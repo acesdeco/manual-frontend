@@ -3,6 +3,7 @@ import Input from "../components/Input"; // Adjust the import path as necessary
 import { ActionFunction, redirect } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import { loginUser } from "~/axios/User";
+import { validateRegNumber } from "~/utils";
 export const meta: MetaFunction = () => {
   return [
     { title: "Login" },
@@ -12,9 +13,18 @@ export const meta: MetaFunction = () => {
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const password = formData.get("password") as string;
-  const email = formData.get("email") as string;
-  const user: { email: string; password: string } = {
-    email,
+
+  const regNumber = formData.get("regNumber") as string;
+
+  if (validateRegNumber(regNumber) === false) {
+    return new Response("Invalid registration number", {
+      status: 400,
+      statusText: "Bad Request",
+    });
+  }
+
+  const user: { regNumber: string; password: string } = {
+    regNumber,
     password,
     // add other required fields if any
   };
