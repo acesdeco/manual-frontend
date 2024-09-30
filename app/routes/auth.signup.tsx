@@ -1,13 +1,30 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction, ActionFunctionArgs } from "@remix-run/node";
 import Input from "../components/Input"; // Adjust the import path as necessary
+import { Form } from "@remix-run/react";
+import { createUser, IUser } from "~/axios/User";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "CPE Lab" },
+    { title: "Create account" },
     { name: "description", content: "Welcome to Computer Engineering UNIUYO" },
   ];
 };
-// Add input fields for first name, last name, password, and confirm password
+
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const data = await request.formData();
+  const formInfo = Object.fromEntries(data);
+  const user: IUser = {
+    email: formInfo.email as string,
+    password: formInfo.password as string,
+    firstName: formInfo.firstName as string,
+    lastName: formInfo.lastName as string,
+    // add other required fields if any
+  };
+  const response = await createUser(user);
+  return response;
+}
+
 
 export default function Index() {
   return (
@@ -21,7 +38,7 @@ export default function Index() {
       <section className="h-full flex flex-row items-center justify-center">
         <section className="md:w-1/2 h-full pt-10">
           <h2 className="text-2xl font-bold mb-6">Create Account</h2>
-          <form>
+          <Form key={"signup_form"} id="signup-form" method="post">
             <div className="mb-4">
               <label
                 htmlFor="regNumber"
@@ -103,14 +120,10 @@ export default function Index() {
             >
               Create Account
             </button>
-          </form>
+          </Form>
         </section>
         <section className="w-1/2 hidden md:flex flex-col justify-center items-center">
-          <img
-            className="w-3/5"
-            alt="Studious students"
-            src="/Illustration.png"
-          ></img>
+          <img className="w-3/5" alt="Studious students" src="/Illustration.png"></img>
         </section>
       </section>
     </main>

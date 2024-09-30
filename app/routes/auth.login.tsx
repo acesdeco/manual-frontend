@@ -1,11 +1,30 @@
 import type { MetaFunction } from "@remix-run/node";
 import Input from "../components/Input"; // Adjust the import path as necessary
-
+import { ActionFunction, redirect } from "@remix-run/node";
+import { Form } from "@remix-run/react";
+import { loginUser } from "~/axios/User";
 export const meta: MetaFunction = () => {
   return [
-    { title: "CPE Lab" },
+    { title: "Login" },
     { name: "description", content: "Welcome to Computer Engineering UNIUYO" },
   ];
+};
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const password = formData.get("password") as string;
+  const email = formData.get("email") as string;
+  const user: { email: string; password: string } = {
+    email,
+    password,
+    // add other required fields if any
+  };
+  const response = await loginUser(user);
+  // Perform login logic here (e.g., check credentials, create session, etc.)
+  if (response.token) {
+    sessionStorage.setItem("token", response.token);
+  }
+  // For now, we'll just redirect to a dashboard page
+  return redirect("/dashboard");
 };
 
 export default function Index() {
@@ -20,7 +39,7 @@ export default function Index() {
       <section className="h-full flex flex-row items-center justify-center">
         <section className="w-full md:w-1/2">
           <h2 className="text-2xl font-bold mb-6">Login</h2>
-          <form>
+          <Form>
             <div className="mb-4">
               <label
                 htmlFor="regNumber"
@@ -66,7 +85,7 @@ export default function Index() {
                 Sign up
               </a>
             </p>
-          </form>
+          </Form>
         </section>
         <section className="w-1/2 hidden md:flex flex-col justify-center items-center">
           <img className="w-3/5" alt="Studious students" src="/amico.png"></img>
