@@ -41,32 +41,22 @@ export default function Index() {
           <h2 className="text-2xl font-bold mb-6">Login</h2>
           <Form>
             <div className="mb-4">
-              <label
-                htmlFor="regNumber"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Registration Number
-              </label>
+
               <Input
                 type="text"
                 id="regNumber"
                 name="regNumber"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Email address or Registration number"
                 required
               />
             </div>
             <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
+
               <Input
                 type="password"
                 id="password"
                 name="password"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Password"
                 required
               />
             </div>
