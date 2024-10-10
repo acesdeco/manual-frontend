@@ -59,20 +59,39 @@ export default function Index() {
         </p>
       </header>
       <section className="h-full flex flex-row items-center justify-center">
-        <section className="md:w-1/2 h-full pt-10">
+        <section className="md:w-1/2 w-full h-full pt-10">
           <h2 className="text-2xl font-bold mb-6">Create Account</h2>
           <Form key={"signup_form"} id="signup-form" method="post">
+
+            <div className="justify-between flex gap-4 md:gap-6 lg:gap-10 w-full">
+              <div className="w-full">
+
+                <Input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First Name"
+                  required
+                />
+              </div>
+              <div className="w-full">
+                <Input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last Name"
+
+                  required
+                />
+              </div>
+            </div>
+
             <div className="mb-4">
-              <label
-                htmlFor="regNumber"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Registration Number
-              </label>
               <Input
                 type="text"
                 id="regNumber"
                 name="regNumber"
+                placeholder="Registration Number"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 required
               />
@@ -108,47 +127,31 @@ export default function Index() {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Last Name
-              </label>
               <Input
                 type="text"
-                id="lastName"
-                name="lastName"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                id="email"
+                name="email"
+                placeholder="Email address"
                 required
               />
             </div>
+
             <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
               <Input
                 type="password"
                 id="password"
                 name="password"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Password"
                 required
               />
             </div>
+            
             <div className="mb-6">
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Confirm Password
-              </label>
               <Input
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Confirm Password"
                 required
               />
             </div>
@@ -168,6 +171,6 @@ export default function Index() {
           ></img>
         </section>
       </section>
-    </main>
+    </main >
   );
 }
