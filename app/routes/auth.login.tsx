@@ -12,9 +12,9 @@ export const meta: MetaFunction = () => {
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const password = formData.get("password") as string;
-  const email = formData.get("email") as string;
-  const user: { email: string; password: string } = {
-    email,
+  const regNumber = formData.get("regNumber") as string;
+  const user: { regNumber: string; password: string } = {
+    regNumber,
     password,
     // add other required fields if any
   };
@@ -39,7 +39,7 @@ export default function Index() {
       <section className="h-full flex flex-row items-center justify-center">
         <section className="w-full md:w-1/2">
           <h2 className="text-2xl font-bold mb-6">Login</h2>
-          <Form>
+          <Form  key={"login_form"} id="login-form" method="post">
             <div className="mb-4">
 
               <Input

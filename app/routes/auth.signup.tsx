@@ -2,6 +2,7 @@ import type { MetaFunction, ActionFunctionArgs } from "@remix-run/node";
 import Input from "../components/Input"; // Adjust the import path as necessary
 import { Form } from "@remix-run/react";
 import { createUser, IUser } from "~/axios/User";
+import { validateEmail, validateRegNumber } from "~/utils";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,21 +11,43 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-
 export const action = async ({ request }: ActionFunctionArgs) => {
   const data = await request.formData();
   const formInfo = Object.fromEntries(data);
+
+  const regNumber = formInfo.regNumber as string;
+  const email = formInfo.email as string;
+
+  if (validateRegNumber(regNumber) === false) {
+    return new Response("Invalid registration number", {
+      status: 400,
+      statusText: "Bad Request",
+    });
+  }
+
+  if (validateEmail(email)) {
+    return new Response("input correct email", {
+      status: 400,
+      statusText: "Bad Request",
+    });
+  }
+  if (formInfo.password !== formInfo.confirmPassword) {
+    return new Response("passwords do not match", {
+      status: 400,
+      statusText: "Bad Request",
+    });
+  }
   const user: IUser = {
-    email: formInfo.email as string,
+    email,
     password: formInfo.password as string,
     firstName: formInfo.firstName as string,
     lastName: formInfo.lastName as string,
+    regNumber,
     // add other required fields if any
   };
   const response = await createUser(user);
   return response;
-}
-
+};
 
 export default function Index() {
   return (
@@ -69,10 +92,40 @@ export default function Index() {
                 id="regNumber"
                 name="regNumber"
                 placeholder="Registration Number"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 required
               />
             </div>
-
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                First Name
+              </label>
+              <Input
+                type="text"
+                id="firstName"
+                name="firstName"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              />
+            </div>
             <div className="mb-4">
               <Input
                 type="text"
@@ -111,7 +164,11 @@ export default function Index() {
           </Form>
         </section>
         <section className="w-1/2 hidden md:flex flex-col justify-center items-center">
-          <img className="w-3/5" alt="Studious students" src="/Illustration.png"></img>
+          <img
+            className="w-3/5"
+            alt="Studious students"
+            src="/Illustration.png"
+          ></img>
         </section>
       </section>
     </main >
