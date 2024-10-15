@@ -32,14 +32,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     });
   }
   if (formInfo.password !== formInfo.confirmPassword) {
-    return new Response("passwords do not match", {
+    return new Response("Passwords do not match", {
       status: 400,
       statusText: "Bad Request",
     });
   }
   const user: IUser = {
     email,
-    password: formInfo.password as string,
+    password: formInfo.confirmPassword as string,
     firstName: formInfo.firstName as string,
     lastName: formInfo.lastName as string,
     regNumber,
@@ -62,10 +62,8 @@ export default function Index() {
         <section className="md:w-1/2 w-full h-full pt-10">
           <h2 className="text-2xl font-bold mb-6">Create Account</h2>
           <Form key={"signup_form"} id="signup-form" method="post">
-
             <div className="justify-between flex gap-4 md:gap-6 lg:gap-10 w-full">
               <div className="w-full">
-
                 <Input
                   type="text"
                   id="firstName"
@@ -80,7 +78,6 @@ export default function Index() {
                   id="lastName"
                   name="lastName"
                   placeholder="Last Name"
-
                   required
                 />
               </div>
@@ -135,7 +132,6 @@ export default function Index() {
                 required
               />
             </div>
-
             <div className="mb-4">
               <Input
                 type="password"
@@ -145,7 +141,6 @@ export default function Index() {
                 required
               />
             </div>
-            
             <div className="mb-6">
               <Input
                 type="password"
@@ -161,6 +156,15 @@ export default function Index() {
             >
               Create Account
             </button>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Already have an account?{" "}
+              <a
+                href="/auth/signup"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Log In
+              </a>
+            </p>
           </Form>
         </section>
         <section className="w-1/2 hidden md:flex flex-col justify-center items-center">
@@ -171,6 +175,6 @@ export default function Index() {
           ></img>
         </section>
       </section>
-    </main >
+    </main>
   );
 }

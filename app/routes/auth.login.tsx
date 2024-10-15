@@ -39,9 +39,8 @@ export default function Index() {
       <section className="h-full flex flex-row items-center justify-center">
         <section className="w-full md:w-1/2">
           <h2 className="text-2xl font-bold mb-6">Login</h2>
-          <Form  key={"login_form"} id="login-form" method="post">
+          <Form key={"login_form"} id="login-form" method="post">
             <div className="mb-4">
-
               <Input
                 type="text"
                 id="regNumber"
@@ -51,7 +50,6 @@ export default function Index() {
               />
             </div>
             <div className="mb-6">
-
               <Input
                 type="password"
                 id="password"
