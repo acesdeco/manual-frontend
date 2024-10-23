@@ -22,16 +22,17 @@ export default function dashboard() {
                     </div>
                     < div id="user">
                     <div id="avatar">
+                    
                     <img src="/notification.png" alt="avatar"  id="avatar_img"/>
                     </div>
                     <div id ="dropdown">
-                    <button><svg height="5px" width="10px"  id="drop-btn" >
+                     <button><svg height="5px" width="10px"  id="drop-btn" >
                         <polyline points= "0,0 5,5 10,0" />
                         </svg>
                         </button>
                         <div id="dropdown-content">
                             <ul>
-                        <li><a href="profile">Profile</a></li>
+                        <li><a href="profile">Profile <hr/></a></li>
                        <li> <a href="log-out">Log out</a></li>
                         </ul>
                         </div>
@@ -56,51 +57,44 @@ export default function dashboard() {
                     <h2 >Courses</h2>
                     <div id="manual">
 
-                        <table>
-<td>
-    <tr><div id="note">
+                        <div id="note">
                             <div id="note_img">
                             </div><p><b>Computer circuit and component <br /> CPE211  <br/>2.0 hours<br/></b>
                             Engr. Udoh Udofia<br/>
                             <progress value="65" max="100"></progress>
                             </p>
-
-                            
-                        </div></tr>
-    <tr><div id="note">
+                            </div>
+                        <div id="note">
                             <div id="note_img">
                             </div><p><b>Computer circuit and component <br /> CPE211  <br/>2.0 hours<br/></b>
                             Engr. Udoh Udofia<br/>
                             <progress value="65" max="100"></progress>
                             </p>
                             
-                        </div></tr>
-</td>
-<td>
-    <tr><div id="note">
+                        </div>
+                        </div>
+                        <div id="manual">
+                        <div id="note">
                             <div id="note_img">
                             </div><p><b>Computer circuit and component <br /> CPE211  <br/>2.0 hours <br/></b>
                         Engr. Udoh Udofia<br/>
                         <progress value="65" max="100"></progress></p>
 
-                        </div></tr>
-    <tr><div id="note">
+                        </div>
+                        <div id="note">
                             <div id="note_img">
                             </div><p><b>Computer circuit and component <br /> CPE211  <br/>2.0 hours<br/></b>
                             Engr. Udoh Udofia<br/>
                             <progress value="65" max="100"></progress>
                             </p>
                            
-                        </div></tr>
-</td>
+                        </div>
 
-                        </table>
-                        
+                        </div>
+                       </div> 
 
 
-                    </div>
-
-                </div>
+        
 
                 <div id="db_right">
                     <div id="calender">
