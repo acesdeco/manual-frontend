@@ -1,7 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import Input from "../components/Input"; // Adjust the import path as necessary
 import { ActionFunction, redirect } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import { loginUser } from "~/axios/User";
 export const meta: MetaFunction = () => {
   return [
@@ -60,14 +60,15 @@ export default function Index() {
                 required
               />
             </div>
-            <Link to="../dashboard">
+            
             <button
               type="submit"
+              formAction="../dashboard"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Login
             </button>
-            </Link>
+  
             <p className="mt-2 text-center text-sm text-gray-600">
               Don&apos;t have an account?{" "}
               <a
