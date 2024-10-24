@@ -76,7 +76,7 @@ export default function Dashboard() {
         <aside
           className={`bg-white px-3 relative pt-10 h-full duration-500 md:w-1/4  ${
             isMenuOpen
-              ? "left-0 w-[400px]"
+              ? "left-0 w-[270px]"
               : "-left-[120%] md:left-0 w-0 text-wrap"
           }`}
         >
