@@ -58,12 +58,15 @@ export default function Index() {
                 required
               />
             </div>
+            
             <button
               type="submit"
+              formAction="../dashboard"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Login
             </button>
+  
             <p className="mt-2 text-center text-sm text-gray-600">
               Don&apos;t have an account?{" "}
               <a

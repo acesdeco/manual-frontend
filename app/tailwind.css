@@ -22,3 +22,275 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Dashboard  for desktop */
+@media (min-width: 1250px) {
+  #dashboard {
+    background: #f9f9f9;
+    min-width: 1250px;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 50px;
+    font-size: medium;
+    color: black;
+    hr {
+      color: whitesmoke;
+    }
+    #top {
+      margin-bottom: 10px;
+      display: flex;
+      #left {
+        position: static;
+        width: 200px;
+        left: 0px;
+        top: 20px;
+      }
+      #right {
+        position: absolute;
+        right: 0px;
+        width: 550px;
+        margin: 0px;
+        padding: 2px;
+        display: flex;
+        #search_bar {
+          input {
+            background-color: white;
+            color: black;
+            border: 0px;
+            margin: 0px;
+            width: 250px;
+            height: 25px;
+            padding: 15px;
+            border-radius: 10px 0px 0px 10px;
+          }
+
+          button {
+            background-color: #1a3fe5;
+            color: white;
+            height: 30px;
+            padding: 7px;
+            border-radius: 0px 10px 10px 0px;
+            font-size: 10px;
+          }
+        }
+        #notification {
+          margin: 5px 25px 5px 20px;
+          width: 15px;
+        }
+        #user {
+          display: flex;
+          padding-right: 10px;
+          padding-left: 10px;
+          width: 120px;
+          border-left: gray;
+          #avatar_img {
+            width: 20px;
+            border-radius: 10px;
+          }
+          #dropdown:hover #dropdown-content ul{
+
+            display: block;
+          }
+          #dropdown {
+            display: inline-block;
+            position: relative;
+
+            polyline {
+              stroke-width: 2px;
+              stroke: black;
+              fill: none;
+              margin: 0px;
+            }
+
+            #drop-btn {
+              margin: 2px;
+            }
+            #dropdown-content {
+              position: absolute;
+              background-color: white;
+              display: block;
+              right: 2px;
+              top: 15px;
+              margin: 0px;
+              padding: 0px;
+              width: 5px;
+              height: 5px;
+              overflow: hidden;
+            color: black;
+              z-index: 2;
+            }
+
+            #dropdown-content:hover {
+              position: absolute;
+              background-color: white;
+              display: block;
+              right: 5px;
+              width: 200px;
+              height: 80px;
+              z-index: 1;
+              padding: 20px;
+              font-size: 15px;
+            }
+
+              #dropdown-content a {
+                text-decoration: none;
+                color: black;
+              }
+              }
+            }
+          }
+        }
+
+    #down {
+      display: flex;
+      margin: 50px 0px;
+
+      #db_left {
+        width: 22%;
+        background: #f9f9f9;
+        margin: 0px 30px 0px 0px;
+        padding: 0px;
+        border-radius: 20px;
+        li {
+          height: 50px;
+          margin-bottom: 20px;
+          padding: 15px;
+          border-radius: 10px;
+        }
+        li:hover {
+          background-color: #1a3fe5;
+          color: #ffffff;
+        }
+      }
+      #db_right {
+        display: block;
+        width: 20%;
+        max-width: 500px;
+
+        #calender {
+          background: #ffffff;
+          box-shadow: 0px 1px 40.8px rgba(0, 0, 0, 0.05);
+          border-radius: 8px;
+          padding: 10%;
+
+          h2 {
+            font-weight: bold;
+            display: flex;
+
+            svg {
+              padding: 0px;
+              margin: 5px 5px;
+            }
+            svg:hover {
+              background-color: #1a3fe5;
+            }
+
+            polyline {
+              stroke-width: 2px;
+              stroke: black;
+              fill: none;
+            }
+
+            #btn-left {
+              transform: rotate(90deg);
+            }
+            #btn-right {
+              transform: rotate(-90deg);
+            }
+            nav {
+              margin-left: 50%;
+              display: flex;
+            }
+          }
+
+          #calender_table {
+            text-align: center;
+            border-collapse: collapse;
+            background: white;
+            margin: 2%;
+            width: 100%;
+            padding: 2%;
+            th {
+              color: #de3163;
+              font-weight: bold;
+            }
+            td {
+              font-weight: bold;
+              font-size: 10px;
+            }
+            #weekend {
+              color: #de3163;
+            }
+          }
+        }
+        #event {
+          min-height: 500px;
+          background: #ffffff;
+          box-shadow: 0px 1px 40.8px -2px rgba(0, 0, 0, 0.05);
+          border-radius: 8px;
+          margin-top: 100px;
+          margin-bottom: 100px;
+
+          p {
+            margin: 3%;
+            padding: 25px 20px 10px 20px;
+            font-weight: 900;
+          }
+        }
+      }
+      #courses {
+        width: 50%;
+        background: #ffffff;
+        box-shadow: 0px 1px 40.8px -2px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        padding: 30px;
+        margin: 0px 30px 0px 0px;
+        display: flow-root;
+
+        h2 {
+          font-size: 35px;
+          margin: 10px 10px 50px 10px;
+        }
+        p {
+          font-size: 10px;
+          text-align: justify;
+        }
+
+        #manual {
+          display: flex;
+          min-width: 550px;
+          width: 100%;
+        }
+
+        #note {
+          width: 100px;
+          min-width: 250px;
+          background: #ffffff;
+          box-shadow: 0px 1px 40.8px -2px rgba(0, 0, 0, 0.05);
+          border-radius: 8px;
+          margin: 3%;
+          padding-top: 3%;
+          p {
+            padding: 15px;
+          }
+
+          #note_img {
+            width: 95%;
+            height: 200px;
+            padding: 2%;
+            margin: 2%;
+            background: greenyellow;
+          }
+          progress {
+            border-radius: 10px;
+            height: 6px;
+          }
+        }
+      }
+    }
+    li {
+      list-style-type: none;
+    }
+  }
+}
