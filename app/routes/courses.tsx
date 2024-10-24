@@ -1,11 +1,10 @@
 //import { Link } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import { MyDatePicker } from "~/components/DateComponent";
 import { NavLinkTs } from "~/components/NavLink";
 export const meta: MetaFunction = () => {
   return [
-    { title: "Dashboard" },
+    { title: "Course 1" },
     { name: "description", content: "View Courses" },
   ];
 };
