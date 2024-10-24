@@ -30,7 +30,7 @@ export const CourseCard = ({
         </span>
         <footer className="flex flex-row justify-between my-3">
           <h3>{courseLecturer}</h3>
-          <Link to={"/courses/home"} className="w-fit">
+          <Link to={"/courses"} className="w-fit">
             <Button>Go to course</Button>
           </Link>
         </footer>
