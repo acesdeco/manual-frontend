@@ -11,6 +11,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@paystack/inline-js": "^2.22.1",
     "@remix-run/node": "^2.12.1",
     "@remix-run/react": "^2.12.1",
     "@remix-run/serve": "^2.12.1",
@@ -26,6 +27,7 @@
     "@remix-run/dev": "^2.12.1",
     "@types/crypto-js": "^4.2.2",
     "@types/jsonwebtoken": "^9.0.7",
+    "@types/paystack__inline-js": "^1.0.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/store": "^2.0.5",

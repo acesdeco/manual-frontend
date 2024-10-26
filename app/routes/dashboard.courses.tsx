@@ -1,19 +1,22 @@
 //import { Link } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/node";
+import {  
+  // LoaderFunctionArgs, 
+  type MetaFunction } from "@remix-run/node";
+import { json, useLoaderData, 
+  // useOutletContext 
+} from "@remix-run/react";
 import { CourseCard } from "~/components/Courses/CourseCard";
+import { getAllCourses } from "~/axios/Courses";
 export const meta: MetaFunction = () => {
     return [
       { title: "Courses" },
       { name: "description", content: "View Courses" },
     ];
   };
-const course = {
-    courseCode: "CPE 311",
-    courseLecturer: "Engr. Udofia",
-    courseTime: "2 hours",
-    courseName: "Applications of Programming",
-}
-export default function dashboard() {
+
+export default function Dashboard() {
+    // const user = useOutletContext();
+    const {courses} = useLoaderData<typeof loader>();
     return (
         <>
         <header className="mb-10">
@@ -22,11 +25,20 @@ export default function dashboard() {
             </h1>
         </header>
         <section className="grid grid-cols-2 gap-3">
-            <CourseCard course={course}></CourseCard>
-            <CourseCard course={course}></CourseCard>
-            <CourseCard course={course}></CourseCard>
-            <CourseCard course={course}></CourseCard>
+            {courses.map((course, y) => <CourseCard key={y} course={course}></CourseCard>)}
         </section>
         </>
     );
 }
+
+
+export async function loader(
+  // {
+  //   request,
+  // }: LoaderFunctionArgs
+) {
+    const data = await getAllCourses();
+    // const cookie = request.headers.get("Cookie");
+    return json({ courses: data });
+  }
+  

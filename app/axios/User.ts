@@ -1,11 +1,11 @@
-import api from "./baseConfig";
+import {baseConfig as api, axios, AxiosError} from "./baseConfig";
 export interface IUser {
   id?: string;
   email: string;
   password: string;
   firstName: string;
   lastName: string;
-  regNumber: string;
+  registrationNumber: string;
   // Add other user properties here
 }
 
@@ -19,13 +19,43 @@ export const getUser = async (id: string): Promise<IUser> => {
   }
 };
 
-export const createUser = async (userData: IUser): Promise<IUser> => {
+interface ApiResponse {
+  success: boolean;
+  data?: {
+    [key: string]: string;
+  };
+  message?: string;
+  details?: unknown;
+}
+
+export const createUser = async (userData: IUser): Promise<ApiResponse> => {
   try {
     const response = await api.post("/users/signup", userData);
-    return response.data as IUser;
-  } catch (error) {
-    console.error("Error creating user:", error);
-    throw error;
+    return {
+      success: true,
+      data: response.data.data,
+    };
+  } catch (error: unknown | { message: string }) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        // The server responded with a status code that falls outside the 2xx range
+        console.error('Server Error:', axiosError.response.data);
+        return { success: false, message: 'Server error occurred', details: axiosError.response.data };
+      } else if (axiosError.request) {
+        // The request was made but no response was received
+        console.error('Network Error:', axiosError.request);
+        return { success: false, message: 'Network error occurred. Please check your connection.' };
+      } else {
+        // Something else happened in setting up the request
+        console.error('Error:', axiosError.message);
+        return { success: false, message: 'An error occurred: ' + axiosError.message };
+      }
+    } else {
+      // Non-Axios error handling
+      console.error('Unexpected Error:', error);
+      return { success: false, message: 'An unexpected error occurred.' };
+    }
   }
 };
 
@@ -52,14 +82,35 @@ export const deleteUser = async (id: string): Promise<{ message: string }> => {
   }
 };
 export const loginUser = async (data: {
-  regNumber: string;
+  registrationNumber: string;
   password: string;
-}): Promise<{ token: string }> => {
+}): Promise<ApiResponse> => {
   try {
     const response = await api.post("/users/login", data);
-    return response.data as { token: string };
+    return {
+      success: true,
+      data: response.data.data,
+    };
   } catch (error) {
-    console.error("Error logging in user:", error);
-    throw error;
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        // The server responded with a status code that falls outside the 2xx range
+        console.error('Server Error:', axiosError.response.data);
+        return { success: false, message: 'Server error occurred', details: axiosError.response.data };
+      } else if (axiosError.request) {
+        // The request was made but no response was received
+        console.error('Network Error:', axiosError.request);
+        return { success: false, message: 'Network error occurred. Please check your connection.' };
+      } else {
+        // Something else happened in setting up the request
+        console.error('Error:', axiosError.message);
+        return { success: false, message: 'An error occurred: ' + axiosError.message };
+      }
+    } else {
+      // Non-Axios error handling
+      console.error('Unexpected Error:', error);
+      return { success: false, message: 'An unexpected error occurred.' };
+    }
   }
 };

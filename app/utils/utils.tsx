@@ -2,20 +2,20 @@ export const validateRegNumber = (text: string) => {
   const regNumber = text;
   const regex = /^[1][5-9]|[2][0-4]\/EG\/CO\/[0-9]{1,4}$/;
 
-  if (!regex.test(regNumber)) {
-    return false;
-  } else {
+  if (regex.test(regNumber)) {
     return true;
+  } else {
+    return false;
   }
 };
 
 export const validateEmail = (text: string) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!regex.test(text)) {
-    return false;
-  } else {
+  const regex =
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (regex.test(text)) {
     return true;
+  } else {
+    return false;
   }
 };
 

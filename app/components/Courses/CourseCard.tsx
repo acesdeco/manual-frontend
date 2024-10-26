@@ -1,36 +1,28 @@
 import Button from "../Button";
 import { Link } from "@remix-run/react";
-interface CourseCardProps {
-  course: {
-    courseName: string;
-    courseLecturer: string;
-    courseCode: string;
-    courseTime: string;
-    img?: string;
-  };
-  img?: string;
+import { ICourse } from "~/axios/Courses";
+interface ICourseCard {
+  course: ICourse
 }
-export const CourseCard = ({
-  course: { courseName, courseLecturer, courseCode, courseTime, img },
-}: CourseCardProps) => {
+export const CourseCard = ({course}: ICourseCard) => {
   return (
     <div className="w-full min-w-32 shadow-lg p-4 shadow-gray-300 text-gray-900">
       <figure>
         <img
           className="h-1/2"
           alt="course description"
-          src={img ? img : "/amico.png"}
+          src={course.courseImage ? course.courseImage : "/amico.png"}
         ></img>
       </figure>
       <article>
-        <h3 className="text-xl font-semibold">{courseName}</h3>
+        <h3 className="text-xl text-gray-900 font-semibold">{course.title}</h3>
         <span className="flex justify-between">
-          <span>{courseCode}</span>
-          <span>{courseTime}</span>
+          <span>{course.code}</span>
+          <span>2 hours</span>
         </span>
         <footer className="flex flex-row justify-between my-3">
-          <h3>{courseLecturer}</h3>
-          <Link to={"/courses"} className="w-fit">
+          <h3>{course.instructor}</h3>
+          <Link to={`/courses/${course['_id']}/introduction`} className="w-fit">
             <Button>Go to course</Button>
           </Link>
         </footer>

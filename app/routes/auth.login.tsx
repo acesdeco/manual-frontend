@@ -1,34 +1,90 @@
 import type { MetaFunction } from "@remix-run/node";
 import Input from "../components/Input"; // Adjust the import path as necessary
-import { ActionFunction, redirect } from "@remix-run/node";
-import { Form } from "@remix-run/react";
-import { loginUser } from "~/axios/User";
+import { ActionFunction, json, redirect } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
+import { IUser, loginUser } from "~/axios/User";
+import { user as userState } from "~/serverstate.server";
+import { validateRegNumber } from "~/utils/utils";
+import { useEffect, useState } from "react";
 export const meta: MetaFunction = () => {
   return [
     { title: "Login" },
     { name: "description", content: "Welcome to Computer Engineering UNIUYO" },
   ];
 };
+type ActionData = {
+  validationErrors?: { [key: string]: string };
+  data?: IUser;
+  responseError?: {
+    success: boolean;
+    message: string;
+    details?: {
+      code: number;
+      message: string;
+    };
+  };
+};
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const password = formData.get("password") as string;
-  const regNumber = formData.get("regNumber") as string;
-  const user: { regNumber: string; password: string } = {
-    regNumber,
+  const registrationNumber = formData.get("regNumber") as string;
+  const validationErrors: { [key: string]: string } = {};
+
+  if (validateRegNumber(registrationNumber) === false) {
+    validationErrors.regNumber = "Invalid Registration Number";
+  }
+  if (Object.keys(validationErrors).length > 0) {
+    return json({ validationErrors });
+  }
+  const user: { registrationNumber: string; password: string } = {
+    registrationNumber,
     password,
     // add other required fields if any
   };
   const response = await loginUser(user);
-  // Perform login logic here (e.g., check credentials, create session, etc.)
-  if (response.token) {
-    sessionStorage.setItem("token", response.token);
+  if (response.success && "data" in response) {
+    const cookieHeader = request.headers.get('Cookie');
+    const cookie = (await userState.parse(cookieHeader)) || {};
+    cookie.user =  response.data;
+    return redirect("/dashboard/courses", {
+      headers: {
+        "Set-Cookie": await userState.serialize(cookie),
+      }
+    });
   }
-  // For now, we'll just redirect to a dashboard page
-  return redirect("/dashboard");
+  if (!response.success) {
+    return json({responseError: { ...response }});
+  }
 };
 
 export default function Index() {
+  const actionData = useActionData<ActionData>();
+  const [modalOpen, setModalOpen] = useState(false);
+  useEffect(() => {
+    if(actionData?.responseError) {
+      setModalOpen(true);
+    }
+  }, [actionData]);
   return (
+    <>
+    {actionData?.responseError && modalOpen && (
+      <div className="fixed h-screen z-50 w-screen inset-0 flex items-center justify-center bg-opacity-50">
+        <div className="bg-white w-1/2 absolute p-6 rounded shadow-lg">
+          <h2 className="text-xl font-bold mb-4 text-gray-600">
+            Error
+          </h2>
+          <p className="text-sm text-gray-600">
+            {actionData.responseError.details?.message}
+          </p>
+          <button
+            onClick={() => setModalOpen(false)}
+            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
     <main className="w-full h-screen flex flex-col md:px-16 px-4 py-8 fade-in-bottom">
       <header>
         <h1 className="text-4xl font-bold mb-4">CPE Lab</h1>
@@ -45,9 +101,14 @@ export default function Index() {
                 type="text"
                 id="regNumber"
                 name="regNumber"
-                placeholder="Email address or Registration number"
+                placeholder="Registration number"
                 required
               />
+                {actionData?.validationErrors?.regNumber ? (
+                  <span className="text-sm text-red-700">
+                    {actionData?.validationErrors.regNumber}
+                  </span>
+                ) : null}
             </div>
             <div className="mb-6">
               <Input
@@ -61,7 +122,6 @@ export default function Index() {
             
             <button
               type="submit"
-              formAction="../dashboard"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Login
@@ -83,5 +143,6 @@ export default function Index() {
         </section>
       </section>
     </main>
+    </>
   );
 }

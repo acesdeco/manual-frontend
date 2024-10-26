@@ -1,6 +1,4 @@
 import type { MetaFunction } from "@remix-run/node";
-import { useNavigate } from "@remix-run/react";
-import { useEffect } from "react";
 export const meta: MetaFunction = () => {
   return [
     { title: "CPE Lab" },
@@ -8,13 +6,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 export default function Index() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate("/auth/login");
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [navigate]);
   return (
     <main className="w-full h-screen flex flex-col items-center justify-center md:px-16 px-4 py-8">
       <header>
@@ -29,3 +20,15 @@ export default function Index() {
     </main>
   );
 }
+import { LoaderFunction, redirect } from "@remix-run/node";
+import { user as userState } from "~/serverstate.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const cookieHeader = request.headers.get('Cookie');
+    const cookie = (await userState.parse(cookieHeader)) || {};
+  if (cookie.user) {
+    return redirect("/dashboard/courses");
+  } else {
+    return redirect("/auth/login");
+  }
+};

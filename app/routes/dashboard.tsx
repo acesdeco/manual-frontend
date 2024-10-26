@@ -1,7 +1,9 @@
 //import { Link } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/node";
-import { Outlet, Link} from "@remix-run/react";
+import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
+import { Outlet, Link, useLoaderData} from "@remix-run/react";
 import { NavLinkTs } from "~/components/NavLink";
+import {user as userState} from "~/serverstate.server";
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Dashboard" },
@@ -22,7 +24,8 @@ const locations = [
     location: "/dashboard/resources",
   },
 ];
-export default function dashboard() {
+export default function Dshboard() {
+  const {user} = useLoaderData<typeof loader>();
   return (
     <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed">
       <header className="w-[100%] bg-white h-[15%] flex flex-row items-center  py-5 justify-between bg-transparent px-10">
@@ -121,7 +124,7 @@ export default function dashboard() {
         </aside>
 
         <main className="bg-white w-full h-[90%] p-4 overflow-auto">
-          <Outlet></Outlet>
+          <Outlet context={user}></Outlet>
         </main>
         <aside className="w-1/6 bg-white">
         {/* Robust date and event section */}
@@ -130,4 +133,14 @@ export default function dashboard() {
       </section>
     </main>
   );
+}
+
+
+export async function loader({
+  request,
+}: LoaderFunctionArgs) {
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userState.parse(cookieHeader)) || {};
+  console.log(cookie);
+  return json({ user: cookie.user });
 }
