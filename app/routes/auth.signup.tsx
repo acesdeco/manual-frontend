@@ -89,46 +89,16 @@ export default function Index() {
                 id="regNumber"
                 name="regNumber"
                 placeholder="Registration Number"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 required
               />
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <Input
-                type="email"
-                id="email"
-                name="email"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                First Name
-              </label>
-              <Input
-                type="text"
-                id="firstName"
-                name="firstName"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-              />
-            </div>
+
             <div className="mb-4">
               <Input
                 type="text"
                 id="email"
                 name="email"
-                placeholder="Email address"
+                placeholder="Email Address"
                 required
               />
             </div>

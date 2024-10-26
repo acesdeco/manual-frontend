@@ -45,7 +45,7 @@ export default function Index() {
                 type="text"
                 id="regNumber"
                 name="regNumber"
-                placeholder="Email address or Registration number"
+                placeholder="Email Address or Registration Number"
                 required
               />
             </div>
