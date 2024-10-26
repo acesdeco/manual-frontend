@@ -9,12 +9,10 @@ export const meta: MetaFunction = () => {
 };
 export default function Index() {
   const navigate = useNavigate();
-
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate("/auth/login");
     }, 3000);
-
     return () => clearTimeout(timer);
   }, [navigate]);
   return (
