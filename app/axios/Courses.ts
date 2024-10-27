@@ -37,7 +37,7 @@ interface ApiResponse {
     success: boolean;
     data?: {
         [key: string]: string;
-    } | ICourse[];
+    } | ICourse[]  | string[];
     message?: string;
     details?: unknown;
 }
@@ -149,7 +149,7 @@ export const getCoursesByUserId = async (id: string): Promise<ApiResponse> => {
         const response = await api.get(`/course/user/${id}`);
         return {
             success: true,
-            data: response.data.data as ICourse[],
+            data: response.data.data as string[],
         }
     } catch (error) {
         if (axios.isAxiosError(error)) {

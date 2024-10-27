@@ -5,9 +5,9 @@ import { useState } from "react";
 import { BiMenuAltRight } from "react-icons/bi";
 import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
-import { getCourse } from "~/axios/Courses";
+import { getCourse, getCoursesByUserId, ICourse } from "~/axios/Courses";
 // import { NavLinkTs } from "~/components/NavLink";
-import {user as userState} from "~/serverstate.server";
+// import {user as userState} from "~/serverstate.server";
 export const meta: MetaFunction = () => {
   return [
     { title: "Course 1" },
@@ -18,10 +18,10 @@ export const meta: MetaFunction = () => {
 export default function Course() {
   const params = useParams(); // Get the parameters from the URL
   const courseId = params.courseId;
-  const {user, course} = useLoaderData<typeof loader>();
+  const {course, userCourses} = useLoaderData<typeof loader>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // Access the `userId` parameter
-  if(!user.courses || user.courses.includes(courseId) === false) {
+  if(!userCourses || !courseId || userCourses.filter((course) => course._id === courseId).length === 0) {
     return (
       <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed">
         <div className="flex flex-col items-center justify-center h-full">
@@ -85,14 +85,15 @@ export default function Course() {
 }
 
 export async function loader({
-  request,
+  // request,
   params,
 }: LoaderFunctionArgs) {
-  const cookieHeader = request.headers.get("Cookie");
+  // const cookieHeader = request.headers.get("Cookie");
   const {courseId} = params as {courseId: string};
-  const cookie = (await userState.parse(cookieHeader)) || {};
-  const response = await getCourse(courseId);
-  return json({ user: cookie.user, course: response });
+  // const cookie = (await userState.parse(cookieHeader)) || {};
+  const response = await getCoursesByUserId(courseId);
+  const courseResponse = await getCourse(courseId);
+  return json({ course: courseResponse, userCourses: response.data as ICourse[] });
 }
 
 
