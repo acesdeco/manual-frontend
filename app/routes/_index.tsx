@@ -26,6 +26,7 @@ import { user as userState } from "~/serverstate.server";
 export const loader: LoaderFunction = async ({ request }) => {
   const cookieHeader = request.headers.get('Cookie');
     const cookie = (await userState.parse(cookieHeader)) || {};
+    console.log(cookie);
   if (cookie.user) {
     return redirect("/dashboard/courses");
   } else {

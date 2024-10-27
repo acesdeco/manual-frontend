@@ -1,6 +1,7 @@
 import {
   json,
   LoaderFunction,
+  MetaFunction,
   // ActionFunction
 } from "@remix-run/node";
 import {
@@ -12,8 +13,15 @@ import {
 // import { useEffect } from "react";
 import { getCourse } from "~/axios/Courses";
 import { initializePayment, verifyTransaction } from "~/axios/Payment";
+import { updateUser } from "~/axios/User";
 import { user as userState } from "~/serverstate.server";
 // Loader function to fetch course data
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Payment For Course" },
+    { name: "description", content: "Pay for course" },
+  ];
+};
 export const loader: LoaderFunction = async ({ params, request }) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
@@ -30,18 +38,25 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     if (verifyTransactionData.success) {
       if ("data" in verifyTransactionData) {
         // Redirect to course page
-        if(verifyTransactionData.success) {
-            cookie.user.courses = [...(cookie.user.courses || []), courseId];
-            await userState.serialize(cookie);
+        if (verifyTransactionData.success) {
+          const response = await updateUser({courses: [courseId]}, cookie.user.user);
+          console.log(response);
+          if (response.success) {
+            cookie.user = response.data;
+          }
+          await userState.serialize(cookie);
         }
-        return json({
-          courseTransactionState: verifyTransactionData.data,
-          courseData,
-        }, {
+        return json(
+          {
+            courseTransactionState: verifyTransactionData.data,
+            courseData,
+          },
+          {
             headers: {
-                "Set-Cookie": await userState.serialize(cookie)
-            }
-        });
+              "Set-Cookie": await userState.serialize(cookie),
+            },
+          }
+        );
       }
     } else {
       return json({ courseData: verifyTransactionData.data });
@@ -49,9 +64,9 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   }
   // // Fetch course data based on courseId ?trxref=671d442ba0e3d725d8387303&reference=671d442ba0e3d725d8387303
   if (
-    courseData 
-    &&
-    (cookie.user.courses === undefined || cookie.user.courses?.includes(courseId) === false)
+    courseData &&
+    (cookie.user.courses === undefined ||
+      cookie.user.courses?.includes(courseId) === false)
   ) {
     const APP_URL = process.env.APP_URL || "http://localhost:5173";
     console.log(APP_URL);
@@ -76,7 +91,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 // UI Component
 export default function PaymentPage() {
   const navigate = useNavigate();
-  const { paymentData, courseData, courseTransactionState, userHasPaid } = useLoaderData<typeof loader>();
+  const { paymentData, courseData, courseTransactionState, userHasPaid } =
+    useLoaderData<typeof loader>();
   if (courseTransactionState?.status === "success") {
     return (
       <div className="flex flex-col items-center justify-center w-screen h-screen">
@@ -88,7 +104,9 @@ export default function PaymentPage() {
           </p>
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-            onClick={() => navigate(`/courses/${courseData["_id"]}/introduction`)}
+            onClick={() =>
+              navigate(`/courses/${courseData["_id"]}/introduction`)
+            }
           >
             Go to Course
           </button>
@@ -114,43 +132,72 @@ export default function PaymentPage() {
       </div>
     );
   }
-  if(userHasPaid){
+  if (userHasPaid) {
     return (
       <div className="flex flex-col items-center justify-center w-screen h-screen">
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-2xl font-bold mb-4">Payment Successful!</h2>
           <p className="mb-4">
-            You have already paid for the course: <strong>{courseData.title}</strong>
+            You have already paid for the course:{" "}
+            <strong>{courseData.title}</strong>
           </p>
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-            onClick={() => navigate(`/courses/${courseData["_id"]}/introduction`)}
+            onClick={() =>
+              navigate(`/courses/${courseData["_id"]}/introduction`)
+            }
           >
             Go to Course
           </button>
         </div>
       </div>
-    )
+    );
   }
   return (
-    <div>
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
-        <div className="flex flex-col items-center justify-center">
-            <h2 className="text-2xl font-bold mb-4">Course Payment</h2>
-            <p className="mb-4">
-                You are about to pay for the course: <strong>{courseData.title}</strong>
+    <main className="flex flex-col items-center justify-center w-screen h-screen">
+      <header className="my-5">
+        <h2 className="text-2xl font-bold mb-4">Course Payment</h2>
+      </header>
+      <section className="flex flex-row items-start gap-10 justify-around rounded-md border border-white p-4">
+        <section className="w-3/4">
+          <img
+            src={courseData.courseImage}
+            alt={courseData.title}
+            className="w-64 h-64 object-cover mb-4 rounded-md"
+          />
+          <p className="mb-4">
+            You are about to pay for the course:{" "}
+            <strong>{courseData.title}</strong>
+          </p>
+          <article>{courseData.description}</article>
+          <span className="py-4">Taken by {courseData.instructor}</span>
+        </section>
+
+        <div className="flex flex-col h-full mb-4 w-1/4">
+          <div className="h-fit">
+            <p className="py-2 flex justify-between">
+              Course Price: <strong>N{courseData.coursePrice}</strong>
             </p>
-            <p className="mb-4">
-                Course Price: <strong>N{courseData.coursePrice}</strong>
+            <p className="py-2 flex justify-between">
+              Charges:{" "}
+              <strong>N{(courseData.coursePrice * 0.05).toFixed(2)}</strong>
             </p>
-            <button
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                onClick={() => window.location.href = paymentData.authorization_url}
-            >
-                Proceed to Pay
-            </button>
+            <p className="py-2 flex justify-between">
+              Total:{" "}
+              <strong>N{(courseData.coursePrice * 1.05).toFixed(2)}</strong>
+            </p>
+          </div>
+
+          <button
+            className="bg-blue-500 w-full  mt-5 text-white py-2 px-4 rounded hover:bg-blue-700"
+            onClick={() =>
+              (window.location.href = paymentData.authorization_url)
+            }
+          >
+            Proceed to Pay
+          </button>
         </div>
-    </div>
-    </div>
+      </section>
+    </main>
   );
 }

@@ -6,7 +6,7 @@ import { json, useLoaderData,
   // useOutletContext 
 } from "@remix-run/react";
 import { CourseCard } from "~/components/Courses/CourseCard";
-import { getAllCourses } from "~/axios/Courses";
+import { getAllCourses, ICourse } from "~/axios/Courses";
 export const meta: MetaFunction = () => {
     return [
       { title: "Courses" },
@@ -24,7 +24,7 @@ export default function Dashboard() {
                 Courses
             </h1>
         </header>
-        <section className="grid grid-cols-2 gap-3">
+        <section className="grid px-4 md:grid-cols-2 gap-3">
             {courses.map((course, y) => <CourseCard key={y} course={course}></CourseCard>)}
         </section>
         </>
@@ -39,6 +39,9 @@ export async function loader(
 ) {
     const data = await getAllCourses();
     // const cookie = request.headers.get("Cookie");
-    return json({ courses: data });
+    if (data.success === false) {
+      return json({ courses: [] });
+    }
+    return json({ courses: data?.data as ICourse[] });
   }
   

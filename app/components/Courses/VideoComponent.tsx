@@ -15,7 +15,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
     <div className="video-component">
       <div className="">
         <h2 className="text-gray-600 font-semibold text-xl mt-1 mb-4">{content.topic}</h2>
-        <p>{content.description}</p>
+        <p className="text-gray-600 my-4">{content.description}</p>
       </div>
       <div className="video-wrapper">
         <iframe

@@ -6,7 +6,7 @@ interface ICourseCard {
 }
 export const CourseCard = ({course}: ICourseCard) => {
   return (
-    <div className=" min-w-32 rounded-md cursor-pointer w-full shadow-lg p-4 shadow-gray-300 text-gray-900">
+    <div className="min-w-32 rounded-md cursor-pointer w-full shadow-lg p-4 shadow-gray-300 text-gray-900">
       <figure>
         <img
           className="h-1/2"
@@ -15,7 +15,7 @@ export const CourseCard = ({course}: ICourseCard) => {
         ></img>
       </figure>
       <article>
-        <h3 className="text-xl text-gray-900 font-semibold">{course.title}</h3>
+        <h3 className="text-xl text-gray-900 py-2 font-semibold">{course.title}</h3>
         <span className="flex justify-between">
           <span>{course.code}</span>
           <span>2 hours</span>

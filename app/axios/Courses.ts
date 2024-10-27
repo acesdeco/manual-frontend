@@ -37,7 +37,7 @@ interface ApiResponse {
     success: boolean;
     data?: {
         [key: string]: string;
-    };
+    } | ICourse[];
     message?: string;
     details?: unknown;
 }
@@ -113,12 +113,64 @@ export const deleteCourse = async (id: string): Promise<{ message: string }> => 
         throw error;
     }
 };
-export const getAllCourses = async (): Promise<ICourse[]> => {
+export const getAllCourses = async (): Promise<ApiResponse> => {
     try {
         const response = await api.get("/course");
-        return response.data.data as ICourse[];
-    } catch (error) {
-        console.error("Error fetching courses:", error);
-        throw error;
+        return {
+            success: true,
+            data: response.data.data as ICourse[],
+        };
+    }catch (error) {
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError;
+            if (axiosError.response) {
+                // The server responded with a status code that falls outside the 2xx range
+                console.error('Server Error:', axiosError.response.data);
+                return { success: false, message: 'Server error occurred', details: axiosError.response.data };
+            } else if (axiosError.request) {
+                // The request was made but no response was received
+                console.error('Network Error:', axiosError.request);
+                return { success: false, message: 'Network error occurred. Please check your connection.' };
+            } else {
+                // Something else happened in setting up the request
+                console.error('Error:', axiosError.message);
+                return { success: false, message: 'An error occurred: ' + axiosError.message };
+            }
+        } else {
+            // Non-Axios error handling
+            console.error('Unexpected Error:', error);
+            return { success: false, message: 'An unexpected error occurred.' };
+        }
     }
 };
+
+export const getCoursesByUserId = async (id: string): Promise<ApiResponse> => {
+    try {
+        const response = await api.get(`/course/user/${id}`);
+        return {
+            success: true,
+            data: response.data.data as ICourse[],
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError;
+            if (axiosError.response) {
+                // The server responded with a status code that falls outside the 2xx range
+                console.error('Server Error:', axiosError.response.data);
+                return { success: false, message: 'Server error occurred', details: axiosError.response.data };
+            } else if (axiosError.request) {
+                // The request was made but no response was received
+                console.error('Network Error:', axiosError.request);
+                return { success: false, message: 'Network error occurred. Please check your connection.' };
+            } else {
+                // Something else happened in setting up the request
+                console.error('Error:', axiosError.message);
+                return { success: false, message: 'An error occurred: ' + axiosError.message };
+            }
+        } else {
+            // Non-Axios error handling
+            console.error('Unexpected Error:', error);
+            return { success: false, message: 'An unexpected error occurred.' };
+        }
+    }
+}

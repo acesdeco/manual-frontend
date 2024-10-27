@@ -1,10 +1,10 @@
-import type { MetaFunction, ActionFunctionArgs } from "@remix-run/node";
+import type { MetaFunction, ActionFunctionArgs, LoaderFunction } from "@remix-run/node";
 import Input from "../components/Input"; // Adjust the import path as necessary
 import { Form, json, redirect, useActionData } from "@remix-run/react";
 import { createUser, IUser } from "~/axios/User";
 import { validateEmail, validateRegNumber } from "~/utils/utils";
 import { useEffect, useState } from "react";
-import {user as userState} from "~/serverstate.server";
+import { user as userState } from "~/serverstate.server";
 type ActionData = {
   validationErrors?: { [key: string]: string };
   data?: IUser;
@@ -53,14 +53,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   };
   const response = await createUser(user);
   if (response.success && "data" in response) {
-    const cookieHeader = request.headers.get('Cookie');
-    const cookie = (await userState.parse(cookieHeader)) || {};
-    cookie.user =  response.data;
-    return redirect("/dashboard/courses", {
-      headers: {
-        "Set-Cookie": await userState.serialize(cookie),
-      }
-    });
+    return redirect("/auth/login");
   }
   if (!response.success) {
     return json({responseError: { ...response }});
@@ -211,3 +204,12 @@ export default function Index() {
     </>
   );
 }
+export const loader: LoaderFunction = async ({ request }) => {
+  const cookieHeader = request.headers.get('Cookie');
+    const cookie = (await userState.parse(cookieHeader)) || {};
+    console.log(cookie);
+  if (cookie.user) {
+    return redirect("/dashboard/courses");
+  } 
+  return null;
+};

@@ -1,6 +1,10 @@
 //import { Link } from "@remix-run/react";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, Link, useParams, useLoaderData, json} from "@remix-run/react";
+import { useState } from "react";
+import { BiMenuAltRight } from "react-icons/bi";
+import { IoIosArrowDown, IoIosClose } from "react-icons/io";
+import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
 import { getCourse } from "~/axios/Courses";
 // import { NavLinkTs } from "~/components/NavLink";
 import {user as userState} from "~/serverstate.server";
@@ -15,6 +19,7 @@ export default function Course() {
   const params = useParams(); // Get the parameters from the URL
   const courseId = params.courseId;
   const {user, course} = useLoaderData<typeof loader>();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   // Access the `userId` parameter
   if(!user.courses || user.courses.includes(courseId) === false) {
     return (
@@ -31,14 +36,14 @@ export default function Course() {
   }
   return (
     <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed">
-      <header className="w-[100%] bg-white h-[15%] flex flex-row items-center justify-between bg-transparent px-10 py-5">
+      <header className="w-[100%] bg-white h-fit flex flex-row items-center justify-between bg-transparent px-10 py-5">
         <div id="left">
         <Link className="w-5" to="/dashboard/course">
             <img alt="Union" src="/Union.png"></img>
             </Link>
         </div>
         <div className="flex flex-row items-center">
-          <div className="flex flex-row items-center mx-10 border border-gray-200 rounded-lg ">
+          {/* <div className="flex flex-row items-center mx-10 border border-gray-200 rounded-lg ">
             <input
               className="text-black bg-transparent focus:outline-none focus:border-gray-500 px-3 p-1 rounded-l-md"
               type="text"
@@ -51,39 +56,30 @@ export default function Course() {
               {" "}
               Search
             </button>
-          </div>
+          </div> */}
           <div className="w-6 mx-4">
-            <img src="/notification.png" alt="notification" />
+            <IoNotificationsOutline size={30} color="#1671d9" />
           </div>
-          <div className="flex flex-row justify-center">
+          <div className="flex items-center gap-1 flex-row justify-center">
             <div className="w-6 ">
-              <img src="/notification.png" alt="avatar" id="avatar_img" />
+              <IoPersonCircleOutline size={30} color="#1671d9" />
             </div>
-            <div id="dropdown">
+            <div className="md:flex hidden gap-3 justify-center items-center">
               <button>
-                <svg height="5px" width="10px" id="drop-btn">
-                  <polyline points="0,0 5,5 10,0" />
-                </svg>
+                <IoIosArrowDown size={20} color="#1671d9" />
               </button>
-              {/* <div id="dropdown-content">
-                <ul>
-                  <li>
-                    <a href="profile">
-                      Profile <hr />
-                    </a>
-                  </li>
-                  <li>
-                    {" "}
-                    <a href="log-out">Log out</a>
-                  </li>
-                </ul>
-              </div> */}
             </div>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="cursor-pointer md:hidden"
+            >
+                {isMenuOpen ? <IoIosClose size={30} color="#1671d9" /> : <BiMenuAltRight size={30} color="#1671d9" />}
+            </button>
           </div>
         </div>
       </header>
       <hr />
-     <Outlet context={course}></Outlet>
+     <Outlet context={{course, isMenuOpen}}></Outlet>
     </main>
   );
 }
@@ -98,3 +94,5 @@ export async function loader({
   const response = await getCourse(courseId);
   return json({ user: cookie.user, course: response });
 }
+
+

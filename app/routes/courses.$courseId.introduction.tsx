@@ -1,17 +1,24 @@
 import { useOutletContext } from "@remix-run/react";
-import { ICourse } from "~/axios/Courses";
 import { NavLinkTs } from "~/components/NavLink";
 import LessonComponent from "~/components/Courses/VideoComponent";
+import { ICourse } from "~/axios/Courses";
 export default function Week() {
-    const course = useOutletContext<ICourse>();
+    const {course, isMenuOpen} = useOutletContext<{course: ICourse, isMenuOpen: boolean}>();
+    console.log(course);
     const weeks = course.weeks;
     const locations = Object.keys(weeks).map((weekNumber) => ({
       location: `/courses/${course._id}/${weekNumber}`,
       item: `Week ${weekNumber}`,
     }));
     return (
-        <section className="h-[85%] bg-transparent w-6/6 mx-10 gap-4 mt-10 flex flex-row justify-between items-start">
-        <aside className=" w-2/6">
+        <section className="h-[85%] bg-transparent w-6/6 md:mx-10 mx-0 gap-4 mt-0 md:mt-10 flex flex-row justify-between items-start">
+        <aside
+          className={`absolute md:static bg-white  px-3 z-50 pt-10 h-full duration-500 w-[300px]  ${
+            isMenuOpen
+              ? "left-0 w-[270px]"
+              : "-left-[120%] md:left-0 w-0 text-wrap"
+          }`}
+        >
           <ul className="w-full">
           <li className="w-full" >
                 <NavLinkTs

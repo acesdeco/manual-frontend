@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import Input from "../components/Input"; // Adjust the import path as necessary
 import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
@@ -6,6 +6,7 @@ import { IUser, loginUser } from "~/axios/User";
 import { user as userState } from "~/serverstate.server";
 import { validateRegNumber } from "~/utils/utils";
 import { useEffect, useState } from "react";
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Login" },
@@ -21,6 +22,7 @@ type ActionData = {
     details?: {
       code: number;
       message: string;
+      details?: string;
     };
   };
 };
@@ -74,7 +76,7 @@ export default function Index() {
             Error
           </h2>
           <p className="text-sm text-gray-600">
-            {actionData.responseError.details?.message}
+            {actionData.responseError.details?.details}
           </p>
           <button
             onClick={() => setModalOpen(false)}
@@ -146,3 +148,13 @@ export default function Index() {
     </>
   );
 }
+export const loader: LoaderFunction = async ({ request }) => {
+  const cookieHeader = request.headers.get('Cookie');
+    const cookie = (await userState.parse(cookieHeader)) || {};
+    console.log(cookie);
+  if (cookie.user) {
+    return redirect("/dashboard/courses");
+  }
+  return null;
+};
+
