@@ -1,4 +1,8 @@
-import type { MetaFunction, ActionFunctionArgs, LoaderFunction } from "@remix-run/node";
+import type {
+  MetaFunction,
+  ActionFunctionArgs,
+  LoaderFunction,
+} from "@remix-run/node";
 import Input from "../components/Input"; // Adjust the import path as necessary
 import { Form, json, redirect, useActionData } from "@remix-run/react";
 import { createUser, IUser } from "~/axios/User";
@@ -56,7 +60,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return redirect("/auth/login");
   }
   if (!response.success) {
-    return json({responseError: { ...response }});
+    return json({ responseError: { ...response } });
   }
   return response;
 };
@@ -65,7 +69,7 @@ export default function Index() {
   const actionData = useActionData<ActionData>();
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
-    if(actionData?.responseError) {
+    if (actionData?.responseError) {
       setModalOpen(true);
     }
   }, [actionData]);
@@ -74,9 +78,7 @@ export default function Index() {
       {actionData?.responseError && modalOpen && (
         <div className="fixed h-screen z-50 w-screen inset-0 flex items-center justify-center bg-opacity-50">
           <div className="bg-white w-1/2 absolute p-6 rounded shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-gray-600">
-              Error
-            </h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-600">Error</h2>
             <p className="text-sm text-gray-600">
               {actionData.responseError.details?.message}
             </p>
@@ -205,11 +207,11 @@ export default function Index() {
   );
 }
 export const loader: LoaderFunction = async ({ request }) => {
-  const cookieHeader = request.headers.get('Cookie');
-    const cookie = (await userState.parse(cookieHeader)) || {};
-    console.log(cookie);
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userState.parse(cookieHeader)) || {};
+  console.log(cookie);
   if (cookie.user) {
     return redirect("/dashboard/courses");
-  } 
+  }
   return null;
 };
