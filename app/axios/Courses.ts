@@ -35,9 +35,7 @@ export const getCourse = async (id: string): Promise<ICourse> => {
 
 interface ApiResponse {
     success: boolean;
-    data?: {
-        [key: string]: string;
-    } | ICourse[]  | string[];
+    data?: ICourse[];
     message?: string;
     details?: unknown;
 }
@@ -146,10 +144,22 @@ export const getAllCourses = async (): Promise<ApiResponse> => {
 
 export const getCoursesByUserId = async (id: string): Promise<ApiResponse> => {
     try {
-        const response = await api.get(`/course/user/${id}`);
+        const response = await api.get(`/users/courses/${id}`);
+        const allCourse = await getAllCourses();
+        if(response.status === 200 && allCourse.success){
+            const userCourses = response.data.data as string[];
+            const filteredCourses = allCourse.data ? allCourse.data.filter(course => 
+                userCourses.some(userCourse => userCourse === course._id)
+            ) : [];
+            console.log(filteredCourses);
+            return {
+                success: true,
+                data: filteredCourses,
+            };
+        }
         return {
             success: true,
-            data: response.data.data as string[],
+            data: response.data.data as ICourse[],
         }
     } catch (error) {
         if (axios.isAxiosError(error)) {

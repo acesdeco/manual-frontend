@@ -7,7 +7,7 @@ import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
 import { getCourse, getCoursesByUserId, ICourse } from "~/axios/Courses";
 // import { NavLinkTs } from "~/components/NavLink";
-// import {user as userState} from "~/serverstate.server";
+import {user as userState} from "~/serverstate.server";
 export const meta: MetaFunction = () => {
   return [
     { title: "Course 1" },
@@ -23,7 +23,7 @@ export default function Course() {
   // Access the `userId` parameter
   if(!userCourses || !courseId || userCourses.filter((course) => course._id === courseId).length === 0) {
     return (
-      <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed">
+      <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed p-4">
         <div className="flex flex-col items-center justify-center h-full">
           <h1 className="text-2xl text-gray-900 font-bold mb-4">Course Details</h1>
           <p className="text-lg text-gray-900 mb-4">You are not enrolled in this course. Please make a payment to access the course content.</p>
@@ -38,7 +38,7 @@ export default function Course() {
     <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed">
       <header className="w-[100%] bg-white h-fit flex flex-row items-center justify-between bg-transparent px-10 py-5">
         <div id="left">
-        <Link className="w-5" to="/dashboard/course">
+        <Link className="w-5" to="/dashboard/courses">
             <img alt="Union" src="/Union.png"></img>
             </Link>
         </div>
@@ -85,13 +85,13 @@ export default function Course() {
 }
 
 export async function loader({
-  // request,
+  request,
   params,
 }: LoaderFunctionArgs) {
-  // const cookieHeader = request.headers.get("Cookie");
+  const cookieHeader = request.headers.get("Cookie");
   const {courseId} = params as {courseId: string};
-  // const cookie = (await userState.parse(cookieHeader)) || {};
-  const response = await getCoursesByUserId(courseId);
+  const cookie = (await userState.parse(cookieHeader)) || {};
+  const response = await getCoursesByUserId(cookie.user._id);
   const courseResponse = await getCourse(courseId);
   return json({ course: courseResponse, userCourses: response.data as ICourse[] });
 }

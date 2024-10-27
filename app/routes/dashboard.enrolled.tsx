@@ -46,7 +46,7 @@ export default function Enrolled() {
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
-  const enrolledCourses = await getCoursesByUserId(cookie.user.user);
+  const enrolledCourses = await getCoursesByUserId(cookie.user._id);
   if (enrolledCourses.success === false) {
     return json({ courses: [] });
   }

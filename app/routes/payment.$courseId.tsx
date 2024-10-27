@@ -69,7 +69,6 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       cookie.user.courses?.includes(courseId) === false)
   ) {
     const APP_URL = process.env.APP_URL || "http://localhost:5173";
-    console.log(APP_URL);
     const initializePaymentData = await initializePayment({
       courseId: courseId,
       amount: courseData.coursePrice * 100,
@@ -158,8 +157,8 @@ export default function PaymentPage() {
       <header className="my-5">
         <h2 className="text-2xl font-bold mb-4">Course Payment</h2>
       </header>
-      <section className="flex flex-row items-start gap-10 justify-around rounded-md border border-white p-4">
-        <section className="w-3/4">
+      <section className="flex flex-col md:flex-row items-start gap-10 justify-around rounded-md border border-white p-4">
+        <section className="w-full md:w-3/4">
           <img
             src={courseData.courseImage}
             alt={courseData.title}
@@ -173,7 +172,7 @@ export default function PaymentPage() {
           <span className="py-4">Taken by {courseData.instructor}</span>
         </section>
 
-        <div className="flex flex-col h-full mb-4 w-1/4">
+        <div className="flex flex-col h-full mb-4 w-full md:w-1/4">
           <div className="h-fit">
             <p className="py-2 flex justify-between">
               Course Price: <strong>N{courseData.coursePrice}</strong>
