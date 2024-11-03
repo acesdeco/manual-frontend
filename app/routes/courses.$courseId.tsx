@@ -95,5 +95,3 @@ export async function loader({
   const courseResponse = await getCourse(courseId);
   return json({ course: courseResponse, userCourses: response.data as ICourse[] });
 }
-
-

@@ -186,7 +186,7 @@ export default function Index() {
               <p className="mt-2 text-center text-sm text-gray-600">
                 Already have an account?{" "}
                 <a
-                  href="/auth/signup"
+                  href="/auth/login"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   Log In

@@ -7,12 +7,12 @@ interface ICourseCard {
 export const CourseCard = ({course}: ICourseCard) => {
   return (
     <div className="min-w-32 rounded-md cursor-pointer w-full shadow-lg p-4 shadow-gray-300 text-gray-900">
-      <figure>
+      <figure className="h-52 ">
         <img
-          className="h-1/2"
+          className="w-full h-full object-cover rounded-md"
           alt="course description"
           src={course.courseImage ? course.courseImage : "/amico.png"}
-        ></img>
+        />
       </figure>
       <article>
         <h3 className="text-xl text-gray-900 py-2 font-semibold">{course.title}</h3>

@@ -44,11 +44,20 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
         >
           Comments
         </button>
+        <button
+          className={`tab text-gray-800  px-4 pb-1 ${activeTab === "assessments" ? "border-b-2  border-blue-600" : ""}`}
+          onClick={() => setActiveTab("assessments")}
+        >
+          Assessments
+        </button>
       </div>
       <div className="tab-content">
         {activeTab === "notes" && <div className="text-gray-700">{content.notes}</div>}
         {activeTab === "comments" && (
           <div className="text-gray-700">No comments yet</div>
+        )}
+         {activeTab === "assessments" && (
+          <div className="text-gray-700">No assessments yet</div>
         )}
       </div>
     </div>
