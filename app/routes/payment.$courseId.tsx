@@ -39,7 +39,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       if ("data" in verifyTransactionData) {
         // Redirect to course page
         if (verifyTransactionData.success) {
-          const response = await updateUser({courses: [courseId]}, cookie.user._id);
+          const response = await updateUser({courses: [courseId, ...cookie.user.courses]}, cookie.user._id);
           console.log(response);
           if (response.success) {
             cookie.user = response.data;

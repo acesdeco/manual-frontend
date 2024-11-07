@@ -8,9 +8,15 @@ import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
 import { getCourse, getCoursesByUserId, ICourse } from "~/axios/Courses";
 // import { NavLinkTs } from "~/components/NavLink";
 import {user as userState} from "~/serverstate.server";
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction = ({ data }: { data: {course: {title: string}} }) => {
+  if (!data || !data.course) {
+    return [
+      { title: "Course 1" },
+      { name: "description", content: "View Courses" },
+    ];
+  }
   return [
-    { title: "Course 1" },
+    { title: data.course.title },
     { name: "description", content: "View Courses" },
   ];
 };

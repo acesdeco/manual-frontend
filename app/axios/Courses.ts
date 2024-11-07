@@ -151,7 +151,6 @@ export const getCoursesByUserId = async (id: string): Promise<ApiResponse> => {
             const filteredCourses = allCourse.data ? allCourse.data.filter(course => 
                 userCourses.some(userCourse => userCourse === course._id)
             ) : [];
-            console.log(filteredCourses);
             return {
                 success: true,
                 data: filteredCourses,
