@@ -2,11 +2,12 @@
 import {  
   // LoaderFunctionArgs, 
   type MetaFunction } from "@remix-run/node";
-import { json, useLoaderData, 
+import { json, Link, useLoaderData, 
   // useOutletContext 
 } from "@remix-run/react";
 import { CourseCard } from "~/components/Courses/CourseCard";
 import { getAllCourses, ICourse } from "~/axios/Courses";
+import Button from "~/components/Button";
 export const meta: MetaFunction = () => {
     return [
       { title: "Courses" },
@@ -25,7 +26,15 @@ export default function Dashboard() {
             </h1>
         </header>
         <section className="grid px-4 md:grid-cols-2 gap-3">
-            {courses.map((course, y) => <CourseCard key={y} course={course}></CourseCard>)}
+          {courses.length > 0 ? 
+            courses.map((course, y) => <CourseCard key={y} course={course}></CourseCard>)
+          :
+          <div className=" col-span-2 text-center flex flex-col items-center">
+          <img alt="Courses not found" src="/public/notfound.png"></img>
+          <p className="text-gray-900 text-xl font-medium">Courses not found</p>
+          {/* <span className="text-gray-800 mb-2">Create your first course and start inspiring minds. Tap Create Course to Begin</span> */}
+        </div>
+          }
         </section>
         </>
     );

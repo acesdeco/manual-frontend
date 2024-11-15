@@ -5,7 +5,10 @@ export interface ICourse {
     title: string;
     code: string;
     description: string;
-    instructor: string;
+    instructor: {
+        name: string;
+        id: string;
+    };
     courseImage: string;
     coursePrice: number;
   introduction: {

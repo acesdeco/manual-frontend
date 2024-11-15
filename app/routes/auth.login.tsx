@@ -38,13 +38,15 @@ export const action: ActionFunction = async ({ request }) => {
   if (Object.keys(validationErrors).length > 0) {
     return json({ validationErrors });
   }
-  const user: { registrationNumber: string; password: string } = {
+  const user: { registrationNumber: string; password: string, role: string; } = {
     registrationNumber,
     password,
+    role:'student'
     // add other required fields if any
   };
   const response = await loginUser(user);
   if (response.success && "data" in response) {
+    console.log(response);
     const cookieHeader = request.headers.get('Cookie');
     const cookie = (await userState.parse(cookieHeader)) || {};
     cookie.user =  response.data;
@@ -55,6 +57,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
   }
   if (!response.success) {
+    console.log(response);
     return json({responseError: { ...response }});
   }
 };
@@ -62,9 +65,14 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const actionData = useActionData<ActionData>();
   const [modalOpen, setModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
-    if(actionData?.responseError) {
+    if (actionData?.responseError) {
+      setIsSubmitting(false);
       setModalOpen(true);
+    }
+    if(actionData?.validationErrors) {
+      setIsSubmitting(false);
     }
   }, [actionData]);
   return (
@@ -76,7 +84,7 @@ export default function Index() {
             Error
           </h2>
           <p className="text-sm text-gray-600">
-            {actionData.responseError.details?.details}
+          {actionData.responseError.details?.message || actionData.responseError.message }
           </p>
           <button
             onClick={() => setModalOpen(false)}
@@ -125,8 +133,33 @@ export default function Index() {
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Login
+              onClick={() => setIsSubmitting(true)}
+           
+           >
+               {isSubmitting ? (
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+              ) : (
+                "Create Account"
+              )}
             </button>
   
             <p className="mt-2 text-center text-sm text-gray-600">

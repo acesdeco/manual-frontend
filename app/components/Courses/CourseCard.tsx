@@ -21,7 +21,7 @@ export const CourseCard = ({course}: ICourseCard) => {
           <span>2 hours</span>
         </span>
         <footer className="flex flex-row justify-between my-3">
-          <h3>{course.instructor}</h3>
+          <h3>{course.instructor.name}</h3>
           <Link to={`/courses/${course['_id']}/introduction`} className="w-fit">
             <Button>Go to course</Button>
           </Link>

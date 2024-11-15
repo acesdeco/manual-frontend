@@ -7,6 +7,7 @@ export interface IUser {
   lastName?: string;
   registrationNumber?: string;
   courses?: string[];
+  role?: string;
   // Add other user properties here
 }
 

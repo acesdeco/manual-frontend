@@ -30,6 +30,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   const trxref = url.searchParams.get("trxref");
   const reference = url.searchParams.get("reference");
   const courseData = await getCourse(courseId);
+
+  //check if the page is visited after a payment
   if (trxref || reference) {
     // Verify transaction
     const verifyTransactionData = await verifyTransaction(
@@ -39,7 +41,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       if ("data" in verifyTransactionData) {
         // Redirect to course page
         if (verifyTransactionData.success) {
-          const response = await updateUser({courses: [courseId, ...cookie.user.courses]}, cookie.user._id);
+          console.log(cookie.user);
+          const response = await updateUser({courses: [courseId, ...cookie.user.courses]}, cookie.user.user);
           console.log(response);
           if (response.success) {
             cookie.user = response.data;
@@ -62,12 +65,14 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       return json({ courseData: verifyTransactionData.data });
     }
   }
-  // // Fetch course data based on courseId ?trxref=671d442ba0e3d725d8387303&reference=671d442ba0e3d725d8387303
+  // // Fetch course data based on courseId 
+  console.log(courseData);
   if (
     courseData &&
     (cookie.user.courses === undefined ||
       cookie.user.courses?.includes(courseId) === false)
   ) {
+    console.log(cookie.user);
     const APP_URL = process.env.APP_URL || "http://localhost:5173";
     const initializePaymentData = await initializePayment({
       courseId: courseId,
@@ -76,7 +81,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       email: cookie.user.email,
       paymentDate: Date.now().toString(),
       status: "pending",
-      userId: cookie.user._id,
+      userId: cookie.user.user,
     });
     if (initializePaymentData.success) {
       if ("data" in initializePaymentData) {
@@ -169,7 +174,7 @@ export default function PaymentPage() {
             <strong>{courseData.title}</strong>
           </p>
           <article>{courseData.description}</article>
-          <span className="py-4">Taken by {courseData.instructor}</span>
+          <span className="py-4">Taken by {courseData.instructor.name}</span>
         </section>
 
         <div className="flex flex-col h-full mb-4 w-full md:w-1/4">
