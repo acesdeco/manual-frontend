@@ -66,7 +66,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     }
   }
   // // Fetch course data based on courseId 
-  console.log(courseData);
+  console.log("Course data:", courseData);
   if (
     courseData &&
     (cookie.user.courses === undefined ||
@@ -81,7 +81,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       email: cookie.user.email,
       paymentDate: Date.now().toString(),
       status: "pending",
-      userId: cookie.user.user,
+      userId: cookie.user.user || cookie.user._id,
     });
     if (initializePaymentData.success) {
       if ("data" in initializePaymentData) {

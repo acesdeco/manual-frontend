@@ -2,12 +2,12 @@
 import {  
   // LoaderFunctionArgs, 
   type MetaFunction } from "@remix-run/node";
-import { json, Link, useLoaderData, 
+import { json, useLoaderData, 
   // useOutletContext 
 } from "@remix-run/react";
 import { CourseCard } from "~/components/Courses/CourseCard";
 import { getAllCourses, ICourse } from "~/axios/Courses";
-import Button from "~/components/Button";
+// import Button from "~/components/Button";
 export const meta: MetaFunction = () => {
     return [
       { title: "Courses" },

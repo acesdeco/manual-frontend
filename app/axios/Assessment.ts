@@ -79,3 +79,42 @@ export const getAssessmentByWeek = async (
     }
   }
 };
+
+export const submitAssessment = async (
+  assessment: IAssessment
+): Promise<ApiResponse> => {
+  try {
+    const response = await api.post(`/assessment/submit`, assessment);
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        console.error("Server Error:", axiosError.response.data);
+        return {
+          success: false,
+          message: "Server error occurred",
+          details: axiosError.response.data,
+        };
+      } else if (axiosError.request) {
+        console.error("Network Error:", axiosError.request);
+        return {
+          success: false,
+          message: "Network error occurred. Please check your connection.",
+        };
+      } else {
+        console.error("Error:", axiosError.message);
+        return {
+          success: false,
+          message: "An error occurred: " + axiosError.message,
+        };
+      }
+    } else {
+      console.error("Unexpected Error:", error);
+      return { success: false, message: "An unexpected error occurred." };
+    }
+  }
+};
