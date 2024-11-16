@@ -1,6 +1,7 @@
 //import { Link } from "@remix-run/react";
 import {
   json,
+  redirect,
   type LoaderFunctionArgs,
   type MetaFunction,
 } from "@remix-run/node";
@@ -129,5 +130,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
   console.log(cookie);
-  return json({ user: cookie.user });
+  if(cookie.user){
+    return json({ user: cookie.user });
+  } else {
+    return redirect("/auth/login");
+  }
 }

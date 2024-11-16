@@ -1,6 +1,7 @@
 //import { Link } from "@remix-run/react";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Outlet, Link, useParams, useLoaderData, json} from "@remix-run/react";
+import {redirect} from "@remix-run/node";
+import { Outlet, Link, useParams, useLoaderData, json } from "@remix-run/react";
 import { useState } from "react";
 import { BiMenuAltRight } from "react-icons/bi";
 import { IoIosArrowDown, IoIosClose } from "react-icons/io";
@@ -97,7 +98,12 @@ export async function loader({
   const cookieHeader = request.headers.get("Cookie");
   const {courseId} = params as {courseId: string};
   const cookie = (await userState.parse(cookieHeader)) || {};
-  const response = await getCoursesByUserId(cookie.user._id);
-  const courseResponse = await getCourse(courseId);
-  return json({ course: courseResponse, userCourses: response.data as ICourse[] });
+  console.log(cookie.user);
+  if(cookie.user){
+    const response = await getCoursesByUserId(cookie.user._id);
+    const courseResponse = await getCourse(courseId);
+    return json({ course: courseResponse, userCourses: response.data as ICourse[] });
+  } else {
+    return redirect("/auth/login");
+  }
 }

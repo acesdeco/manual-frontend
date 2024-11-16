@@ -158,7 +158,7 @@ export default function Index() {
                   ></path>
                 </svg>
               ) : (
-                "Create Account"
+                "Log in"
               )}
             </button>
   
