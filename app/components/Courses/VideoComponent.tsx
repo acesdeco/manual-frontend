@@ -3,6 +3,7 @@ import AllAssessmentComponent from "./AllAssessmentComponent";
 
 interface VideoComponentProps {
   content: contentProps;
+  user: { student_id: string; student_name: string; reg_number: string };
 }
 interface contentProps {
   [key: string]: string;
@@ -10,6 +11,7 @@ interface contentProps {
 
 const VideoComponent: React.FC<VideoComponentProps> = ({
   content,
+  user,
 }: VideoComponentProps) => {
   const [activeTab, setActiveTab] = useState("notes");
   return (
@@ -73,7 +75,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
             <div className="text-gray-700">No comments yet</div>
           )}
           {activeTab === "assessments" && (
-            <AllAssessmentComponent weekId={content._id} />
+            <AllAssessmentComponent user={user} weekId={content._id} />
           )}
         </div>
       </div>

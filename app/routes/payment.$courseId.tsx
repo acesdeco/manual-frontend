@@ -42,7 +42,10 @@ export const loader: LoaderFunction = async ({ params, request }) => {
         // Redirect to course page
         if (verifyTransactionData.success) {
           console.log(cookie.user);
-          const response = await updateUser({courses: [courseId, ...cookie.user.courses]}, cookie.user.user);
+          const response = await updateUser(
+            { courses: [courseId, ...cookie.user.courses] },
+            cookie.user.user
+          );
           console.log(response);
           if (response.success) {
             cookie.user = response.data;
@@ -65,14 +68,13 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       return json({ courseData: verifyTransactionData.data });
     }
   }
-  // // Fetch course data based on courseId 
+  // // Fetch course data based on courseId
   console.log("Course data:", courseData);
   if (
     courseData &&
     (cookie.user.courses === undefined ||
       cookie.user.courses?.includes(courseId) === false)
   ) {
-    console.log(cookie.user);
     const APP_URL = process.env.APP_URL || "http://localhost:5173";
     const initializePaymentData = await initializePayment({
       courseId: courseId,
