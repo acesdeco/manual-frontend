@@ -1,4 +1,4 @@
-import {baseConfig as api, axios, AxiosError} from "./baseConfig";
+import { baseConfig as api, axios, AxiosError } from "./baseConfig";
 export interface IUser {
   id?: string;
   email?: string;
@@ -42,21 +42,31 @@ export const createUser = async (userData: IUser): Promise<ApiResponse> => {
       const axiosError = error as AxiosError;
       if (axiosError.response) {
         // The server responded with a status code that falls outside the 2xx range
-        console.error('Server Error:', axiosError.response.data);
-        return { success: false, message: 'Server error occurred', details: axiosError.response.data };
+        console.error("Server Error:", axiosError.response.data);
+        return {
+          success: false,
+          message: "Server error occurred",
+          details: axiosError.response.data,
+        };
       } else if (axiosError.request) {
         // The request was made but no response was received
-        console.error('Network Error:', axiosError.request);
-        return { success: false, message: 'Network error occurred. Please check your connection.' };
+        console.error("Network Error:", axiosError.request);
+        return {
+          success: false,
+          message: "Network error occurred. Please check your connection.",
+        };
       } else {
         // Something else happened in setting up the request
-        console.error('Error:', axiosError.message);
-        return { success: false, message: 'An error occurred: ' + axiosError.message };
+        console.error("Error:", axiosError.message);
+        return {
+          success: false,
+          message: "An error occurred: " + axiosError.message,
+        };
       }
     } else {
       // Non-Axios error handling
-      console.error('Unexpected Error:', error);
-      return { success: false, message: 'An unexpected error occurred.' };
+      console.error("Unexpected Error:", error);
+      return { success: false, message: "An unexpected error occurred." };
     }
   }
 };
@@ -85,25 +95,38 @@ export const loginUser = async (data: {
       const axiosError = error as AxiosError;
       if (axiosError.response) {
         // The server responded with a status code that falls outside the 2xx range
-        console.error('Server Error:', axiosError.response.data);
-        return { success: false, message: 'Server error occurred', details: axiosError.response.data };
+        console.error("Server Error:", axiosError.response.data);
+        return {
+          success: false,
+          message: "Server error occurred",
+          details: axiosError.response.data,
+        };
       } else if (axiosError.request) {
         // The request was made but no response was received
-        console.error('Network Error:', axiosError.request);
-        return { success: false, message: 'Network error occurred. Please check your connection.' };
+        console.error("Network Error:", axiosError.request);
+        return {
+          success: false,
+          message: "Network error occurred. Please check your connection.",
+        };
       } else {
         // Something else happened in setting up the request
-        console.error('Error:', axiosError.message);
-        return { success: false, message: 'An error occurred: ' + axiosError.message };
+        console.error("Error:", axiosError.message);
+        return {
+          success: false,
+          message: "An error occurred: " + axiosError.message,
+        };
       }
     } else {
       // Non-Axios error handling
-      console.error('Unexpected Error:', error);
-      return { success: false, message: 'An unexpected error occurred.' };
+      console.error("Unexpected Error:", error);
+      return { success: false, message: "An unexpected error occurred." };
     }
   }
 };
-export const updateUser = async (data: IUser, id: string): Promise<ApiResponse> => {
+export const updateUser = async (
+  data: IUser,
+  id: string
+): Promise<ApiResponse> => {
   try {
     const response = await api.put(`/users/${id}`, data);
     console.log(response.data);
@@ -116,21 +139,31 @@ export const updateUser = async (data: IUser, id: string): Promise<ApiResponse> 
       const axiosError = error as AxiosError;
       if (axiosError.response) {
         // The server responded with a status code that falls outside the 2xx range
-        console.error('Server Error:', axiosError.response.data);
-        return { success: false, message: 'Server error occurred', details: axiosError.response.data };
+        console.error("Server Error:", axiosError.response.data);
+        return {
+          success: false,
+          message: "Server error occurred",
+          details: axiosError.response.data,
+        };
       } else if (axiosError.request) {
         // The request was made but no response was received
-        console.error('Network Error:', axiosError.request);
-        return { success: false, message: 'Network error occurred. Please check your connection.' };
+        console.error("Network Error:", axiosError.request);
+        return {
+          success: false,
+          message: "Network error occurred. Please check your connection.",
+        };
       } else {
         // Something else happened in setting up the request
-        console.error('Error:', axiosError.message);
-        return { success: false, message: 'An error occurred: ' + axiosError.message };
+        console.error("Error:", axiosError.message);
+        return {
+          success: false,
+          message: "An error occurred: " + axiosError.message,
+        };
       }
     } else {
       // Non-Axios error handling
-      console.error('Unexpected Error:', error);
-      return { success: false, message: 'An unexpected error occurred.' };
+      console.error("Unexpected Error:", error);
+      return { success: false, message: "An unexpected error occurred." };
     }
   }
 };

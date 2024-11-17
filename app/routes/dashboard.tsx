@@ -74,7 +74,11 @@ export default function Dashboard() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="cursor-pointer md:hidden"
             >
-                {isMenuOpen ? <IoIosClose size={30} color="#1671d9" /> : <BiMenuAltRight size={30} color="#1671d9" />}
+              {isMenuOpen ? (
+                <IoIosClose size={30} color="#1671d9" />
+              ) : (
+                <BiMenuAltRight size={30} color="#1671d9" />
+              )}
             </button>
           </div>
         </div>
@@ -91,10 +95,10 @@ export default function Dashboard() {
           <ul className="w-[100%]">
             {locations.map((location, y) => (
               <li className="w-full" key={y}>
-          <NavLinkTs
-            location={location.location}
-            item={location.item}
-          ></NavLinkTs>
+                <NavLinkTs
+                  location={location.location}
+                  item={location.item}
+                ></NavLinkTs>
               </li>
             ))}
           </ul>
@@ -107,9 +111,16 @@ export default function Dashboard() {
         >
           <Outlet></Outlet>
         </main>
-        <button onClick={() => setIsBottomUp(!isBottomUp)} className="md:hidden bottom-32 right-10 absolute z-50 p-4 rounded-full bg-blue-500">
-           { isBottomUp ? <IoIosArrowDown size={20} color="#ffffff"/> : <IoIosArrowUp size={20} color="#ffffff" /> }
-          </button>
+        <button
+          onClick={() => setIsBottomUp(!isBottomUp)}
+          className="md:hidden bottom-32 right-10 absolute z-50 p-4 rounded-full bg-blue-500"
+        >
+          {isBottomUp ? (
+            <IoIosArrowDown size={20} color="#ffffff" />
+          ) : (
+            <IoIosArrowUp size={20} color="#ffffff" />
+          )}
+        </button>
         <aside
           className={`absolute md:static bg-gray-600 px-3 z-40 pt-10 h-fit duration-500 w-full md:w-1/6  ${
             isBottomUp
@@ -117,7 +128,6 @@ export default function Dashboard() {
               : "-bottom-[100%] md:left-0 w-0 text-wrap"
           }`}
         >
-           
           {/* Robust date and event section */}
           <MyDatePicker></MyDatePicker>
         </aside>
@@ -129,8 +139,7 @@ export default function Dashboard() {
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
-  console.log(cookie);
-  if(cookie.user){
+  if (cookie.user) {
     return json({ user: cookie.user });
   } else {
     return redirect("/auth/login");

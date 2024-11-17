@@ -1,6 +1,6 @@
 //import { Link } from "@remix-run/react";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import {redirect} from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Outlet, Link, useParams, useLoaderData, json } from "@remix-run/react";
 import { useState } from "react";
 import { BiMenuAltRight } from "react-icons/bi";
@@ -8,8 +8,12 @@ import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
 import { getCourse, getCoursesByUserId, ICourse } from "~/axios/Courses";
 // import { NavLinkTs } from "~/components/NavLink";
-import {user as userState} from "~/serverstate.server";
-export const meta: MetaFunction = ({ data }: { data: {course: {title: string}} }) => {
+import { user as userState } from "~/serverstate.server";
+export const meta: MetaFunction = ({
+  data,
+}: {
+  data: { course: { title: string } };
+}) => {
   if (!data || !data.course) {
     return [
       { title: "Course 1" },
@@ -25,29 +29,41 @@ export const meta: MetaFunction = ({ data }: { data: {course: {title: string}} }
 export default function Course() {
   const params = useParams(); // Get the parameters from the URL
   const courseId = params.courseId;
-  const {course, userCourses} = useLoaderData<typeof loader>();
+  const { course, userCourses } = useLoaderData<typeof loader>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // Access the `userId` parameter
-  if(!userCourses || !courseId || userCourses.filter((course) => course._id === courseId).length === 0) {
+  if (
+    !userCourses ||
+    !courseId ||
+    userCourses.filter((course) => course._id === courseId).length === 0
+  ) {
     return (
       <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed p-4">
         <div className="flex flex-col items-center justify-center h-full">
-          <h1 className="text-2xl text-gray-900 font-bold mb-4">Course Details</h1>
-          <p className="text-lg text-gray-900 mb-4">You are not enrolled in this course. Please make a payment to access the course content.</p>
-          <Link to={`/payment/${courseId}`} className="bg-blue-600 text-white p-2 rounded-lg">
+          <h1 className="text-2xl text-gray-900 font-bold mb-4">
+            Course Details
+          </h1>
+          <p className="text-lg text-gray-900 mb-4">
+            You are not enrolled in this course. Please make a payment to access
+            the course content.
+          </p>
+          <Link
+            to={`/payment/${courseId}`}
+            className="bg-blue-600 text-white p-2 rounded-lg"
+          >
             Go to Payment
           </Link>
         </div>
       </main>
-    )
+    );
   }
   return (
     <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed">
       <header className="w-[100%] bg-white h-fit flex flex-row items-center justify-between bg-transparent px-10 py-5">
         <div id="left">
-        <Link className="w-5" to="/dashboard/courses">
+          <Link className="w-5" to="/dashboard/courses">
             <img alt="Union" src="/Union.png"></img>
-            </Link>
+          </Link>
         </div>
         <div className="flex flex-row items-center">
           {/* <div className="flex flex-row items-center mx-10 border border-gray-200 rounded-lg ">
@@ -80,29 +96,32 @@ export default function Course() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="cursor-pointer md:hidden"
             >
-                {isMenuOpen ? <IoIosClose size={30} color="#1671d9" /> : <BiMenuAltRight size={30} color="#1671d9" />}
+              {isMenuOpen ? (
+                <IoIosClose size={30} color="#1671d9" />
+              ) : (
+                <BiMenuAltRight size={30} color="#1671d9" />
+              )}
             </button>
           </div>
         </div>
       </header>
       <hr />
-     <Outlet context={{course, isMenuOpen}}></Outlet>
+      <Outlet context={{ course, isMenuOpen }}></Outlet>
     </main>
   );
 }
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get("Cookie");
-  const {courseId} = params as {courseId: string};
+  const { courseId } = params as { courseId: string };
   const cookie = (await userState.parse(cookieHeader)) || {};
-  console.log(cookie.user);
-  if(cookie.user){
+  if (cookie.user) {
     const response = await getCoursesByUserId(cookie.user._id);
     const courseResponse = await getCourse(courseId);
-    return json({ course: courseResponse, userCourses: response.data as ICourse[] });
+    return json({
+      course: courseResponse,
+      userCourses: response.data as ICourse[],
+    });
   } else {
     return redirect("/auth/login");
   }

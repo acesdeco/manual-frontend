@@ -1,12 +1,36 @@
-import { useOutletContext, useParams } from "@remix-run/react";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
+import { useLoaderData, useOutletContext, useParams } from "@remix-run/react";
 import { ICourse } from "~/axios/Courses";
 import LessonComponent from "~/components/Courses/VideoComponent";
 import { NavLinkTs } from "~/components/NavLink";
+import { user as userState } from "~/serverstate.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userState.parse(cookieHeader)) || {};
+  if (cookie.user) {
+    return json({ ...cookie.user });
+  } else {
+    return json({});
+  }
+}
+
 export default function Week() {
   const { course, isMenuOpen } = useOutletContext<{
     course: ICourse;
     isMenuOpen: boolean;
   }>();
+  const user = useLoaderData<{
+    _id: string;
+    firstName: string;
+    lastName: string;
+    registrationNumber: string;
+  }>();
+  const studentUser = {
+    student_id: user._id,
+    student_name: `${user.firstName} ${user.lastName}`,
+    reg_number: user.registrationNumber,
+  };
   const weeks = course.weeks;
   const { weekName } = useParams<{ weekName: string }>();
   const locations = Object.keys(weeks).map((weekNumber) => ({
@@ -70,7 +94,10 @@ export default function Week() {
       </aside>
       <main className="bg-white w-full h-[90%] p-4 overflow-auto">
         {weekName ? (
-          <LessonComponent content={course.weeks[weekName]} />
+          <LessonComponent
+            user={studentUser}
+            content={course.weeks[weekName]}
+          />
         ) : (
           <div>Week not found</div>
         )}{" "}
