@@ -35,7 +35,7 @@ export default function Week() {
   const { weekName } = useParams<{ weekName: string }>();
   const locations = Object.keys(weeks).map((weekNumber) => ({
     location: `/courses/${course._id}/${weekNumber}`,
-    item: `Week ${weekNumber}`,
+    item: `Week ${weekNumber + 1}`,
   }));
   return (
     <section className="h-[85%] bg-transparent w-6/6 md:mx-10 mx-0 gap-4 mt-0 md:mt-10 flex flex-row justify-between items-start">
@@ -47,12 +47,12 @@ export default function Week() {
         }`}
       >
         <ul className="w-full">
-          <li className="w-full">
+          {/* <li className="w-full">
             <NavLinkTs
               location={"/courses/" + course._id + "/introduction"}
               item={"Introduction"}
             ></NavLinkTs>
-          </li>
+          </li> */}
           {locations.map((location, y) => (
             <li className="w-full" key={y}>
               <NavLinkTs
