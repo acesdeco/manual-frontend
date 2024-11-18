@@ -76,9 +76,14 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       cookie.user.courses?.includes(courseId) === false)
   ) {
     const APP_URL = process.env.APP_URL || "http://localhost:5173";
+    const transactionFee = courseData.coursePrice < 2500 ? 0 : 100;
+    const charge = courseData.coursePrice * 0.015 + transactionFee;
+    const cappedCharge = charge > 2000 ? 2000 : charge;
+    const totalAmount = courseData.coursePrice + cappedCharge;
+
     const initializePaymentData = await initializePayment({
       courseId: courseId,
-      amount: courseData.coursePrice * 100,
+      amount: totalAmount,
       callback_url: `${APP_URL}/payment/${courseId}`,
       email: cookie.user.email,
       paymentDate: Date.now().toString(),
@@ -99,6 +104,10 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const { paymentData, courseData, courseTransactionState, userHasPaid } =
     useLoaderData<typeof loader>();
+  const transactionFee = courseData.coursePrice < 2500 ? 0 : 100;
+  const charge = courseData.coursePrice * 0.015 + transactionFee;
+  const cappedCharge = charge > 2000 ? 2000 : charge;
+  const totalAmount = courseData.coursePrice + cappedCharge;
   if (courseTransactionState?.status === "success") {
     return (
       <div className="flex flex-col items-center justify-center w-screen h-screen">
@@ -185,12 +194,10 @@ export default function PaymentPage() {
               Course Price: <strong>N{courseData.coursePrice}</strong>
             </p>
             <p className="py-2 flex justify-between">
-              Charges:{" "}
-              <strong>N{(courseData.coursePrice * 0.05).toFixed(2)}</strong>
+              Charges: <strong>N{cappedCharge.toFixed(2)}</strong>
             </p>
             <p className="py-2 flex justify-between">
-              Total:{" "}
-              <strong>N{(courseData.coursePrice * 1.05).toFixed(2)}</strong>
+              Total: <strong>N{totalAmount.toFixed(2)}</strong>
             </p>
           </div>
 
