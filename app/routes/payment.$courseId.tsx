@@ -44,9 +44,9 @@ export const loader: LoaderFunction = async ({ params, request }) => {
           console.log(cookie.user);
           const response = await updateUser(
             { courses: [courseId, ...cookie.user.courses] },
-            cookie.user.user
+            cookie.user.user || cookie.user._id
           );
-          console.log(response);
+          // console.log(response);
           if (response.success) {
             cookie.user = response.data;
           }
