@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, type FC } from "react";
 import { sendSubmissionStatus, submitAssessment } from "~/axios/Assessment";
 
 interface Option {
@@ -38,7 +38,7 @@ interface AssessmentComponentProps {
   };
 }
 
-const AssessmentComponent: React.FC<AssessmentComponentProps> = ({
+const AssessmentComponent: FC<AssessmentComponentProps> = ({
   assessment,
   student,
 }) => {

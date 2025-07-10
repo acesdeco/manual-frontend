@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { getAssessmentByWeek, IAssessment } from "~/axios/Assessment";
+import React, { useEffect, useState, type FC } from "react";
+import { getAssessmentByWeek, type IAssessment } from "~/axios/Assessment";
 import AssessmentComponent from "./AssessmentComponent";
 
 interface AllAssessmentComponentProps {
@@ -7,7 +7,7 @@ interface AllAssessmentComponentProps {
   user: { student_id: string; student_name: string; reg_number: string };
 }
 
-const AllAssessmentComponent: React.FC<AllAssessmentComponentProps> = ({
+const AllAssessmentComponent: FC<AllAssessmentComponentProps> = ({
   weekId,
   user,
 }) => {
@@ -27,6 +27,7 @@ const AllAssessmentComponent: React.FC<AllAssessmentComponentProps> = ({
           setError(response.message || "Failed to fetch assessments");
         }
       } catch (err) {
+        console.error("Error fetching assessments:", err);
         setError("An error occurred while fetching assessments");
       }
     };

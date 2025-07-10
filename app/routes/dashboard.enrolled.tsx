@@ -1,24 +1,20 @@
-//import { Link } from "@remix-run/react";
-import {
-  json,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
-import { getCoursesByUserId, ICourse } from "~/axios/Courses";
+import { Link, useLoaderData } from "react-router";
+import { getCoursesByUserId, type ICourse } from "~/axios/Courses";
 import Button from "~/components/Button";
 import { CourseCard } from "~/components/Courses/CourseCard";
-// import { useOutletContext } from "@remix-run/react";
 import { user as userState } from "~/serverstate.server";
-export const meta: MetaFunction = () => {
+import type { Route } from "./+types/dashboard.enrolled";
+
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Your courses" },
     { name: "description", content: "View Courses" },
   ];
 };
+
 export default function Enrolled() {
-  // const user = useOutletContext();
   const { courses } = useLoaderData<typeof loader>();
+
   return (
     <>
       <header className="mb-10">
@@ -43,12 +39,12 @@ export default function Enrolled() {
   );
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
   const enrolledCourses = await getCoursesByUserId(cookie.user._id);
   if (enrolledCourses.success === false) {
-    return json({ courses: [] });
+    return { courses: [] };
   }
-  return json({ courses: enrolledCourses?.data as ICourse[] });
+  return { courses: enrolledCourses?.data as ICourse[] };
 }

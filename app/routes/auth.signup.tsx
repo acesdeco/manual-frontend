@@ -1,14 +1,12 @@
-import type {
-  MetaFunction,
-  ActionFunctionArgs,
-  LoaderFunction,
-} from "@remix-run/node";
-import Input from "../components/Input"; // Adjust the import path as necessary
-import { Form, json, redirect, useActionData } from "@remix-run/react";
-import { createUser, IUser } from "~/axios/User";
-import { validateEmail, validateRegNumber } from "~/utils/utils";
 import { useEffect, useState } from "react";
+import { Form, redirect, useActionData } from "react-router";
+import { createUser, type IUser } from "~/axios/User";
 import { user as userState } from "~/serverstate.server";
+import { validateEmail, validateRegNumber } from "~/utils/utils";
+import Input from "../components/Input"; // Adjust the import path as necessary
+import type { Route } from "./+types/auth.signup";
+import illustration from "~/assets/images/Illustration.png?url";
+
 type ActionData = {
   validationErrors?: { [key: string]: string };
   data?: IUser;
@@ -21,14 +19,14 @@ type ActionData = {
     };
   };
 };
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Create account" },
     { name: "description", content: "Welcome to Computer Engineering UNIUYO" },
   ];
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const data = await request.formData();
   const formInfo = Object.fromEntries(data);
   const regNumber = formInfo.regNumber as string;
@@ -45,7 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     validationErrors.confirmPassword = "Passwords do not match";
   }
   if (Object.keys(validationErrors).length > 0) {
-    return json({ validationErrors });
+    return { validationErrors };
   }
   const user: IUser = {
     email,
@@ -61,7 +59,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return redirect("/auth/login");
   }
   if (!response.success) {
-    return json({ responseError: { ...response } });
+    return { responseError: { ...response } };
   }
   return response;
 };
@@ -226,18 +224,14 @@ export default function Index() {
             </Form>
           </section>
           <section className="w-1/2 hidden md:flex flex-col justify-center items-center">
-            <img
-              className="w-3/5"
-              alt="Studious students"
-              src="/Illustration.png"
-            ></img>
+            <img className="w-3/5" alt="Studious students" src={illustration} />
           </section>
         </section>
       </main>
     </>
   );
 }
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
   if (cookie.user) {

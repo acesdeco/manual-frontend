@@ -1,17 +1,9 @@
-//import { Link } from "@remix-run/react";
-import {
-  // LoaderFunctionArgs,
-  type MetaFunction,
-} from "@remix-run/node";
-import {
-  json,
-  useLoaderData,
-  // useOutletContext
-} from "@remix-run/react";
+import { useLoaderData } from "react-router";
+import { getAllCourses, type ICourse } from "~/axios/Courses";
 import { CourseCard } from "~/components/Courses/CourseCard";
-import { getAllCourses, ICourse } from "~/axios/Courses";
-// import Button from "~/components/Button";
-export const meta: MetaFunction = () => {
+import type { Route } from "./+types/dashboard.courses";
+
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Courses" },
     { name: "description", content: "View Courses" },
@@ -19,7 +11,6 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Dashboard() {
-  // const user = useOutletContext();
   const { courses } = useLoaderData<typeof loader>();
   return (
     <>
@@ -46,17 +37,13 @@ export default function Dashboard() {
 }
 
 export async function loader() {
-// {
-//   request,
-// }: LoaderFunctionArgs
   const data = await getAllCourses();
-  // const cookie = request.headers.get("Cookie");
   if (data.success === false) {
-    return json({ courses: [] });
+    return { courses: [] };
   }
-  return json({
+  return {
     courses: data?.data!.filter(
       (course: ICourse) => course.published === true
     ) as ICourse[],
-  });
+  };
 }

@@ -1,6 +1,6 @@
 import Button from "../Button";
-import { Link } from "@remix-run/react";
-import { ICourse } from "~/axios/Courses";
+import { Link } from "react-router";
+import { type ICourse } from "~/axios/Courses";
 interface ICourseCard {
   course: ICourse;
 }

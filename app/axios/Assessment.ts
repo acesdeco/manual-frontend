@@ -1,4 +1,5 @@
-import { baseConfig as api, axios, AxiosError } from "./baseConfig";
+import type { AxiosError } from "axios";
+import { baseConfig as api, axios } from "./baseConfig";
 
 export interface IAssessment {
   _id: string;

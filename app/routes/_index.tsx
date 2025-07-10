@@ -1,5 +1,8 @@
-import type { MetaFunction } from "@remix-run/node";
-export const meta: MetaFunction = () => {
+import { user as userState } from "~/serverstate.server";
+import type { Route } from "./+types/_index";
+import { redirect } from "react-router";
+
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "CPE Lab" },
     { name: "description", content: "Welcome to Computer Engineering UNIUYO" },
@@ -20,13 +23,11 @@ export default function Index() {
     </main>
   );
 }
-import { LoaderFunction, redirect } from "@remix-run/node";
-import { user as userState } from "~/serverstate.server";
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const cookieHeader = request.headers.get('Cookie');
-    const cookie = (await userState.parse(cookieHeader)) || {};
-    console.log(cookie);
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userState.parse(cookieHeader)) || {};
+  console.log(cookie);
   if (cookie.user) {
     return redirect("/dashboard/courses");
   } else {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FC } from "react";
 import AllAssessmentComponent from "./AllAssessmentComponent";
 
 interface VideoComponentProps {
@@ -9,7 +9,7 @@ interface contentProps {
   [key: string]: string;
 }
 
-const VideoComponent: React.FC<VideoComponentProps> = ({
+const VideoComponent: FC<VideoComponentProps> = ({
   content,
   user,
 }: VideoComponentProps) => {

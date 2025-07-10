@@ -1,18 +1,19 @@
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
-import Input from "../components/Input"; // Adjust the import path as necessary
-import { ActionFunction, json, redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
-import { IUser, loginUser } from "~/axios/User";
+import { useEffect, useState } from "react";
+import { Form, redirect, useActionData } from "react-router";
+import { type IUser, loginUser } from "~/axios/User";
 import { user as userState } from "~/serverstate.server";
 import { validateRegNumber } from "~/utils/utils";
-import { useEffect, useState } from "react";
+import Input from "../components/Input"; // Adjust the import path as necessary
+import type { Route } from "./+types/auth.login";
+import amico from "~/assets/images/amico.png?url";
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Login" },
     { name: "description", content: "Welcome to Computer Engineering UNIUYO" },
   ];
 };
+
 type ActionData = {
   validationErrors?: { [key: string]: string };
   data?: IUser;
@@ -26,7 +27,7 @@ type ActionData = {
     };
   };
 };
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
   const password = formData.get("password") as string;
   const registrationNumber = formData.get("regNumber") as string;
@@ -36,7 +37,7 @@ export const action: ActionFunction = async ({ request }) => {
     validationErrors.regNumber = "Invalid Registration Number";
   }
   if (Object.keys(validationErrors).length > 0) {
-    return json({ validationErrors });
+    return { validationErrors };
   }
   const user: { registrationNumber: string; password: string; role: string } = {
     registrationNumber,
@@ -58,7 +59,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (!response.success) {
     console.log(response);
-    return json({ responseError: { ...response } });
+    return { responseError: { ...response } };
   }
 };
 
@@ -172,18 +173,14 @@ export default function Index() {
             </Form>
           </section>
           <section className="w-1/2 hidden md:flex flex-col justify-center items-center">
-            <img
-              className="w-3/5"
-              alt="Studious students"
-              src="/amico.png"
-            ></img>
+            <img className="w-3/5" alt="Studious students" src={amico} />
           </section>
         </section>
       </main>
     </>
   );
 }
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
   if (cookie.user) {

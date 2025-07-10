@@ -1,17 +1,17 @@
-import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useOutletContext, useParams } from "@remix-run/react";
-import { ICourse } from "~/axios/Courses";
+import { useLoaderData, useOutletContext, useParams } from "react-router";
+import type { ICourse } from "~/axios/Courses";
 import LessonComponent from "~/components/Courses/VideoComponent";
 import { NavLinkTs } from "~/components/NavLink";
 import { user as userState } from "~/serverstate.server";
+import type { Route } from "./+types/courses.$courseId.$weekName";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
   if (cookie.user) {
-    return json({ ...cookie.user });
+    return { ...cookie.user };
   } else {
-    return json({});
+    return {};
   }
 }
 

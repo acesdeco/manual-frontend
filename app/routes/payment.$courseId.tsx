@@ -1,28 +1,22 @@
-import {
-  json,
-  LoaderFunction,
-  MetaFunction,
-  // ActionFunction
-} from "@remix-run/node";
-import {
-  // useLoaderData,
-  useLoaderData,
-  useNavigate,
-  // useActionData
-} from "@remix-run/react";
-// import { useEffect } from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck ...
+
+import { useLoaderData, useNavigate } from "react-router";
 import { getCourse } from "~/axios/Courses";
 import { initializePayment, verifyTransaction } from "~/axios/Payment";
 import { updateUser } from "~/axios/User";
 import { user as userState } from "~/serverstate.server";
+import type { Route } from "./+types/payment.$courseId";
+
 // Loader function to fetch course data
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Payment For Course" },
     { name: "description", content: "Pay for course" },
   ];
 };
-export const loader: LoaderFunction = async ({ params, request }) => {
+
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
   const { courseId } = params as { courseId: string };
@@ -52,7 +46,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
           }
           await userState.serialize(cookie);
         }
-        return json(
+        return Response.json(
           {
             courseTransactionState: verifyTransactionData.data,
             courseData,
@@ -65,7 +59,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
         );
       }
     } else {
-      return json({ courseData: verifyTransactionData.data });
+      return { courseData: verifyTransactionData.data };
     }
   }
   // // Fetch course data based on courseId
@@ -92,11 +86,11 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     });
     if (initializePaymentData.success) {
       if ("data" in initializePaymentData) {
-        return json({ paymentData: initializePaymentData.data, courseData });
+        return { paymentData: initializePaymentData.data, courseData };
       }
     }
   }
-  return json({ courseData, userHasPaid: true });
+  return { courseData, userHasPaid: true };
 };
 
 // UI Component
@@ -104,6 +98,7 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const { paymentData, courseData, courseTransactionState, userHasPaid } =
     useLoaderData<typeof loader>();
+
   const transactionFee = courseData.coursePrice < 2500 ? 0 : 100;
   const charge = courseData.coursePrice * 0.015 + transactionFee;
   const cappedCharge = charge > 2000 ? 2000 : charge;

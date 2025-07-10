@@ -1,19 +1,14 @@
-//import { Link } from "@remix-run/react";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { Outlet, Link, useParams, useLoaderData, json } from "@remix-run/react";
 import { useState } from "react";
 import { BiMenuAltRight } from "react-icons/bi";
 import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
-import { getCourse, getCoursesByUserId, ICourse } from "~/axios/Courses";
-// import { NavLinkTs } from "~/components/NavLink";
+import { Link, Outlet, redirect, useLoaderData, useParams } from "react-router";
+import { getCourse, getCoursesByUserId, type ICourse } from "~/axios/Courses";
 import { user as userState } from "~/serverstate.server";
-export const meta: MetaFunction = ({
-  data,
-}: {
-  data: { course: { title: string } };
-}) => {
+import type { Route } from "./+types/courses.$courseId";
+import union from "~/assets/images/Union.png?url";
+
+export const meta: Route.MetaFunction = ({ data }) => {
   if (!data || !data.course) {
     return [
       { title: "Course 1" },
@@ -62,7 +57,7 @@ export default function Course() {
       <header className="w-[100%] bg-white h-fit flex flex-row items-center justify-between bg-transparent px-10 py-5">
         <div id="left">
           <Link className="w-5" to="/dashboard/courses">
-            <img alt="Union" src="/Union.png"></img>
+            <img alt="Union" src={union} />
           </Link>
         </div>
         <div className="flex flex-row items-center">
@@ -111,17 +106,17 @@ export default function Course() {
   );
 }
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
   const cookieHeader = request.headers.get("Cookie");
   const { courseId } = params as { courseId: string };
   const cookie = (await userState.parse(cookieHeader)) || {};
   if (cookie.user) {
     const response = await getCoursesByUserId(cookie.user._id);
     const courseResponse = await getCourse(courseId);
-    return json({
+    return {
       course: courseResponse,
       userCourses: response.data as ICourse[],
-    });
+    };
   } else {
     return redirect("/auth/login");
   }

@@ -1,5 +1,9 @@
-node_modules
+.DS_Store
+/node_modules/
 
-/.cache
-/build
-.env
+# React Router
+/.react-router/
+/build/
+
+# Custom
+tsconfig.ts*

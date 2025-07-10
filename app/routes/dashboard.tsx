@@ -1,24 +1,21 @@
-//import { Link } from "@remix-run/react";
-import {
-  json,
-  redirect,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from "@remix-run/node";
-import { Outlet, Link } from "@remix-run/react";
+import { useState } from "react";
+import { BiMenuAltRight } from "react-icons/bi";
+import { IoIosArrowDown, IoIosArrowUp, IoIosClose } from "react-icons/io";
+import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
+import { Link, Outlet, redirect } from "react-router";
+import union from "~/assets/images/Union.png?url";
+import { MyDatePicker } from "~/components/DateComponent";
 import { NavLinkTs } from "~/components/NavLink";
 import { user as userState } from "~/serverstate.server";
-import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
-import { IoIosArrowDown, IoIosArrowUp, IoIosClose } from "react-icons/io";
-import { BiMenuAltRight } from "react-icons/bi";
-import { useState } from "react";
-import { MyDatePicker } from "~/components/DateComponent";
-export const meta: MetaFunction = () => {
+import type { Route } from "./+types/dashboard";
+
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Dashboard" },
     { name: "description", content: "View Courses" },
   ];
 };
+
 const locations = [
   {
     item: "Courses",
@@ -41,7 +38,7 @@ export default function Dashboard() {
       <header className="w-[100%] bg-white h-fit md:h-[15%] flex flex-row items-center py-5 justify-between bg-transparent px-10">
         <div id="left">
           <Link className="w-5" to="/dashboard/course">
-            <img alt="Union" src="/Union.png"></img>
+            <img alt="Union" src={union} />
           </Link>
         </div>
         <div className="flex flex-row items-center">
@@ -136,11 +133,11 @@ export default function Dashboard() {
   );
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userState.parse(cookieHeader)) || {};
   if (cookie.user) {
-    return json({ user: cookie.user });
+    return { user: cookie.user };
   } else {
     return redirect("/auth/login");
   }
