@@ -32,5 +32,5 @@ export default defineConfig([
       "no-unused-vars": "error",
     },
   },
-  globalIgnores([".react-router/", "build/"]),
+  globalIgnores([".nitro/", ".output/", ".tanstack/"]),
 ]);

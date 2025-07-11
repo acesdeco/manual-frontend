@@ -1,8 +1,24 @@
-import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import viteTsConfigPaths from "vite-tsconfig-paths";
+import react from "@vitejs/plugin-react";
 
-export default defineConfig({
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+const config = defineConfig({
+  plugins: [
+    // this is the plugin that enables path aliases
+    viteTsConfigPaths({
+      projects: ["./tsconfig.json"],
+    }),
+    tailwindcss(),
+    react(),
+    tanstackStart({
+      customViteReactPlugin: true,
+    }),
+  ],
+  build: {
+    chunkSizeWarningLimit: 1024,
+  },
 });
+
+export default config;
