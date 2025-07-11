@@ -1,5 +1,5 @@
-import React, { useState, useEffect, type FC } from "react";
 import { sendSubmissionStatus, submitAssessment } from "@/axios/Assessment";
+import { useEffect, useState, type FC } from "react";
 
 interface Option {
   option_text: string;
@@ -46,7 +46,7 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
   const startTime = new Date(assessment.startTime);
   const endTime = new Date(assessment.endTime);
   const [assessmentQuestions, setAssessmentQuestions] = useState(
-    assessment.questions.map((question) => ({ ...question, selected: "" }))
+    assessment.questions.map((question) => ({ ...question, selected: "" })),
   );
   const [canTakeAssessment, setCanTakeAssessment] = useState(false);
   const [takeAssessment, setTakeAssessment] = useState(false);
@@ -57,7 +57,7 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
       try {
         const response = await sendSubmissionStatus(
           assessment._id,
-          student.student_id
+          student.student_id,
         );
         const responseData = response.data as { data: boolean };
         if (responseData.data) {
@@ -84,7 +84,7 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
 
   const updateQuestionState = (
     questionId: string | number,
-    selected: string
+    selected: string,
   ) => {
     const updatedQuestions = assessmentQuestions.map((question) => {
       if (question.id === questionId) {
@@ -97,7 +97,7 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
 
   const handleSubmit = async () => {
     const unansweredQuestions = assessmentQuestions.filter(
-      (question) => question.selected === undefined || question.selected === ""
+      (question) => question.selected === undefined || question.selected === "",
     );
 
     if (unansweredQuestions.length > 0) {

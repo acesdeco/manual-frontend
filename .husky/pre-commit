@@ -1,0 +1,2 @@
+echo "Running lint-staged to check code quality before commit. This helps prevent committing lint errors."
+npx lint-staged

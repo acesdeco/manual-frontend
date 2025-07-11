@@ -1,5 +1,5 @@
-import React, { useEffect, useState, type FC } from "react";
 import { getAssessmentByWeek, type IAssessment } from "@/axios/Assessment";
+import { useEffect, useState, type FC } from "react";
 import AssessmentComponent from "./AssessmentComponent";
 
 interface AllAssessmentComponentProps {
@@ -13,7 +13,7 @@ const AllAssessmentComponent: FC<AllAssessmentComponentProps> = ({
 }) => {
   const [assessments, setAssessments] = useState<IAssessment[]>([]);
   const [activeAssessment, setActiveAssessment] = useState<IAssessment | null>(
-    null
+    null,
   );
   const [error, setError] = useState<string | null>(null);
 
