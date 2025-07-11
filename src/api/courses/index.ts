@@ -21,9 +21,7 @@ export async function getCoursesByUserId(userId: string) {
     getUsersEnrolledCourses(userId),
     getAllCourses(),
   ]);
-  return allCourses.data.filter((course) =>
-    userCourses.includes(course._id as string)
-  );
+  return allCourses.data.filter((course) => userCourses.includes(course._id));
 }
 
 export async function getCourse(courseId: string) {

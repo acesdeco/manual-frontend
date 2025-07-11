@@ -99,7 +99,7 @@ function DashboardLayout() {
         >
           <ul className="w-[100%]">
             {locations.map((location) => (
-              <li className="w-full" key={location.to}>
+              <li className="w-full" key={location.label}>
                 <NavLink {...location} />
               </li>
             ))}
