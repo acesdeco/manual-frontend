@@ -4,7 +4,6 @@ Fix CSS issue
 Handle auth routes properly
 Add husky, lint-staged, prettier
 Add shadcn component, especially form
-Recommended extensions
 Axios to ky
 Tanstack router linting rules and dev tools
 Tanstack query
