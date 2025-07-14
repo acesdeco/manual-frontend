@@ -1,33 +1,40 @@
 import z from "zod";
-import { regNumberSchema } from "../schema";
+import { registrationNumberSchema } from "../schema";
+
+export type UserId = string & {
+  readonly __brand: "userId";
+};
+export const userIdSchema = z
+  .custom<UserId>((val) => z.string().safeParse(val).success, {
+    error: "Invalid user id",
+  })
+  .transform((val) => val as string);
 
 export const iUserSchema = z.object({
-  _id: z.string(),
+  _id: userIdSchema,
   email: z.email(),
-  password: z.string().optional(),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  registrationNumber: regNumberSchema,
+  password: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  registrationNumber: registrationNumberSchema,
   courses: z.array(z.string()).optional(),
-  role: z.string().optional(),
+  role: z.enum(["student"]),
 });
 export type IUser = z.infer<typeof iUserSchema>;
 
 export const loginSchema = z.object({
   password: z.string(),
-  regNumber: regNumberSchema,
+  regNumber: registrationNumberSchema,
 });
 export type LoginInput = z.infer<typeof loginSchema>;
 
-export const signUpSchema = z
-  .object({
-    password: z.string(),
+export const signUpSchema = iUserSchema
+  .omit({
+    _id: true,
+    courses: true,
+  })
+  .extend({
     confirmPassword: z.string(),
-    email: z.email(),
-    regNumber: regNumberSchema,
-    firstName: z.string(),
-    lastName: z.string(),
-    role: z.enum(["student"]),
   })
   .refine((input) => input.password === input.confirmPassword, {
     error: "Passwords don't match",
@@ -36,7 +43,7 @@ export const signUpSchema = z
 export type SignUpInput = z.infer<typeof signUpSchema>;
 
 export const updateUserSchema = z.object({
-  userId: z.string(),
+  userId: userIdSchema,
   data: iUserSchema.partial(),
 });
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;

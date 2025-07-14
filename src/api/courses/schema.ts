@@ -1,7 +1,16 @@
 import z from "zod";
 
+export type CourseId = string & {
+  readonly __brand: "courseId";
+};
+export const courseIdSchema = z
+  .custom<CourseId>((val) => z.string().safeParse(val).success, {
+    error: "Invalid course id",
+  })
+  .transform((val) => val as string);
+
 export const iCourseSchema = z.object({
-  _id: z.string(),
+  _id: courseIdSchema,
   title: z.string(),
   code: z.string(),
   description: z.string(),
@@ -31,3 +40,9 @@ export type ICourse = z.infer<typeof iCourseSchema>;
 export const getAllCoursesResult = z.object({
   data: z.array(iCourseSchema).catch([]),
 });
+
+export const updateCourseSchema = z.object({
+  id: courseIdSchema,
+  course: iCourseSchema,
+});
+export type UpdateCourseInput = z.infer<typeof updateCourseSchema>;

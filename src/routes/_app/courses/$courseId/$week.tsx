@@ -12,7 +12,11 @@ function Week() {
   const { week } = Route.useParams();
   return (
     <main className="bg-white w-full h-[90%] p-4 overflow-auto">
-      <LessonComponent user={studentInfo} content={course.weeks[+week]} />
+      <LessonComponent
+        user={studentInfo}
+        content={course.weeks[+week]}
+        weekId={+week}
+      />
     </main>
   );
 }

@@ -1,4 +1,5 @@
-import { sendSubmissionStatus, submitAssessment } from "@/axios/Assessment";
+import { assessmentsApi } from "@/api";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState, type FC } from "react";
 
 interface Option {
@@ -46,45 +47,30 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
   const startTime = new Date(assessment.startTime);
   const endTime = new Date(assessment.endTime);
   const [assessmentQuestions, setAssessmentQuestions] = useState(
-    assessment.questions.map((question) => ({ ...question, selected: "" })),
+    assessment.questions.map((question) => ({ ...question, selected: "" }))
   );
   const [canTakeAssessment, setCanTakeAssessment] = useState(false);
   const [takeAssessment, setTakeAssessment] = useState(false);
   const [taken, setTaken] = useState(false);
 
-  useEffect(() => {
-    const sendAssessmentStatus = async () => {
-      try {
-        const response = await sendSubmissionStatus(
-          assessment._id,
-          student.student_id,
-        );
-        const responseData = response.data as { data: boolean };
-        if (responseData.data) {
-          setCanTakeAssessment(false);
-        }
-        if (responseData.data === false) {
-          setCanTakeAssessment(true);
-        }
-        if (!response.success) {
-          throw new Error("Failed to send assessment status");
-        }
-      } catch (error) {
-        console.error("Error sending assessment status:", error);
+  const { refetch } = useQuery({
+    queryKey: ["assment", assessment._id, student.student_id] as const,
+    queryFn: async ({ queryKey: [, assessmentId, studentId] }) => {
+      const { data } = await assessmentsApi.sendSubmissionStatus({
+        submissionId: assessmentId,
+        userId: studentId,
+      });
+      if (data) {
+        setCanTakeAssessment(false);
+      } else {
+        setCanTakeAssessment(true);
       }
-    };
-
-    sendAssessmentStatus();
-  }, [
-    assessment._id,
-    student.student_id,
-    student.student_name,
-    student.reg_number,
-  ]);
+    },
+  });
 
   const updateQuestionState = (
     questionId: string | number,
-    selected: string,
+    selected: string
   ) => {
     const updatedQuestions = assessmentQuestions.map((question) => {
       if (question.id === questionId) {
@@ -97,7 +83,7 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
 
   const handleSubmit = async () => {
     const unansweredQuestions = assessmentQuestions.filter(
-      (question) => question.selected === undefined || question.selected === "",
+      (question) => question.selected === undefined || question.selected === ""
     );
 
     if (unansweredQuestions.length > 0) {

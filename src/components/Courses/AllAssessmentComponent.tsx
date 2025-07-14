@@ -1,9 +1,11 @@
-import { getAssessmentByWeek, type IAssessment } from "@/axios/Assessment";
-import { useEffect, useState, type FC } from "react";
+import type { IAssessment } from "@/api/assessment";
+import { assessmentsQuery } from "@/queries";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useState, type FC } from "react";
 import AssessmentComponent from "./AssessmentComponent";
 
 interface AllAssessmentComponentProps {
-  weekId: string;
+  weekId: number;
   user: { student_id: string; student_name: string; reg_number: string };
 }
 
@@ -11,29 +13,12 @@ const AllAssessmentComponent: FC<AllAssessmentComponentProps> = ({
   weekId,
   user,
 }) => {
-  const [assessments, setAssessments] = useState<IAssessment[]>([]);
-  const [activeAssessment, setActiveAssessment] = useState<IAssessment | null>(
-    null,
+  const { data: assessments, error } = useSuspenseQuery(
+    assessmentsQuery(weekId)
   );
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchAssessments = async () => {
-      try {
-        const response = await getAssessmentByWeek(weekId);
-        if (response.success && response.data) {
-          setAssessments(response.data as IAssessment[]);
-        } else {
-          setError(response.message || "Failed to fetch assessments");
-        }
-      } catch (err) {
-        console.error("Error fetching assessments:", err);
-        setError("An error occurred while fetching assessments");
-      }
-    };
-
-    fetchAssessments();
-  }, [weekId]);
+  const [activeAssessment, setActiveAssessment] = useState<IAssessment | null>(
+    null
+  );
 
   const handleAssessmentClick = (assessment: IAssessment) => {
     setActiveAssessment(assessment);
@@ -50,7 +35,7 @@ const AllAssessmentComponent: FC<AllAssessmentComponentProps> = ({
           <h1 className="text-gray-800 text-xl py-3">
             Assessments for Week {weekId}
           </h1>
-          {error && <div className="error">{error}</div>}
+          {error && <div className="error">{error.message}</div>}
           {assessments.length === 0 && (
             <div className="error text-gray-900">
               No assessments for this week

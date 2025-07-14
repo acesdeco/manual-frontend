@@ -9,13 +9,13 @@ import {
 
 export * from "./schema";
 
-const paymentClient = api.extend((options) => ({
+const client = api.extend((options) => ({
   prefixUrl: options.prefixUrl + "/payment",
 }));
 
 export async function initializePayment(input: InitializePaymentInput) {
   initializePaymentSchema.parse(input);
-  const resJson = await paymentClient
+  const resJson = await client
     .post("initialize", {
       json: input,
     })
@@ -25,6 +25,6 @@ export async function initializePayment(input: InitializePaymentInput) {
 
 export async function verifyPayment(reference: string) {
   z.string().parse(reference);
-  const resJson = await paymentClient.get(`verify/${reference}`).json();
+  const resJson = await client.get(`verify/${reference}`).json();
   return verifyPaymentResult.parse(resJson);
 }

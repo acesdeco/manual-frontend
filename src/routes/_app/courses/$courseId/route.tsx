@@ -1,3 +1,10 @@
+import { coursesApi } from "@/api";
+import type { UserId } from "@/api/auth";
+import { type CourseId } from "@/api/courses";
+import union from "@/assets/images/Union.png?url";
+import { NavLink } from "@/components/NavLink";
+import { getUserData } from "@/loaders";
+import { assessmentsQuery } from "@/queries";
 import {
   createFileRoute,
   Link,
@@ -13,10 +20,6 @@ import { BiMenuAltRight } from "react-icons/bi";
 import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
 import z from "zod";
-import { coursesApi } from "@/api";
-import union from "@/assets/images/Union.png?url";
-import { NavLink } from "@/components/NavLink";
-import { getUserData } from "@/loaders";
 
 const courseLoader = createServerFn({ method: "GET" })
   .validator(
@@ -29,8 +32,8 @@ const courseLoader = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const user = await getUserData();
     const [course, userCourses] = await Promise.all([
-      coursesApi.getCourse(data.courseId),
-      coursesApi.getUsersEnrolledCourses(user._id),
+      coursesApi.getCourse(data.courseId as CourseId),
+      coursesApi.getUsersEnrolledCourseIds(user._id as UserId),
     ]);
     if (!userCourses.includes(data.courseId)) return "NotEnrolled";
     return {
@@ -47,15 +50,15 @@ class NotEnrolledError extends Error {}
 
 export const Route = createFileRoute("/_app/courses/$courseId")({
   component: CourseLayout,
-  loader: async ({ params }) => {
+  loader: async ({ params, context }) => {
     const result = await courseLoader({
       data: params,
     });
     if (result === "NotEnrolled") {
       throw new NotEnrolledError();
-    } else {
-      return result;
     }
+    context.queryClient.prefetchQuery(assessmentsQuery(result.course._id));
+    return result;
   },
   head: ({ loaderData, params }) => ({
     meta: [

@@ -1,7 +1,7 @@
+import { iUserSchema } from "@/api/auth";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie } from "@tanstack/react-start/server";
-import { iUserSchema } from "@/api/auth";
 
 export const redirectUser = createServerFn({ method: "GET" }).handler(() => {
   if (getCookie("user")) {

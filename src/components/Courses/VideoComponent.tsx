@@ -1,18 +1,15 @@
+import type { ICourse } from "@/api/courses";
+import type { Student } from "@/types";
 import { useState, type FC } from "react";
 import AllAssessmentComponent from "./AllAssessmentComponent";
 
 interface VideoComponentProps {
-  content: contentProps;
-  user: { student_id: string; student_name: string; reg_number: string };
-}
-interface contentProps {
-  [key: string]: string;
+  content: ICourse["weeks"][number];
+  user: Student;
+  weekId: number;
 }
 
-const VideoComponent: FC<VideoComponentProps> = ({
-  content,
-  user,
-}: VideoComponentProps) => {
+const VideoComponent: FC<VideoComponentProps> = ({ content, user, weekId }) => {
   const [activeTab, setActiveTab] = useState("notes");
   return (
     <div className="video-component">
@@ -20,7 +17,7 @@ const VideoComponent: FC<VideoComponentProps> = ({
         <h2 className="text-gray-600 font-semibold text-xl mt-1 mb-4">
           {content.topic}
         </h2>
-        <p className="text-gray-600 my-4">{content.description}</p>
+        <p className="text-gray-600 my-4">{content.assessment}</p>
       </div>
       <div className="video-wrapper">
         <iframe
@@ -75,7 +72,7 @@ const VideoComponent: FC<VideoComponentProps> = ({
             <div className="text-gray-700">No comments yet</div>
           )}
           {activeTab === "assessments" && (
-            <AllAssessmentComponent user={user} weekId={content._id} />
+            <AllAssessmentComponent user={user} weekId={weekId} />
           )}
         </div>
       </div>

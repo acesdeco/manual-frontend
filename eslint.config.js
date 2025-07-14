@@ -4,6 +4,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
 export default defineConfig([
   {
@@ -18,6 +19,7 @@ export default defineConfig([
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   reactHooks.configs["recommended-latest"],
+  ...pluginQuery.configs["flat/recommended"],
   {
     settings: {
       react: {
