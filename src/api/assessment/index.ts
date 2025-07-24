@@ -10,35 +10,34 @@ import {
 
 export * from "./schema";
 
-const client = api.extend((options) => ({
-  prefixUrl: options.prefixUrl + "/assessment",
-}));
-
 export async function getAssessment(id: string) {
   z.string().parse(id);
-  const resJson = await client.get(id).json();
+  const resJson = await api.get(`assessment/${id}`).json();
   return iAssessmentSchema.parse(resJson);
 }
 
 export async function getAssessmentByWeek(weekId: number) {
   z.number().parse(weekId);
-  const resJson = await client.get(`week/${weekId}`);
+  const resJson = await api.get(`assessment/week/${weekId}`);
   return z.array(iAssessmentSchema).parse(resJson);
 }
 
 export async function submitAssessment(assessment: ISubmission) {
   iSubmissionSchema.parse(assessment);
-  await client.post("submit", {
+  await api.post("assessment/submit", {
     json: assessment,
   });
 }
 
 export async function sendSubmissionStatus(input: SubmissionStatusInput) {
   submissionStatusSchema.parse(input);
-  const resJson = await client.post(`submission/${input.submissionId}`, {
-    json: {
-      userId: input.userId,
-    },
-  });
-  return z.object({ data: z.boolean }).parse(resJson);
+  const resJson = await api.post(
+    `assessment/submission/${input.submissionId}`,
+    {
+      json: {
+        userId: input.userId,
+      },
+    }
+  );
+  return z.object({ data: z.boolean() }).parse(resJson);
 }

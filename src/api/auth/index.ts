@@ -9,18 +9,14 @@ import {
   type LoginInput,
   type SignUpInput,
   type UpdateUserInput,
-  type UserId
+  type UserId,
 } from "./schema";
 export * from "./schema";
 
-const client = api.extend((options) => ({
-  prefixUrl: options.prefixUrl + "/users",
-}));
-
 export async function login(input: LoginInput) {
   loginSchema.parse(input);
-  const resJson = await client
-    .post("login", {
+  const resJson = await api
+    .post("users/login", {
       json: input,
     })
     .json();
@@ -29,8 +25,8 @@ export async function login(input: LoginInput) {
 
 export async function signUp(input: SignUpInput) {
   signUpSchema.parse(input);
-  const resJson = await client
-    .post("signup", {
+  const resJson = await api
+    .post("users/signup", {
       json: input,
     })
     .json();
@@ -39,7 +35,7 @@ export async function signUp(input: SignUpInput) {
 
 export async function updateUser(input: UpdateUserInput) {
   updateUserSchema.parse(input);
-  const resJson = await client.put(input.userId, {
+  const resJson = await api.put(`users/${input.userId}`, {
     json: input.data,
   });
   return iUserSchema.parse(resJson);
@@ -47,7 +43,7 @@ export async function updateUser(input: UpdateUserInput) {
 
 export async function deleteUser(userId: UserId) {
   userIdSchema.parse(userId);
-  const resJson = await client.delete(userId);
+  const resJson = await api.delete(`users/${userId}`);
   return z
     .object({
       message: z.string(),
@@ -57,6 +53,6 @@ export async function deleteUser(userId: UserId) {
 
 export async function getUser(userId: UserId) {
   userIdSchema.parse(userId);
-  const resJson = await client.get(userId);
+  const resJson = await api.get(`users/${userId}`);
   return iUserSchema.parse(resJson);
 }
