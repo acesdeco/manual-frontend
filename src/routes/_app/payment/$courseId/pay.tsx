@@ -4,11 +4,12 @@ import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
 import { coursesApi, paymentsApi } from "@/api";
 import { getUserData } from "@/loaders";
+import type { CourseId } from "@/api/courses";
 
 const courseIdSchema = zodValidator(
   z.object({
     courseId: z.string(),
-  })
+  }),
 );
 
 const checkExistingPaymentServerFn = createServerFn({ method: "GET" })
@@ -31,7 +32,7 @@ const courseLoader = createServerFn({ method: "GET" })
   .handler(async ({ data: { courseId } }) => {
     const [user, course] = await Promise.all([
       getUserData(),
-      coursesApi.getCourse(courseId),
+      coursesApi.getCourse(courseId as CourseId),
     ]);
     const APP_URL =
       process.env.APP_URL ?? import.meta.baseURL ?? "http://localhost:5173";

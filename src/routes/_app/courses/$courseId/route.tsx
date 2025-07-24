@@ -26,8 +26,8 @@ const courseLoader = createServerFn({ method: "GET" })
     zodValidator(
       z.object({
         courseId: z.string(),
-      })
-    )
+      }),
+    ),
   )
   .handler(async ({ data }) => {
     const user = await getUserData();
@@ -57,7 +57,7 @@ export const Route = createFileRoute("/_app/courses/$courseId")({
     if (result === "NotEnrolled") {
       throw new NotEnrolledError();
     }
-    context.queryClient.prefetchQuery(assessmentsQuery(result.course._id));
+    context.queryClient.prefetchQuery(assessmentsQuery(+result.course._id));
     return result;
   },
   head: ({ loaderData, params }) => ({
@@ -108,7 +108,7 @@ function CourseLayout() {
       },
       label: `Week ${+week + 1}`,
       from: Route.fullPath,
-    })
+    }),
   );
   return (
     <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed">
@@ -165,7 +165,7 @@ function CourseLayout() {
             "absolute md:static bg-white  px-3 z-50 pt-10 h-full duration-500 w-[300px]",
             isMenuOpen
               ? "left-0 w-[270px]"
-              : "-left-[120%] md:left-0 w-0 text-wrap"
+              : "-left-[120%] md:left-0 w-0 text-wrap",
           )}
         >
           <ul className="w-full">

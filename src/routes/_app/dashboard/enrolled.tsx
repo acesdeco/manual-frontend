@@ -1,16 +1,16 @@
+import { coursesApi } from "@/api";
+import { iUserSchema, type UserId } from "@/api/auth";
+import Button from "@/components/Button";
+import { CourseCard } from "@/components/Courses/CourseCard";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie } from "@tanstack/react-start/server";
-import { coursesApi } from "@/api";
-import { iUserSchema } from "@/api/auth";
-import Button from "@/components/Button";
-import { CourseCard } from "@/components/Courses/CourseCard";
 
 const enrolledCoursesLoader = createServerFn({ method: "GET" }).handler(
   async () => {
     const user = iUserSchema.parse(JSON.parse(getCookie("user")!));
-    return await coursesApi.getCoursesByUserId(user._id);
-  }
+    return await coursesApi.getCoursesByUserId(user._id as UserId);
+  },
 );
 
 export const Route = createFileRoute("/_app/dashboard/enrolled")({

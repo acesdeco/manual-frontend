@@ -48,7 +48,7 @@ function SignUp() {
       firstName: "",
       lastName: "",
       password: "",
-      regNumber: "",
+      registrationNumber: "",
       role: "student",
     },
   });
@@ -103,10 +103,7 @@ function SignUp() {
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="First Name"
-                          />
+                          <Input {...field} placeholder="First Name" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -118,10 +115,7 @@ function SignUp() {
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Last Name"
-                          />
+                          <Input {...field} placeholder="Last Name" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -131,14 +125,11 @@ function SignUp() {
 
                 <FormField
                   control={form.control}
-                  name="regNumber"
+                  name="registrationNumber"
                   render={({ field }) => (
                     <FormItem className="mb-4">
                       <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Registration Number"
-                        />
+                        <Input {...field} placeholder="Registration Number" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

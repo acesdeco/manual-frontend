@@ -17,9 +17,9 @@ export const iAssessmentSchema = z.object({
           option_text: z.string(),
           is_correct: z.boolean(),
           _id: z.string(),
-        })
+        }),
       ),
-    })
+    }),
   ),
   dueDate: z.string(),
   startTime: z.string(),
@@ -28,7 +28,7 @@ export const iAssessmentSchema = z.object({
 export type IAssessment = z.infer<typeof iAssessmentSchema>;
 
 export const iSubmissionSchema = z.object({
-  assessment: z.string(),
+  assessmentId: z.string(),
   student: z.object({
     student_id: z.string(),
     student_name: z.string(),
@@ -41,7 +41,7 @@ export const iSubmissionSchema = z.object({
         question_text: z.string(),
       },
       answer_text: z.string(),
-    })
+    }),
   ),
   submitted_at: z.string(),
 });

@@ -1,6 +1,7 @@
 import { assessmentsApi } from "@/api";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState, type FC } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useState, type FC } from "react";
+import { toast } from "sonner";
 
 interface Option {
   option_text: string;
@@ -47,30 +48,46 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
   const startTime = new Date(assessment.startTime);
   const endTime = new Date(assessment.endTime);
   const [assessmentQuestions, setAssessmentQuestions] = useState(
-    assessment.questions.map((question) => ({ ...question, selected: "" }))
+    assessment.questions.map((question) => ({ ...question, selected: "" })),
   );
   const [canTakeAssessment, setCanTakeAssessment] = useState(false);
   const [takeAssessment, setTakeAssessment] = useState(false);
   const [taken, setTaken] = useState(false);
 
-  const { refetch } = useQuery({
-    queryKey: ["assment", assessment._id, student.student_id] as const,
-    queryFn: async ({ queryKey: [, assessmentId, studentId] }) => {
-      const { data } = await assessmentsApi.sendSubmissionStatus({
-        submissionId: assessmentId,
-        userId: studentId,
+  const toastId = "assessment-toast-id";
+
+  const { mutateAsync: submitAssessment } = useMutation({
+    mutationFn: assessmentsApi.submitAssessment,
+    onMutate() {
+      toast.loading("Submitting assessment", {
+        id: toastId,
       });
-      if (data) {
+    },
+    onSuccess(data) {
+      if (typeof data !== "undefined") {
         setCanTakeAssessment(false);
       } else {
         setCanTakeAssessment(true);
       }
+      toast.success("Assessment submitted successfully", {
+        id: toastId,
+      });
+    },
+    onError(error) {
+      // eslint-disable-next-line no-console
+      console.error(`Error submitting assessment:`, error);
+      toast.error("Failed to submit assessment", {
+        id: toastId,
+      });
+    },
+    onSettled() {
+      setTaken(false);
     },
   });
 
   const updateQuestionState = (
     questionId: string | number,
-    selected: string
+    selected: string,
   ) => {
     const updatedQuestions = assessmentQuestions.map((question) => {
       if (question.id === questionId) {
@@ -83,7 +100,7 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
 
   const handleSubmit = async () => {
     const unansweredQuestions = assessmentQuestions.filter(
-      (question) => question.selected === undefined || question.selected === ""
+      (question) => question.selected === undefined || question.selected === "",
     );
 
     if (unansweredQuestions.length > 0) {
@@ -91,35 +108,23 @@ const AssessmentComponent: FC<AssessmentComponentProps> = ({
       return;
     }
 
-    try {
-      const response = await submitAssessment({
-        assessment: assessment._id,
-        student: {
-          student_id: student.student_id,
-          student_name: student.student_name,
-          reg_number: student.reg_number,
+    await submitAssessment({
+      assessmentId: assessment._id,
+      student: {
+        student_id: student.student_id,
+        student_name: student.student_name,
+        reg_number: student.reg_number,
+      },
+      answers: assessmentQuestions.map((question) => ({
+        question: {
+          question_id: question._id as string,
+          question_text: question.question_text,
+          question_type: question.question_type,
         },
-        answers: assessmentQuestions.map((question) => ({
-          question: {
-            question_id: question._id as string,
-            question_text: question.question_text,
-            question_type: question.question_type,
-          },
-          answer_text: question.selected as string,
-        })),
-        submitted_at: new Date().toISOString(),
-      });
-
-      if (!response.success) {
-        throw new Error("Failed to submit assessment");
-      }
-      setTaken(true);
-      setCanTakeAssessment(false);
-      alert("Assessment submitted successfully!");
-    } catch (error) {
-      console.error("Error submitting assessment:", error);
-      alert("There was an error submitting your assessment. Please try again.");
-    }
+        answer_text: question.selected as string,
+      })),
+      submitted_at: new Date().toISOString(),
+    });
   };
 
   if (currentTime < startTime || currentTime > endTime) {

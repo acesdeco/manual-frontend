@@ -6,7 +6,7 @@ import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
 import { cookieOptions } from "@/actions";
 import { authApi, paymentsApi } from "@/api";
-import { getCourse } from "@/api/courses";
+import { getCourse, type CourseId } from "@/api/courses";
 import { getUserData } from "@/loaders";
 
 const successFn = createServerFn({ method: "GET" })
@@ -15,13 +15,13 @@ const successFn = createServerFn({ method: "GET" })
       z.object({
         reference: z.string(),
         courseId: z.string(),
-      })
-    )
+      }),
+    ),
   )
   .handler(async ({ data }) => {
     const [user, course, txState] = await Promise.all([
       getUserData(),
-      getCourse(data.courseId),
+      getCourse(data.courseId as CourseId),
       paymentsApi.verifyPayment(data.reference),
     ]);
     if (txState.status === "success") {
@@ -58,8 +58,8 @@ export const Route = createFileRoute("/_app/payment/$courseId/callback")({
       .or(
         z.object({
           reference: z.string(),
-        })
-      )
+        }),
+      ),
   ),
 });
 
