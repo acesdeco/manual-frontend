@@ -10,6 +10,8 @@ import type { ReactNode } from "react";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "@/components/ui/sonner";
+import { getThemeServerFn } from "@/lib/theme";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -45,22 +47,27 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   component: RootComponent,
+  loader: async () => await getThemeServerFn(),
 });
 
 function RootComponent() {
+  const data = Route.useLoaderData();
   return (
-    <RootDocument>
-      <Outlet />
-      <Toaster />
-      <TanStackRouterDevtools position="bottom-right" />
-      <ReactQueryDevtools buttonPosition="bottom-left" />
-    </RootDocument>
+    <ThemeProvider theme={data}>
+      <RootDocument>
+        <Outlet />
+        <Toaster />
+        <TanStackRouterDevtools position="bottom-right" />
+        <ReactQueryDevtools buttonPosition="bottom-left" />
+      </RootDocument>
+    </ThemeProvider>
   );
 }
 
 function RootDocument({ children }: { children: ReactNode }) {
+  const theme = Route.useLoaderData();
   return (
-    <html lang="en">
+    <html lang="en" className={theme} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

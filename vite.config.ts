@@ -11,10 +11,10 @@ const config = defineConfig({
       projects: ["./tsconfig.json"],
     }),
     tailwindcss(),
-    react(),
     tanstackStart({
       customViteReactPlugin: true,
     }),
+    react(),
   ],
   build: {
     chunkSizeWarningLimit: 1024,

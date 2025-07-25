@@ -1,7 +1,7 @@
 // FIXME THE LOADER MAKES THIS PAGE USELESS
 
-import { createFileRoute } from "@tanstack/react-router";
 import { redirectGuest, redirectUser } from "@/loaders";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Home,

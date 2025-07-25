@@ -16,6 +16,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const loginServerFn = createServerFn({ method: "POST" })
   .validator(zodValidator(authApi.loginSchema))
@@ -52,38 +54,17 @@ function Login() {
       regNumber: "",
     },
   });
-  const login = useServerFn(loginServerFn);
-  async function onSubmit(data: LoginInput) {
-    await login({ data });
-  }
-  // TODO HANDLE THIS WITH TANSTACK QUERY'S MUTATION
-  // const [modalOpen, setModalOpen] = useState(false);
-  // useEffect(() => {
-  //   if (actionData?.responseError) {
-  //     setModalOpen(true);
-  //   }
-  //   if (actionData?.validationErrors) {
-  //   }
-  // }, [actionData]);
+  const loginFn = useServerFn(loginServerFn);
+  const { mutate, isPending } = useMutation({
+    mutationFn: loginFn,
+    onError(error) {
+      // eslint-disable-next-line no-console
+      console.error("Error during login:", error);
+      toast.error("There was a problem with your request.");
+    },
+  });
   return (
     <>
-      {/* {actionData?.responseError && modalOpen && (
-        <div className="fixed h-screen z-50 w-screen inset-0 flex items-center justify-center bg-opacity-50 bg-black">
-          <div className="bg-white w-1/2 absolute p-6 rounded shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-gray-600">Error</h2>
-            <p className="text-sm text-gray-600">
-              {actionData.responseError.details?.message ||
-                actionData.responseError.message}
-            </p>
-            <button
-              onClick={() => setModalOpen(false)}
-              className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )} */}
       <main className="w-full h-screen flex flex-col md:px-16 px-4 py-8 fade-in-bottom">
         <header>
           <h1 className="text-4xl font-bold mb-4">CPE Lab</h1>
@@ -95,7 +76,7 @@ function Login() {
           <section className="w-full md:w-1/2">
             <h2 className="text-2xl font-bold mb-6">Login</h2>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
+              <form onSubmit={form.handleSubmit((data) => mutate({ data }))}>
                 <FormField
                   control={form.control}
                   name="regNumber"
@@ -130,9 +111,10 @@ function Login() {
                 />
                 <button
                   type="submit"
+                  disabled={isPending}
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  {form.formState.isSubmitting ? (
+                  {isPending ? (
                     // TODO see if this can be replaced with lucide react
                     <svg
                       className="animate-spin h-5 w-5 text-white"
