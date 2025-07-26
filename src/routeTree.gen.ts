@@ -8,113 +8,124 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createServerRootRoute } from '@tanstack/react-start/server'
-
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
-import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
-import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
-import { ServerRoute as ApiDemoNamesServerRouteImport } from './routes/api.demo-names'
+import { Route as DashboardCoursesRouteImport } from './routes/dashboard/courses'
+import { Route as AuthSignupRouteRouteImport } from './routes/auth/signup/route'
+import { Route as AuthLoginRouteRouteImport } from './routes/auth/login/route'
+import { Route as AuthSignupStudentsRouteImport } from './routes/auth/signup/students'
+import { Route as AuthLoginStudentsRouteImport } from './routes/auth/login/students'
 
-const rootServerRouteImport = createServerRootRoute()
-
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
+const DashboardCoursesRoute = DashboardCoursesRouteImport.update({
+  id: '/dashboard/courses',
+  path: '/dashboard/courses',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
-  id: '/demo/start/server-funcs',
-  path: '/demo/start/server-funcs',
-  getParentRoute: () => rootRouteImport,
+const AuthSignupRouteRoute = AuthSignupRouteRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => AuthRouteRoute,
 } as any)
-const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
-  getParentRoute: () => rootRouteImport,
+const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRouteRoute,
 } as any)
-const ApiDemoNamesServerRoute = ApiDemoNamesServerRouteImport.update({
-  id: '/api/demo-names',
-  path: '/api/demo-names',
-  getParentRoute: () => rootServerRouteImport,
+const AuthSignupStudentsRoute = AuthSignupStudentsRouteImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => AuthSignupRouteRoute,
+} as any)
+const AuthLoginStudentsRoute = AuthLoginStudentsRouteImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => AuthLoginRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/auth/login': typeof AuthLoginRouteRouteWithChildren
+  '/auth/signup': typeof AuthSignupRouteRouteWithChildren
+  '/dashboard/courses': typeof DashboardCoursesRoute
+  '/auth/login/students': typeof AuthLoginStudentsRoute
+  '/auth/signup/students': typeof AuthSignupStudentsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/auth/login': typeof AuthLoginRouteRouteWithChildren
+  '/auth/signup': typeof AuthSignupRouteRouteWithChildren
+  '/dashboard/courses': typeof DashboardCoursesRoute
+  '/auth/login/students': typeof AuthLoginStudentsRoute
+  '/auth/signup/students': typeof AuthSignupStudentsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/auth/login': typeof AuthLoginRouteRouteWithChildren
+  '/auth/signup': typeof AuthSignupRouteRouteWithChildren
+  '/dashboard/courses': typeof DashboardCoursesRoute
+  '/auth/login/students': typeof AuthLoginStudentsRoute
+  '/auth/signup/students': typeof AuthSignupStudentsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/demo/tanstack-query'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+    | '/auth'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/dashboard/courses'
+    | '/auth/login/students'
+    | '/auth/signup/students'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/demo/tanstack-query'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+    | '/auth'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/dashboard/courses'
+    | '/auth/login/students'
+    | '/auth/signup/students'
   id:
     | '__root__'
     | '/'
-    | '/demo/tanstack-query'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+    | '/auth'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/dashboard/courses'
+    | '/auth/login/students'
+    | '/auth/signup/students'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
-}
-export interface FileServerRoutesByFullPath {
-  '/api/demo-names': typeof ApiDemoNamesServerRoute
-}
-export interface FileServerRoutesByTo {
-  '/api/demo-names': typeof ApiDemoNamesServerRoute
-}
-export interface FileServerRoutesById {
-  __root__: typeof rootServerRouteImport
-  '/api/demo-names': typeof ApiDemoNamesServerRoute
-}
-export interface FileServerRouteTypes {
-  fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/demo-names'
-  fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/demo-names'
-  id: '__root__' | '/api/demo-names'
-  fileServerRoutesById: FileServerRoutesById
-}
-export interface RootServerRouteChildren {
-  ApiDemoNamesServerRoute: typeof ApiDemoNamesServerRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  DashboardCoursesRoute: typeof DashboardCoursesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -122,53 +133,87 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+    '/dashboard/courses': {
+      id: '/dashboard/courses'
+      path: '/dashboard/courses'
+      fullPath: '/dashboard/courses'
+      preLoaderRoute: typeof DashboardCoursesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/start/server-funcs': {
-      id: '/demo/start/server-funcs'
-      path: '/demo/start/server-funcs'
-      fullPath: '/demo/start/server-funcs'
-      preLoaderRoute: typeof DemoStartServerFuncsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupRouteRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestRouteImport
-      parentRoute: typeof rootRouteImport
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
-  }
-}
-declare module '@tanstack/react-start/server' {
-  interface ServerFileRoutesByPath {
-    '/api/demo-names': {
-      id: '/api/demo-names'
-      path: '/api/demo-names'
-      fullPath: '/api/demo-names'
-      preLoaderRoute: typeof ApiDemoNamesServerRouteImport
-      parentRoute: typeof rootServerRouteImport
+    '/auth/signup/students': {
+      id: '/auth/signup/students'
+      path: '/students'
+      fullPath: '/auth/signup/students'
+      preLoaderRoute: typeof AuthSignupStudentsRouteImport
+      parentRoute: typeof AuthSignupRouteRoute
+    }
+    '/auth/login/students': {
+      id: '/auth/login/students'
+      path: '/students'
+      fullPath: '/auth/login/students'
+      preLoaderRoute: typeof AuthLoginStudentsRouteImport
+      parentRoute: typeof AuthLoginRouteRoute
     }
   }
 }
 
+interface AuthLoginRouteRouteChildren {
+  AuthLoginStudentsRoute: typeof AuthLoginStudentsRoute
+}
+
+const AuthLoginRouteRouteChildren: AuthLoginRouteRouteChildren = {
+  AuthLoginStudentsRoute: AuthLoginStudentsRoute,
+}
+
+const AuthLoginRouteRouteWithChildren = AuthLoginRouteRoute._addFileChildren(
+  AuthLoginRouteRouteChildren,
+)
+
+interface AuthSignupRouteRouteChildren {
+  AuthSignupStudentsRoute: typeof AuthSignupStudentsRoute
+}
+
+const AuthSignupRouteRouteChildren: AuthSignupRouteRouteChildren = {
+  AuthSignupStudentsRoute: AuthSignupStudentsRoute,
+}
+
+const AuthSignupRouteRouteWithChildren = AuthSignupRouteRoute._addFileChildren(
+  AuthSignupRouteRouteChildren,
+)
+
+interface AuthRouteRouteChildren {
+  AuthLoginRouteRoute: typeof AuthLoginRouteRouteWithChildren
+  AuthSignupRouteRoute: typeof AuthSignupRouteRouteWithChildren
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthLoginRouteRoute: AuthLoginRouteRouteWithChildren,
+  AuthSignupRouteRoute: AuthSignupRouteRouteWithChildren,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
+  DashboardCoursesRoute: DashboardCoursesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiDemoNamesServerRoute: ApiDemoNamesServerRoute,
-}
-export const serverRouteTree = rootServerRouteImport
-  ._addFileChildren(rootServerRouteChildren)
-  ._addFileTypes<FileServerRouteTypes>()

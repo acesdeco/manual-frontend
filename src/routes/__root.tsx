@@ -1,3 +1,4 @@
+import type { QueryClient } from '@tanstack/react-query'
 import {
   HeadContent,
   Outlet,
@@ -5,20 +6,20 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import Header from '../components/Header'
-
 import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
-
 import appCss from '../styles.css?url'
-
-import type { QueryClient } from '@tanstack/react-query'
+import { ThemeProvider } from '@/components/theme-provider.tsx'
+import { getThemeServerFn } from '@/lib/theme.ts'
+import { ThemeToggle } from '@/components/theme-toggle.tsx'
+import { Toaster } from '@/components/ui/sonner.tsx'
 
 interface MyRouterContext {
   queryClient: QueryClient
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  loader: async () => await getThemeServerFn(),
+  component: RootComponent,
   head: () => ({
     meta: [
       {
@@ -39,20 +40,27 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
-
-  component: () => (
-    <RootDocument>
-      <Header />
-      <Outlet />
-      <TanStackRouterDevtools />
-      <TanStackQueryLayout />
-    </RootDocument>
-  ),
 })
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootComponent() {
+  const data = Route.useLoaderData()
   return (
-    <html lang="en">
+    <ThemeProvider theme={data}>
+      <RootDocument>
+        <ThemeToggle />
+        <Outlet />
+        <TanStackRouterDevtools />
+        <TanStackQueryLayout />
+        <Toaster />
+      </RootDocument>
+    </ThemeProvider>
+  )
+}
+
+function RootDocument({ children }: { children: React.ReactNode }) {
+  const theme = Route.useLoaderData()
+  return (
+    <html lang="en" className={theme} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

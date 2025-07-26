@@ -1,5 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
-import logo from '../logo.svg'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -7,33 +6,24 @@ export const Route = createFileRoute('/')({
 
 function App() {
   return (
-    <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
-        <img
-          src={logo}
-          className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
-          alt="logo"
-        />
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to reload.
+    <main className="w-full h-screen flex flex-col items-center justify-center md:px-16 px-4 py-8">
+      <header>
+        <h1 className="text-4xl text-center font-bold mb-4">CPE Lab</h1>
+        <p className="text-lg text-center text-foreground">
+          Welcome to Computer Engineering UNIUYO
         </p>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
+        <p className="text-center space-x-4">
+          <Link to="/auth/login/students" from={Route.fullPath}>
+            Student?
+          </Link>
+          <Link to="." from={Route.fullPath}>
+            Instructor?
+          </Link>
+        </p>
       </header>
-    </div>
+      <div className="flex items-center justify-center mt-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    </main>
   )
 }

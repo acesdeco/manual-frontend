@@ -47,5 +47,12 @@ export default defineConfig([
       '@typescript-eslint/no-unsafe-argument': 'off',
     },
   },
-  globalIgnores(['dist/', 'note.*', 'src/routeTree.gen.ts']),
+  globalIgnores([
+    'dist/',
+    'note.*',
+    'src/routeTree.gen.ts',
+    '.tanstack',
+    '.nitro',
+    '.output',
+  ]),
 ])
