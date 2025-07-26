@@ -8,8 +8,8 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import {
-  studentsLoginFn,
-  studentsLoginSchema,
+  sLoginFn,
+  sLoginSchema,
   type StudentLogin,
 } from '@/functions/students/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,14 +34,14 @@ export const Route = createFileRoute('/auth/login/students')({
 
 function RouteComponent() {
   const form = useForm<StudentLogin>({
-    resolver: zodResolver(studentsLoginSchema),
+    resolver: zodResolver(sLoginSchema),
     defaultValues: {
       password: '',
       registrationNumber: '',
       role: 'student',
     },
   })
-  const loginFn = useServerFn(studentsLoginFn)
+  const loginFn = useServerFn(sLoginFn)
   const { mutate, isPending } = useMutation({
     mutationFn: loginFn,
     onError(error) {

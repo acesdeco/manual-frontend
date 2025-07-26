@@ -4,12 +4,12 @@ import { userSchema } from '@/schemas'
 import { redirect } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { zodValidator } from '@tanstack/zod-adapter'
-import { studentsLoginSchema, studentsSignUpSchema } from './schema'
+import { sLoginSchema, sSignUpSchema } from './schema'
 
 export * from './schema'
 
-export const studentsLoginFn = createServerFn({ method: 'POST' })
-  .validator(zodValidator(studentsLoginSchema))
+export const sLoginFn = createServerFn({ method: 'POST' })
+  .validator(zodValidator(sLoginSchema))
   .handler(async ({ data }) => {
     const res = await api
       .post('users/login', {
@@ -25,12 +25,12 @@ export const studentsLoginFn = createServerFn({ method: 'POST' })
     })
   })
 
-export const studentsSignUpFn = createServerFn({ method: 'POST' })
-  .validator(zodValidator(studentsSignUpSchema))
+export const sSignUpFn = createServerFn({ method: 'POST' })
+  .validator(zodValidator(sSignUpSchema))
   .handler(async ({ data }) => {
     const res = await api
       .post('users/signup', {
-        json: studentsSignUpSchema
+        json: sSignUpSchema
           .omit({
             confirmPassword: true,
           })

@@ -8,8 +8,8 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import {
-  studentsSignUpFn,
-  studentsSignUpSchema,
+  sSignUpFn,
+  sSignUpSchema,
   type StudentSignUp,
 } from '@/functions/students/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,7 +34,7 @@ export const Route = createFileRoute('/auth/signup/students')({
 
 function SignUp() {
   const form = useForm<StudentSignUp>({
-    resolver: zodResolver(studentsSignUpSchema),
+    resolver: zodResolver(sSignUpSchema),
     defaultValues: {
       confirmPassword: '',
       email: '',
@@ -45,7 +45,7 @@ function SignUp() {
       role: 'student',
     },
   })
-  const signUpFn = useServerFn(studentsSignUpFn)
+  const signUpFn = useServerFn(sSignUpFn)
   const { mutate, isPending } = useMutation({
     mutationFn: signUpFn,
     onError(error) {
