@@ -8,256 +8,113 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as AssessmentRouteImport } from './routes/assessment'
-import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as AppRouteRouteImport } from './routes/_app/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthSignupRouteImport } from './routes/auth/signup'
-import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as AppDashboardRouteRouteImport } from './routes/_app/dashboard/route'
-import { Route as AppDashboardResourcesRouteImport } from './routes/_app/dashboard/resources'
-import { Route as AppDashboardEnrolledRouteImport } from './routes/_app/dashboard/enrolled'
-import { Route as AppDashboardCoursesRouteImport } from './routes/_app/dashboard/courses'
-import { Route as AppCoursesCourseIdRouteRouteImport } from './routes/_app/courses/$courseId/route'
-import { Route as AppPaymentCourseIdPayRouteImport } from './routes/_app/payment/$courseId/pay'
-import { Route as AppPaymentCourseIdCallbackRouteImport } from './routes/_app/payment/$courseId/callback'
-import { Route as AppPaymentCourseIdSplatRouteImport } from './routes/_app/payment/$courseId/$'
-import { Route as AppCoursesCourseIdIntroductionRouteImport } from './routes/_app/courses/$courseId/introduction'
-import { Route as AppCoursesCourseIdWeekRouteImport } from './routes/_app/courses/$courseId/$week'
-import { Route as AppCoursesCourseIdSplatRouteImport } from './routes/_app/courses/$courseId/$'
+import { createServerRootRoute } from '@tanstack/react-start/server'
 
-const AssessmentRoute = AssessmentRouteImport.update({
-  id: '/assessment',
-  path: '/assessment',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppRouteRoute = AppRouteRouteImport.update({
-  id: '/_app',
-  getParentRoute: () => rootRouteImport,
-} as any)
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
+import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
+import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
+import { ServerRoute as ApiDemoNamesServerRouteImport } from './routes/api.demo-names'
+
+const rootServerRouteImport = createServerRootRoute()
+
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthSignupRoute = AuthSignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => AuthRouteRoute,
+const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
+  id: '/demo/tanstack-query',
+  path: '/demo/tanstack-query',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AuthRouteRoute,
+const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
+  id: '/demo/start/server-funcs',
+  path: '/demo/start/server-funcs',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AppDashboardRouteRoute = AppDashboardRouteRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AppRouteRoute,
+const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
+  id: '/demo/start/api-request',
+  path: '/demo/start/api-request',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AppDashboardResourcesRoute = AppDashboardResourcesRouteImport.update({
-  id: '/resources',
-  path: '/resources',
-  getParentRoute: () => AppDashboardRouteRoute,
-} as any)
-const AppDashboardEnrolledRoute = AppDashboardEnrolledRouteImport.update({
-  id: '/enrolled',
-  path: '/enrolled',
-  getParentRoute: () => AppDashboardRouteRoute,
-} as any)
-const AppDashboardCoursesRoute = AppDashboardCoursesRouteImport.update({
-  id: '/courses',
-  path: '/courses',
-  getParentRoute: () => AppDashboardRouteRoute,
-} as any)
-const AppCoursesCourseIdRouteRoute = AppCoursesCourseIdRouteRouteImport.update({
-  id: '/courses/$courseId',
-  path: '/courses/$courseId',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppPaymentCourseIdPayRoute = AppPaymentCourseIdPayRouteImport.update({
-  id: '/payment/$courseId/pay',
-  path: '/payment/$courseId/pay',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppPaymentCourseIdCallbackRoute =
-  AppPaymentCourseIdCallbackRouteImport.update({
-    id: '/payment/$courseId/callback',
-    path: '/payment/$courseId/callback',
-    getParentRoute: () => AppRouteRoute,
-  } as any)
-const AppPaymentCourseIdSplatRoute = AppPaymentCourseIdSplatRouteImport.update({
-  id: '/payment/$courseId/$',
-  path: '/payment/$courseId/$',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppCoursesCourseIdIntroductionRoute =
-  AppCoursesCourseIdIntroductionRouteImport.update({
-    id: '/introduction',
-    path: '/introduction',
-    getParentRoute: () => AppCoursesCourseIdRouteRoute,
-  } as any)
-const AppCoursesCourseIdWeekRoute = AppCoursesCourseIdWeekRouteImport.update({
-  id: '/$week',
-  path: '/$week',
-  getParentRoute: () => AppCoursesCourseIdRouteRoute,
-} as any)
-const AppCoursesCourseIdSplatRoute = AppCoursesCourseIdSplatRouteImport.update({
-  id: '/$',
-  path: '/$',
-  getParentRoute: () => AppCoursesCourseIdRouteRoute,
+const ApiDemoNamesServerRoute = ApiDemoNamesServerRouteImport.update({
+  id: '/api/demo-names',
+  path: '/api/demo-names',
+  getParentRoute: () => rootServerRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/assessment': typeof AssessmentRoute
-  '/dashboard': typeof AppDashboardRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/signup': typeof AuthSignupRoute
-  '/courses/$courseId': typeof AppCoursesCourseIdRouteRouteWithChildren
-  '/dashboard/courses': typeof AppDashboardCoursesRoute
-  '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
-  '/dashboard/resources': typeof AppDashboardResourcesRoute
-  '/courses/$courseId/$': typeof AppCoursesCourseIdSplatRoute
-  '/courses/$courseId/$week': typeof AppCoursesCourseIdWeekRoute
-  '/courses/$courseId/introduction': typeof AppCoursesCourseIdIntroductionRoute
-  '/payment/$courseId/$': typeof AppPaymentCourseIdSplatRoute
-  '/payment/$courseId/callback': typeof AppPaymentCourseIdCallbackRoute
-  '/payment/$courseId/pay': typeof AppPaymentCourseIdPayRoute
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/assessment': typeof AssessmentRoute
-  '/dashboard': typeof AppDashboardRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/signup': typeof AuthSignupRoute
-  '/courses/$courseId': typeof AppCoursesCourseIdRouteRouteWithChildren
-  '/dashboard/courses': typeof AppDashboardCoursesRoute
-  '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
-  '/dashboard/resources': typeof AppDashboardResourcesRoute
-  '/courses/$courseId/$': typeof AppCoursesCourseIdSplatRoute
-  '/courses/$courseId/$week': typeof AppCoursesCourseIdWeekRoute
-  '/courses/$courseId/introduction': typeof AppCoursesCourseIdIntroductionRoute
-  '/payment/$courseId/$': typeof AppPaymentCourseIdSplatRoute
-  '/payment/$courseId/callback': typeof AppPaymentCourseIdCallbackRoute
-  '/payment/$courseId/pay': typeof AppPaymentCourseIdPayRoute
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_app': typeof AppRouteRouteWithChildren
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/assessment': typeof AssessmentRoute
-  '/_app/dashboard': typeof AppDashboardRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/signup': typeof AuthSignupRoute
-  '/_app/courses/$courseId': typeof AppCoursesCourseIdRouteRouteWithChildren
-  '/_app/dashboard/courses': typeof AppDashboardCoursesRoute
-  '/_app/dashboard/enrolled': typeof AppDashboardEnrolledRoute
-  '/_app/dashboard/resources': typeof AppDashboardResourcesRoute
-  '/_app/courses/$courseId/$': typeof AppCoursesCourseIdSplatRoute
-  '/_app/courses/$courseId/$week': typeof AppCoursesCourseIdWeekRoute
-  '/_app/courses/$courseId/introduction': typeof AppCoursesCourseIdIntroductionRoute
-  '/_app/payment/$courseId/$': typeof AppPaymentCourseIdSplatRoute
-  '/_app/payment/$courseId/callback': typeof AppPaymentCourseIdCallbackRoute
-  '/_app/payment/$courseId/pay': typeof AppPaymentCourseIdPayRoute
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/start/api-request': typeof DemoStartApiRequestRoute
+  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
-    | '/assessment'
-    | '/dashboard'
-    | '/auth/login'
-    | '/auth/signup'
-    | '/courses/$courseId'
-    | '/dashboard/courses'
-    | '/dashboard/enrolled'
-    | '/dashboard/resources'
-    | '/courses/$courseId/$'
-    | '/courses/$courseId/$week'
-    | '/courses/$courseId/introduction'
-    | '/payment/$courseId/$'
-    | '/payment/$courseId/callback'
-    | '/payment/$courseId/pay'
+    | '/demo/tanstack-query'
+    | '/demo/start/api-request'
+    | '/demo/start/server-funcs'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
-    | '/assessment'
-    | '/dashboard'
-    | '/auth/login'
-    | '/auth/signup'
-    | '/courses/$courseId'
-    | '/dashboard/courses'
-    | '/dashboard/enrolled'
-    | '/dashboard/resources'
-    | '/courses/$courseId/$'
-    | '/courses/$courseId/$week'
-    | '/courses/$courseId/introduction'
-    | '/payment/$courseId/$'
-    | '/payment/$courseId/callback'
-    | '/payment/$courseId/pay'
+    | '/demo/tanstack-query'
+    | '/demo/start/api-request'
+    | '/demo/start/server-funcs'
   id:
     | '__root__'
     | '/'
-    | '/_app'
-    | '/auth'
-    | '/assessment'
-    | '/_app/dashboard'
-    | '/auth/login'
-    | '/auth/signup'
-    | '/_app/courses/$courseId'
-    | '/_app/dashboard/courses'
-    | '/_app/dashboard/enrolled'
-    | '/_app/dashboard/resources'
-    | '/_app/courses/$courseId/$'
-    | '/_app/courses/$courseId/$week'
-    | '/_app/courses/$courseId/introduction'
-    | '/_app/payment/$courseId/$'
-    | '/_app/payment/$courseId/callback'
-    | '/_app/payment/$courseId/pay'
+    | '/demo/tanstack-query'
+    | '/demo/start/api-request'
+    | '/demo/start/server-funcs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRouteRoute: typeof AppRouteRouteWithChildren
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  AssessmentRoute: typeof AssessmentRoute
+  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
+  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
+}
+export interface FileServerRoutesByFullPath {
+  '/api/demo-names': typeof ApiDemoNamesServerRoute
+}
+export interface FileServerRoutesByTo {
+  '/api/demo-names': typeof ApiDemoNamesServerRoute
+}
+export interface FileServerRoutesById {
+  __root__: typeof rootServerRouteImport
+  '/api/demo-names': typeof ApiDemoNamesServerRoute
+}
+export interface FileServerRouteTypes {
+  fileServerRoutesByFullPath: FileServerRoutesByFullPath
+  fullPaths: '/api/demo-names'
+  fileServerRoutesByTo: FileServerRoutesByTo
+  to: '/api/demo-names'
+  id: '__root__' | '/api/demo-names'
+  fileServerRoutesById: FileServerRoutesById
+}
+export interface RootServerRouteChildren {
+  ApiDemoNamesServerRoute: typeof ApiDemoNamesServerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/assessment': {
-      id: '/assessment'
-      path: '/assessment'
-      fullPath: '/assessment'
-      preLoaderRoute: typeof AssessmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_app': {
-      id: '/_app'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AppRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -265,173 +122,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/signup': {
-      id: '/auth/signup'
-      path: '/signup'
-      fullPath: '/auth/signup'
-      preLoaderRoute: typeof AuthSignupRouteImport
-      parentRoute: typeof AuthRouteRoute
+    '/demo/tanstack-query': {
+      id: '/demo/tanstack-query'
+      path: '/demo/tanstack-query'
+      fullPath: '/demo/tanstack-query'
+      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRouteRoute
+    '/demo/start/server-funcs': {
+      id: '/demo/start/server-funcs'
+      path: '/demo/start/server-funcs'
+      fullPath: '/demo/start/server-funcs'
+      preLoaderRoute: typeof DemoStartServerFuncsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/dashboard': {
-      id: '/_app/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/dashboard/resources': {
-      id: '/_app/dashboard/resources'
-      path: '/resources'
-      fullPath: '/dashboard/resources'
-      preLoaderRoute: typeof AppDashboardResourcesRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
-    '/_app/dashboard/enrolled': {
-      id: '/_app/dashboard/enrolled'
-      path: '/enrolled'
-      fullPath: '/dashboard/enrolled'
-      preLoaderRoute: typeof AppDashboardEnrolledRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
-    '/_app/dashboard/courses': {
-      id: '/_app/dashboard/courses'
-      path: '/courses'
-      fullPath: '/dashboard/courses'
-      preLoaderRoute: typeof AppDashboardCoursesRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
-    '/_app/courses/$courseId': {
-      id: '/_app/courses/$courseId'
-      path: '/courses/$courseId'
-      fullPath: '/courses/$courseId'
-      preLoaderRoute: typeof AppCoursesCourseIdRouteRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/payment/$courseId/pay': {
-      id: '/_app/payment/$courseId/pay'
-      path: '/payment/$courseId/pay'
-      fullPath: '/payment/$courseId/pay'
-      preLoaderRoute: typeof AppPaymentCourseIdPayRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/payment/$courseId/callback': {
-      id: '/_app/payment/$courseId/callback'
-      path: '/payment/$courseId/callback'
-      fullPath: '/payment/$courseId/callback'
-      preLoaderRoute: typeof AppPaymentCourseIdCallbackRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/payment/$courseId/$': {
-      id: '/_app/payment/$courseId/$'
-      path: '/payment/$courseId/$'
-      fullPath: '/payment/$courseId/$'
-      preLoaderRoute: typeof AppPaymentCourseIdSplatRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/courses/$courseId/introduction': {
-      id: '/_app/courses/$courseId/introduction'
-      path: '/introduction'
-      fullPath: '/courses/$courseId/introduction'
-      preLoaderRoute: typeof AppCoursesCourseIdIntroductionRouteImport
-      parentRoute: typeof AppCoursesCourseIdRouteRoute
-    }
-    '/_app/courses/$courseId/$week': {
-      id: '/_app/courses/$courseId/$week'
-      path: '/$week'
-      fullPath: '/courses/$courseId/$week'
-      preLoaderRoute: typeof AppCoursesCourseIdWeekRouteImport
-      parentRoute: typeof AppCoursesCourseIdRouteRoute
-    }
-    '/_app/courses/$courseId/$': {
-      id: '/_app/courses/$courseId/$'
-      path: '/$'
-      fullPath: '/courses/$courseId/$'
-      preLoaderRoute: typeof AppCoursesCourseIdSplatRouteImport
-      parentRoute: typeof AppCoursesCourseIdRouteRoute
+    '/demo/start/api-request': {
+      id: '/demo/start/api-request'
+      path: '/demo/start/api-request'
+      fullPath: '/demo/start/api-request'
+      preLoaderRoute: typeof DemoStartApiRequestRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface AppDashboardRouteRouteChildren {
-  AppDashboardCoursesRoute: typeof AppDashboardCoursesRoute
-  AppDashboardEnrolledRoute: typeof AppDashboardEnrolledRoute
-  AppDashboardResourcesRoute: typeof AppDashboardResourcesRoute
-}
-
-const AppDashboardRouteRouteChildren: AppDashboardRouteRouteChildren = {
-  AppDashboardCoursesRoute: AppDashboardCoursesRoute,
-  AppDashboardEnrolledRoute: AppDashboardEnrolledRoute,
-  AppDashboardResourcesRoute: AppDashboardResourcesRoute,
-}
-
-const AppDashboardRouteRouteWithChildren =
-  AppDashboardRouteRoute._addFileChildren(AppDashboardRouteRouteChildren)
-
-interface AppCoursesCourseIdRouteRouteChildren {
-  AppCoursesCourseIdSplatRoute: typeof AppCoursesCourseIdSplatRoute
-  AppCoursesCourseIdWeekRoute: typeof AppCoursesCourseIdWeekRoute
-  AppCoursesCourseIdIntroductionRoute: typeof AppCoursesCourseIdIntroductionRoute
-}
-
-const AppCoursesCourseIdRouteRouteChildren: AppCoursesCourseIdRouteRouteChildren =
-  {
-    AppCoursesCourseIdSplatRoute: AppCoursesCourseIdSplatRoute,
-    AppCoursesCourseIdWeekRoute: AppCoursesCourseIdWeekRoute,
-    AppCoursesCourseIdIntroductionRoute: AppCoursesCourseIdIntroductionRoute,
+declare module '@tanstack/react-start/server' {
+  interface ServerFileRoutesByPath {
+    '/api/demo-names': {
+      id: '/api/demo-names'
+      path: '/api/demo-names'
+      fullPath: '/api/demo-names'
+      preLoaderRoute: typeof ApiDemoNamesServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
   }
-
-const AppCoursesCourseIdRouteRouteWithChildren =
-  AppCoursesCourseIdRouteRoute._addFileChildren(
-    AppCoursesCourseIdRouteRouteChildren,
-  )
-
-interface AppRouteRouteChildren {
-  AppDashboardRouteRoute: typeof AppDashboardRouteRouteWithChildren
-  AppCoursesCourseIdRouteRoute: typeof AppCoursesCourseIdRouteRouteWithChildren
-  AppPaymentCourseIdSplatRoute: typeof AppPaymentCourseIdSplatRoute
-  AppPaymentCourseIdCallbackRoute: typeof AppPaymentCourseIdCallbackRoute
-  AppPaymentCourseIdPayRoute: typeof AppPaymentCourseIdPayRoute
 }
-
-const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppDashboardRouteRoute: AppDashboardRouteRouteWithChildren,
-  AppCoursesCourseIdRouteRoute: AppCoursesCourseIdRouteRouteWithChildren,
-  AppPaymentCourseIdSplatRoute: AppPaymentCourseIdSplatRoute,
-  AppPaymentCourseIdCallbackRoute: AppPaymentCourseIdCallbackRoute,
-  AppPaymentCourseIdPayRoute: AppPaymentCourseIdPayRoute,
-}
-
-const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
-  AppRouteRouteChildren,
-)
-
-interface AuthRouteRouteChildren {
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthSignupRoute: typeof AuthSignupRoute
-}
-
-const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthLoginRoute: AuthLoginRoute,
-  AuthSignupRoute: AuthSignupRoute,
-}
-
-const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
-  AuthRouteRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRouteRoute: AppRouteRouteWithChildren,
-  AuthRouteRoute: AuthRouteRouteWithChildren,
-  AssessmentRoute: AssessmentRoute,
+  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
+  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiDemoNamesServerRoute: ApiDemoNamesServerRoute,
+}
+export const serverRouteTree = rootServerRouteImport
+  ._addFileChildren(rootServerRouteChildren)
+  ._addFileTypes<FileServerRouteTypes>()

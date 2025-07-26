@@ -1,73 +1,58 @@
-import appCss from "@/index.css?url";
 import {
-  createRootRouteWithContext,
   HeadContent,
   Outlet,
   Scripts,
-} from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import type { ReactNode } from "react";
-import type { QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Toaster } from "@/components/ui/sonner";
-import { getThemeServerFn } from "@/lib/theme";
-import { ThemeProvider } from "@/components/theme-provider";
+  createRootRouteWithContext,
+} from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
-export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient;
-}>()({
+import Header from '../components/Header'
+
+import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
+
+import appCss from '../styles.css?url'
+
+import type { QueryClient } from '@tanstack/react-query'
+
+interface MyRouterContext {
+  queryClient: QueryClient
+}
+
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
+    meta: [
+      {
+        charSet: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        title: 'TanStack Start Starter',
+      },
+    ],
     links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-      },
-      {
-        rel: "stylesheet",
+        rel: 'stylesheet',
         href: appCss,
       },
     ],
-    meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "TanStack Start Starter",
-      },
-    ],
   }),
-  component: RootComponent,
-  loader: async () => await getThemeServerFn(),
-});
 
-function RootComponent() {
-  const data = Route.useLoaderData();
-  return (
-    <ThemeProvider theme={data}>
-      <RootDocument>
-        <Outlet />
-        <Toaster />
-        <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
-      </RootDocument>
-    </ThemeProvider>
-  );
-}
+  component: () => (
+    <RootDocument>
+      <Header />
+      <Outlet />
+      <TanStackRouterDevtools />
+      <TanStackQueryLayout />
+    </RootDocument>
+  ),
+})
 
-function RootDocument({ children }: { children: ReactNode }) {
-  const theme = Route.useLoaderData();
+function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={theme} suppressHydrationWarning>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
@@ -76,5 +61,5 @@ function RootDocument({ children }: { children: ReactNode }) {
         <Scripts />
       </body>
     </html>
-  );
+  )
 }
