@@ -12,8 +12,7 @@ export const iGetCoursesByUserFn = createServerFn({ method: 'GET' })
   .middleware([instructorMiddleware])
   .handler(async ({ context }) => {
     const res = await api.get(`course/creator/${context.user._id}`).json()
-    const { data: courses } = parseResponse(courseSchema.array(), res)
-    return courses
+    return parseResponse(res, courseSchema.array())
   })
 
 export const iCreateCourseFn = createServerFn({ method: 'POST' })
@@ -25,7 +24,7 @@ export const iCreateCourseFn = createServerFn({ method: 'POST' })
         json: data,
       })
       .json()
-    const course = parseResponse(courseSchema, res).data
+    const course = parseResponse(res, courseSchema)
     // eslint-disable-next-line @typescript-eslint/only-throw-error
     throw redirect({
       to: '/dashboard/courses/$slug/edit',

@@ -55,13 +55,10 @@ export const courseSchema = z.object({
 })
 export type Course = z.infer<typeof courseSchema>
 
-export function parseResponse<T extends ZodType = ZodType>(
-  schema: T,
-  input: unknown,
-) {
+export function parseResponse<T>(value: unknown, schema: ZodType<T>) {
   return z
     .object({
       data: schema,
     })
-    .parse(input)
+    .parse(value).data
 }
