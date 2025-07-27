@@ -16,7 +16,7 @@ function App() {
           <Link to="/auth/login/students" from={Route.fullPath}>
             Student?
           </Link>
-          <Link to="." from={Route.fullPath}>
+          <Link to="/auth/login/instructor" from={Route.fullPath}>
             Instructor?
           </Link>
         </p>
