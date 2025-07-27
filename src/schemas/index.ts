@@ -37,6 +37,7 @@ export const courseSchema = z.object({
   }),
   courseImage: z.url().optional(),
   coursePrice: z.number(),
+  slug: z.string(),
   introduction: z.object({
     video: z.url(),
     notes: z.string(),

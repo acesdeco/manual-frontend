@@ -4,18 +4,18 @@ import {
   StudentsCourseCard,
 } from '@/components/courses/course-card'
 import Button from '@/components/global/button'
-import { getCoursesByThisCreatorsId } from '@/functions/instructor/courses'
+import { iGetCoursesByUserFn } from '@/functions/instructor/courses'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import notFoundImg from '@/assets/images/notfound.png'
 import { Fragment } from 'react/jsx-runtime'
 import clsx from 'clsx'
 
-export const Route = createFileRoute('/_app/dashboard/courses')({
+export const Route = createFileRoute('/_app/dashboard/courses/')({
   component: RouteComponent,
   loader: async ({ context }) => {
     switch (context.role) {
       case 'instructor': {
-        const courses = await getCoursesByThisCreatorsId()
+        const courses = await iGetCoursesByUserFn()
         return {
           ...context,
           courses,
@@ -75,7 +75,13 @@ function RouteComponent() {
                   Create your first course and start inspiring minds. Tap Create
                   Course to Begin
                 </span>
-                <Link to="/dashboard/create-course" className="w-fit">
+                <Link
+                  to="/dashboard/courses/new"
+                  className="w-fit"
+                  mask={{
+                    to: '.',
+                  }}
+                >
                   <Button>Create Course</Button>
                 </Link>
               </Fragment>

@@ -18,9 +18,10 @@ import { Route as AuthSignupStudentsRouteImport } from './routes/auth/signup/stu
 import { Route as AuthSignupInstructorRouteImport } from './routes/auth/signup/instructor'
 import { Route as AuthLoginStudentsRouteImport } from './routes/auth/login/students'
 import { Route as AuthLoginInstructorRouteImport } from './routes/auth/login/instructor'
-import { Route as AppDashboardCreateCourseRouteImport } from './routes/_app/dashboard/create-course'
-import { Route as AppDashboardCoursesRouteImport } from './routes/_app/dashboard/courses'
+import { Route as AppDashboardCoursesIndexRouteImport } from './routes/_app/dashboard/courses/index'
+import { Route as AppDashboardCoursesNewRouteImport } from './routes/_app/dashboard/courses/new'
 import { Route as AppCoursesSlugIntroductionRouteImport } from './routes/_app/courses/$slug/introduction'
+import { Route as AppDashboardCoursesSlugEditRouteImport } from './routes/_app/dashboard/courses/$slug/edit'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -66,15 +67,15 @@ const AuthLoginInstructorRoute = AuthLoginInstructorRouteImport.update({
   path: '/instructor',
   getParentRoute: () => AuthLoginRouteRoute,
 } as any)
-const AppDashboardCreateCourseRoute =
-  AppDashboardCreateCourseRouteImport.update({
-    id: '/dashboard/create-course',
-    path: '/dashboard/create-course',
+const AppDashboardCoursesIndexRoute =
+  AppDashboardCoursesIndexRouteImport.update({
+    id: '/dashboard/courses/',
+    path: '/dashboard/courses/',
     getParentRoute: () => AppRouteRoute,
   } as any)
-const AppDashboardCoursesRoute = AppDashboardCoursesRouteImport.update({
-  id: '/dashboard/courses',
-  path: '/dashboard/courses',
+const AppDashboardCoursesNewRoute = AppDashboardCoursesNewRouteImport.update({
+  id: '/dashboard/courses/new',
+  path: '/dashboard/courses/new',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppCoursesSlugIntroductionRoute =
@@ -83,32 +84,40 @@ const AppCoursesSlugIntroductionRoute =
     path: '/courses/$slug/introduction',
     getParentRoute: () => AppRouteRoute,
   } as any)
+const AppDashboardCoursesSlugEditRoute =
+  AppDashboardCoursesSlugEditRouteImport.update({
+    id: '/dashboard/courses/$slug/edit',
+    path: '/dashboard/courses/$slug/edit',
+    getParentRoute: () => AppRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
-  '/dashboard/courses': typeof AppDashboardCoursesRoute
-  '/dashboard/create-course': typeof AppDashboardCreateCourseRoute
   '/auth/login/instructor': typeof AuthLoginInstructorRoute
   '/auth/login/students': typeof AuthLoginStudentsRoute
   '/auth/signup/instructor': typeof AuthSignupInstructorRoute
   '/auth/signup/students': typeof AuthSignupStudentsRoute
   '/courses/$slug/introduction': typeof AppCoursesSlugIntroductionRoute
+  '/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
+  '/dashboard/courses': typeof AppDashboardCoursesIndexRoute
+  '/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
-  '/dashboard/courses': typeof AppDashboardCoursesRoute
-  '/dashboard/create-course': typeof AppDashboardCreateCourseRoute
   '/auth/login/instructor': typeof AuthLoginInstructorRoute
   '/auth/login/students': typeof AuthLoginStudentsRoute
   '/auth/signup/instructor': typeof AuthSignupInstructorRoute
   '/auth/signup/students': typeof AuthSignupStudentsRoute
   '/courses/$slug/introduction': typeof AppCoursesSlugIntroductionRoute
+  '/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
+  '/dashboard/courses': typeof AppDashboardCoursesIndexRoute
+  '/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -117,13 +126,14 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
-  '/_app/dashboard/courses': typeof AppDashboardCoursesRoute
-  '/_app/dashboard/create-course': typeof AppDashboardCreateCourseRoute
   '/auth/login/instructor': typeof AuthLoginInstructorRoute
   '/auth/login/students': typeof AuthLoginStudentsRoute
   '/auth/signup/instructor': typeof AuthSignupInstructorRoute
   '/auth/signup/students': typeof AuthSignupStudentsRoute
   '/_app/courses/$slug/introduction': typeof AppCoursesSlugIntroductionRoute
+  '/_app/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
+  '/_app/dashboard/courses/': typeof AppDashboardCoursesIndexRoute
+  '/_app/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -132,26 +142,28 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/auth/signup'
-    | '/dashboard/courses'
-    | '/dashboard/create-course'
     | '/auth/login/instructor'
     | '/auth/login/students'
     | '/auth/signup/instructor'
     | '/auth/signup/students'
     | '/courses/$slug/introduction'
+    | '/dashboard/courses/new'
+    | '/dashboard/courses'
+    | '/dashboard/courses/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/auth/login'
     | '/auth/signup'
-    | '/dashboard/courses'
-    | '/dashboard/create-course'
     | '/auth/login/instructor'
     | '/auth/login/students'
     | '/auth/signup/instructor'
     | '/auth/signup/students'
     | '/courses/$slug/introduction'
+    | '/dashboard/courses/new'
+    | '/dashboard/courses'
+    | '/dashboard/courses/$slug/edit'
   id:
     | '__root__'
     | '/'
@@ -159,13 +171,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/auth/signup'
-    | '/_app/dashboard/courses'
-    | '/_app/dashboard/create-course'
     | '/auth/login/instructor'
     | '/auth/login/students'
     | '/auth/signup/instructor'
     | '/auth/signup/students'
     | '/_app/courses/$slug/introduction'
+    | '/_app/dashboard/courses/new'
+    | '/_app/dashboard/courses/'
+    | '/_app/dashboard/courses/$slug/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -239,18 +252,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginInstructorRouteImport
       parentRoute: typeof AuthLoginRouteRoute
     }
-    '/_app/dashboard/create-course': {
-      id: '/_app/dashboard/create-course'
-      path: '/dashboard/create-course'
-      fullPath: '/dashboard/create-course'
-      preLoaderRoute: typeof AppDashboardCreateCourseRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/dashboard/courses': {
-      id: '/_app/dashboard/courses'
+    '/_app/dashboard/courses/': {
+      id: '/_app/dashboard/courses/'
       path: '/dashboard/courses'
       fullPath: '/dashboard/courses'
-      preLoaderRoute: typeof AppDashboardCoursesRouteImport
+      preLoaderRoute: typeof AppDashboardCoursesIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/dashboard/courses/new': {
+      id: '/_app/dashboard/courses/new'
+      path: '/dashboard/courses/new'
+      fullPath: '/dashboard/courses/new'
+      preLoaderRoute: typeof AppDashboardCoursesNewRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/courses/$slug/introduction': {
@@ -260,19 +273,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCoursesSlugIntroductionRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/dashboard/courses/$slug/edit': {
+      id: '/_app/dashboard/courses/$slug/edit'
+      path: '/dashboard/courses/$slug/edit'
+      fullPath: '/dashboard/courses/$slug/edit'
+      preLoaderRoute: typeof AppDashboardCoursesSlugEditRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
 interface AppRouteRouteChildren {
-  AppDashboardCoursesRoute: typeof AppDashboardCoursesRoute
-  AppDashboardCreateCourseRoute: typeof AppDashboardCreateCourseRoute
   AppCoursesSlugIntroductionRoute: typeof AppCoursesSlugIntroductionRoute
+  AppDashboardCoursesNewRoute: typeof AppDashboardCoursesNewRoute
+  AppDashboardCoursesIndexRoute: typeof AppDashboardCoursesIndexRoute
+  AppDashboardCoursesSlugEditRoute: typeof AppDashboardCoursesSlugEditRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppDashboardCoursesRoute: AppDashboardCoursesRoute,
-  AppDashboardCreateCourseRoute: AppDashboardCreateCourseRoute,
   AppCoursesSlugIntroductionRoute: AppCoursesSlugIntroductionRoute,
+  AppDashboardCoursesNewRoute: AppDashboardCoursesNewRoute,
+  AppDashboardCoursesIndexRoute: AppDashboardCoursesIndexRoute,
+  AppDashboardCoursesSlugEditRoute: AppDashboardCoursesSlugEditRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
