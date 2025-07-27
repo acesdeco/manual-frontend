@@ -7,5 +7,14 @@
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
+  },
+  "markdownlint.config": {
+    "MD033": false
+  },
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": true
+    }
   }
 }
