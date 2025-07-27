@@ -1,8 +1,9 @@
+import { redirectUsers } from '@/functions/global'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/auth')({
-  // TODO redirect if authenticated
   component: RouteComponent,
+  beforeLoad: async () => await redirectUsers(),
 })
 
 function RouteComponent() {
