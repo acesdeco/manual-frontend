@@ -1,3 +1,7 @@
+import { ThemeProvider } from '@/components/theme-provider.tsx'
+import { ThemeToggle } from '@/components/theme-toggle.tsx'
+import { Toaster } from '@/components/ui/sonner.tsx'
+import { getThemeServerFn } from '@/lib/theme.ts'
 import type { QueryClient } from '@tanstack/react-query'
 import {
   HeadContent,
@@ -8,10 +12,6 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
 import appCss from '../styles.css?url'
-import { ThemeProvider } from '@/components/theme-provider.tsx'
-import { getThemeServerFn } from '@/lib/theme.ts'
-import { ThemeToggle } from '@/components/theme-toggle.tsx'
-import { Toaster } from '@/components/ui/sonner.tsx'
 
 interface MyRouterContext {
   queryClient: QueryClient

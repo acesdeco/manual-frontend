@@ -1,4 +1,4 @@
-import z from 'zod'
+import z, { ZodType } from 'zod'
 
 export const registrationNumberSchema = z
   .string()
@@ -24,3 +24,43 @@ export const userSchema = z.object({
   role: z.enum(['student', 'instructor']),
 })
 export type User = z.infer<typeof userSchema>
+export type UserRole = User['role']
+
+export const courseSchema = z.object({
+  _id: z.string(),
+  title: z.string(),
+  code: z.string(),
+  description: z.string(),
+  instructor: z.object({
+    name: z.string(),
+    id: z.string(),
+  }),
+  courseImage: z.url().optional(),
+  coursePrice: z.number(),
+  introduction: z.object({
+    video: z.url(),
+    notes: z.string(),
+  }),
+  weeks: z.record(
+    z.number(),
+    z.object({
+      video: z.url(),
+      assessment: z.string(),
+      notes: z.string(),
+      topic: z.string(),
+    }),
+  ),
+  published: z.boolean(),
+})
+export type Course = z.infer<typeof courseSchema>
+
+export function parseResponse<T extends ZodType = ZodType>(
+  schema: T,
+  input: unknown,
+) {
+  return z
+    .object({
+      data: schema,
+    })
+    .parse(input)
+}

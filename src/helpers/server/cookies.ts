@@ -1,4 +1,4 @@
-import type { User } from '@/schemas'
+import { userSchema, type User } from '@/schemas'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
 
 const secondsIn30Days = 60 * 60 * 24 * 30
@@ -19,4 +19,10 @@ export function setUserCookie(user: User) {
 
 export function hasUserCookie() {
   return Boolean(getCookie('user'))
+}
+
+export function getUserCookie() {
+  const cookie = getCookie('user')!
+  const json = JSON.stringify(cookie)
+  return userSchema.parse(json)
 }
