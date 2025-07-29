@@ -7,7 +7,7 @@
 - [ ] Copy CSS keyframes
 - [ ] Shadcn: Buttons, Label, Textarea, Input
 - [ ] Brand with Shadcn
-- [ ] bun i react-player@^2.16.0 video-react@^0.16.0 quill@^1.3.7 nanoid
+- [ ] Update quill
 
 ## Issues
 
@@ -34,7 +34,7 @@
   - [ ] introduction
 - [ ] dashboard
   - [x] courses
-  - [ ] courses/:slug/edit
+  - [x] courses/:slug/edit
   - [x] courses/new
   - [ ] enrolled
   - [ ] resources

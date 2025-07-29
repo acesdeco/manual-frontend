@@ -1,6 +1,12 @@
 import clsx from "clsx";
 
-export default function Overloader({ isLoading }: { isLoading: boolean }) {
+export const Loader = () => {
+  return (
+    <div className="w-2.5 aspect-square rounded-[50%] [animation:l5_1s_infinite_linear_alternate]" />
+  );
+};
+
+export function Overloader({ isLoading }: { isLoading: boolean }) {
   return (
     <div
       className={clsx(
@@ -8,7 +14,7 @@ export default function Overloader({ isLoading }: { isLoading: boolean }) {
         !isLoading ? "opacity-0 pointer-events-none" : "opacity-100",
       )}
     >
-      <div className="w-2.5 aspect-square rounded-[50%] [animation:l5_1s_infinite_linear_alternate]" />
+      <Loader />
     </div>
   );
 }

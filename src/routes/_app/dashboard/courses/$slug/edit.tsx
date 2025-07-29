@@ -1,11 +1,13 @@
 import { coursesApi } from "@/api";
 import type { UpdateWeek } from "@/api/courses";
-import { Assessments } from "@/components/assments/assessments";
+import { Assessment } from "@/components/assments/assessments";
 import CourseEditor from "@/components/courses/course-editor";
 import { HeaderComp } from "@/components/global/header";
-import Overloader from "@/components/global/overloader";
+import { Overloader } from "@/components/global/loader";
 import Toggle from "@/components/global/toggle";
+import { SubmissionFlow } from "@/components/submissions/submission-flow";
 import { instructorOnly } from "@/functions/global";
+import { assessmentByWeekOptions } from "@/queries";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -41,15 +43,23 @@ const tabs = ["materials", "assessment", "submissions"] as const;
 function RouteComponent() {
   const router = useRouter();
   const navigate = Route.useNavigate();
+  const { queryClient } = Route.useRouteContext();
+
   const [activeTab, setActiveTab] =
     useState<(typeof tabs)[number]>("materials");
+
   const { course, weeks } = Route.useLoaderData();
   const { week: weekSearchParam } = Route.useSearch();
-  const week = useMemo(
-    () => weeks[weekSearchParam - 1] ?? null,
-    [weekSearchParam, weeks],
-  );
   const [isWeeksOpen, setIsWeeksOpen] = useState(true);
+
+  const week = useMemo(() => {
+    const newWeek = weeks[weekSearchParam - 1] ?? null;
+    if (newWeek) {
+      void queryClient.prefetchQuery(assessmentByWeekOptions(newWeek._id));
+    }
+    return newWeek;
+  }, [queryClient, weekSearchParam, weeks]);
+
   const { mutate: togglePublish, isPending: isTogglingPublish } = useMutation({
     mutationFn: async () => {
       await coursesApi.updateCourse({
@@ -213,18 +223,10 @@ function RouteComponent() {
               {activeTab === "materials" && week && (
                 <CourseEditor submit={updateWeek} week={week} />
               )}
-              {activeTab === "assessment" && <Assessments weekId={week._id} />}
+              {activeTab === "assessment" && <Assessment weekId={week._id} />}
               {activeTab === "submissions" && (
                 <div>
-                  {/* TODO */}
-                  {/* <SubmissionsFlow
-                    user={{
-                      name: user.fullName as string,
-                      id: user.user || user._id,
-                    }}
-                    courseId={course._id as string}
-                    weekId={week!._id as string}
-                  ></SubmissionsFlow> */}
+                  <SubmissionFlow weekId={week._id} />
                 </div>
               )}
             </div>

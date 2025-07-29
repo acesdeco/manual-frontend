@@ -1,7 +1,8 @@
-import { assessmentsApi } from "@/api";
-import type { Assessment } from "@/api/assments/schema";
+import type { Assessment as TAssessment } from "@/api/assments/schema";
+import { assessmentByWeekOptions } from "@/queries";
 import { useQuery } from "@tanstack/react-query";
 import { useState, type FC } from "react";
+import { Loader } from "../global/loader";
 import AssessmentForm from "./assessment-form";
 
 interface AssessmentsProps {
@@ -9,20 +10,16 @@ interface AssessmentsProps {
 }
 
 type Mode =
-  | { state: "edit"; assessment: Assessment }
+  | { state: "edit"; assessment: TAssessment }
   | { state: "new" }
   | { state: "view" };
 
-export const Assessments: FC<AssessmentsProps> = ({ weekId }) => {
+export const Assessment: FC<AssessmentsProps> = ({ weekId }) => {
   const {
     data: assessments,
     isPending: loadingAssesments,
     error,
-  } = useQuery({
-    queryKey: ["assessments-by-week", weekId] as const,
-    queryFn: async ({ queryKey, signal }) =>
-      await assessmentsApi.getAssessmentsByWeek(queryKey[1], signal),
-  });
+  } = useQuery(assessmentByWeekOptions(weekId));
 
   const [mode, setMode] = useState<Mode>({
     state: "view",
@@ -31,7 +28,7 @@ export const Assessments: FC<AssessmentsProps> = ({ weekId }) => {
   if (loadingAssesments) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="loader"></div>
+        <Loader />
       </div>
     );
   }
