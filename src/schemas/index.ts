@@ -1,3 +1,4 @@
+import type { KyResponse } from "ky";
 import z, { ZodType } from "zod";
 
 export const registrationNumberSchema = z
@@ -62,10 +63,13 @@ export const weekSchema = courseSchema.shape.weeks.valueType;
 export type Course = z.infer<typeof courseSchema>;
 export type Week = z.infer<typeof weekSchema>;
 
-export function parseResponse<T>(value: unknown, schema: ZodType<T>) {
+export function parseResponse<V, T>(
+  value: V,
+  schema: V extends KyResponse ? never : ZodType<T>,
+) {
   return z
     .object({
-      data: schema,
+      data: schema as ZodType<T>,
     })
     .parse(value).data;
 }
