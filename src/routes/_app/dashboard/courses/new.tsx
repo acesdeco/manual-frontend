@@ -1,4 +1,4 @@
-import Modal from '@/components/global/modal'
+import Modal from "@/components/global/modal";
 import {
   Form,
   FormControl,
@@ -6,88 +6,88 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { instructorOnly } from '@/functions/global'
+} from "@/components/ui/form";
+import { instructorOnly } from "@/functions/global";
 import {
   iCreateCourseFn,
   iCreateCourseSchema,
   type ICreateCourse,
-} from '@/functions/instructor/courses'
-import { cn } from '@/lib/utils'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
-import { useServerFn } from '@tanstack/react-start'
-import type { ComponentProps, FC } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+} from "@/functions/instructor/courses";
+import { cn } from "@/lib/utils";
+import type { RequireFields } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import type { ComponentProps, FC } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const CustomLabel: FC<
-  ComponentProps<'label'> &
-    Required<Pick<ComponentProps<'label'>, 'children' | 'htmlFor'>>
+  RequireFields<ComponentProps<"label">, "children" | "htmlFor">
 > = ({ className, ...props }) => (
-  <label {...props} className={cn('text-black', className)} />
-)
+  <label {...props} className={cn("text-black", className)} />
+);
 
-const CustomInput: FC<
-  ComponentProps<'input'> & Required<Pick<ComponentProps<'input'>, 'id'>>
-> = ({ className, ...props }) => (
+const CustomInput: FC<RequireFields<ComponentProps<"input">, "id">> = ({
+  className,
+  ...props
+}) => (
   <input
     {...props}
     className={cn(
-      'bg-white focus:outline-none outline-none border-b-2 border-b-[#D9D9D9] text-black',
+      "bg-white focus:outline-none outline-none border-b-2 border-b-[#D9D9D9] text-black",
       className,
     )}
   />
-)
+);
 
-export const Route = createFileRoute('/_app/dashboard/courses/new')({
+export const Route = createFileRoute("/_app/dashboard/courses/new")({
   beforeLoad: async () => await instructorOnly(),
   component: RouteComponent,
   head: () => ({
     meta: [
-      { title: 'Create Course' },
-      { name: 'description', content: 'Creating course...' },
+      { title: "Create Course" },
+      { name: "description", content: "Creating course..." },
     ],
   }),
-})
+});
 
 function RouteComponent() {
-  const { user } = Route.useRouteContext()
+  const { user } = Route.useRouteContext();
   const form = useForm<ICreateCourse>({
     resolver: zodResolver(iCreateCourseSchema),
     defaultValues: {
-      code: '',
-      description: '',
+      code: "",
+      description: "",
       coursePrice: 0,
       instructor: {
         id: user._id,
-        name: '',
+        name: "",
       },
-      title: '',
+      title: "",
     },
-  })
-  const createCourseFn = useServerFn(iCreateCourseFn)
+  });
+  const createCourseFn = useServerFn(iCreateCourseFn);
   const { mutate } = useMutation({
     mutationFn: createCourseFn,
     onMutate({ data }) {
       toast.loading(`Creating ${data.code}`, {
         id: data.code,
-      })
+      });
     },
     onSuccess(_, { data }) {
       toast.success(`${data.code} created successfully`, {
         id: data.code,
-      })
+      });
     },
     onError(error, { data }) {
-      // eslint-disable-next-line no-console
-      console.error("Error creating instructor's course:", error)
-      toast.error('Sorry, an error occured', {
+      console.error("Error creating instructor's course:", error);
+      toast.error("Sorry, an error occured", {
         id: data.code,
-      })
+      });
     },
-  })
+  });
   return (
     <>
       <Form {...form}>
@@ -173,5 +173,5 @@ function RouteComponent() {
         </form>
       </Form>
     </>
-  )
+  );
 }

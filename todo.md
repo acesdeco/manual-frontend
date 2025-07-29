@@ -4,6 +4,14 @@
 - [ ] Redirect param to auth pages
 - [ ] Use parse response for api calls
 - [ ] Switch prettier from using single quotes to double quotes
+- [ ] Copy CSS keyframes
+- [ ] Shadcn: Buttons, Label, Textarea, Input
+- [ ] Brand with Shadcn
+- [ ] bun i react-player@^2.16.0 video-react@^0.16.0 quill@^1.3.7 nanoid
+
+## Issues
+
+- The assessments edits form/api just requires a week Id, and the body
 
 ## Routes
 

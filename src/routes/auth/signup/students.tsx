@@ -1,59 +1,58 @@
-import Input from '@/components/global/input'
-import { Loader } from '@/components/svg'
+import Input from "@/components/global/input";
+import { Loader } from "@/components/svg";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form'
+} from "@/components/ui/form";
 import {
   sSignUpFn,
   sSignUpSchema,
   type StudentSignUp,
-} from '@/functions/students/auth'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useServerFn } from '@tanstack/react-start'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+} from "@/functions/students/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-export const Route = createFileRoute('/auth/signup/students')({
+export const Route = createFileRoute("/auth/signup/students")({
   head: () => ({
     meta: [
-      { title: 'Create account' },
+      { title: "Create account" },
       {
-        name: 'description',
-        content: 'Welcome to Computer Engineering UNIUYO',
+        name: "description",
+        content: "Welcome to Computer Engineering UNIUYO",
       },
     ],
   }),
   component: SignUp,
-})
+});
 
 function SignUp() {
   const form = useForm<StudentSignUp>({
     resolver: zodResolver(sSignUpSchema),
     defaultValues: {
-      confirmPassword: '',
-      email: '',
-      firstName: '',
-      lastName: '',
-      password: '',
-      registrationNumber: '',
-      role: 'student',
+      confirmPassword: "",
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      registrationNumber: "",
+      role: "student",
     },
-  })
-  const signUpFn = useServerFn(sSignUpFn)
+  });
+  const signUpFn = useServerFn(sSignUpFn);
   const { mutate, isPending } = useMutation({
     mutationFn: signUpFn,
     onError(error) {
-      // eslint-disable-next-line no-console
-      console.error('Error during sign up:', error)
-      toast.error('There was a problem with your request.')
+      console.error("Error during sign up:", error);
+      toast.error("There was a problem with your request.");
     },
-  })
+  });
   return (
     <>
       <h2 className="text-2xl font-bold mb-6">Create Account</h2>
@@ -151,10 +150,10 @@ function SignUp() {
             disabled={isPending}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {isPending ? <Loader /> : 'Create Account'}
+            {isPending ? <Loader /> : "Create Account"}
           </button>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Link
               to="/auth/login/students"
               from={Route.fullPath}
@@ -166,5 +165,5 @@ function SignUp() {
         </form>
       </Form>
     </>
-  )
+  );
 }

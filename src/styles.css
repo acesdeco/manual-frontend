@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -116,5 +116,32 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@keyframes l5 {
+  0% {
+    box-shadow:
+      20px 0 #00f,
+      -20px 0 #00aa;
+    background: #00f;
+  }
+  33% {
+    box-shadow:
+      20px 0 #00f,
+      -20px 0 #00aa;
+    background: #00aa;
+  }
+  66% {
+    box-shadow:
+      20px 0 #00d,
+      -20px 0 #00f;
+    background: #00aa;
+  }
+  100% {
+    box-shadow:
+      20px 0 #00d,
+      -20px 0 #00f;
+    background: #00f;
   }
 }
