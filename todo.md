@@ -8,6 +8,7 @@
 - [ ] Shadcn: Buttons, Label, Textarea, Input
 - [ ] Brand with Shadcn
 - [ ] Update quill
+- [ ] Layout for dashboards
 
 ## Issues
 
@@ -32,6 +33,7 @@
 - [ ] courses
   - [ ] $week
   - [ ] introduction
+- [x] dashboard layout
 - [ ] dashboard
   - [x] courses
   - [x] courses/:slug/edit
