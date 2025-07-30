@@ -6,7 +6,7 @@ import { HeaderComp } from "@/components/global/header";
 import { Overloader } from "@/components/global/loader";
 import Toggle from "@/components/global/toggle";
 import { SubmissionFlow } from "@/components/submissions/submission-flow";
-import { instructorOnly } from "@/functions/global";
+import { instructorOnlyFn } from "@/functions/global";
 import { assessmentByWeekOptions } from "@/queries";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/_app/dashboard/courses/$slug/edit")({
     }),
   ),
   component: RouteComponent,
-  beforeLoad: async () => await instructorOnly(),
+  beforeLoad: async () => await instructorOnlyFn(),
   loader: async ({ params }) => {
     const course = await coursesApi.getCourseBySlug(params.slug);
     const weeks = await coursesApi.getWeeksByCourseId(course._id);

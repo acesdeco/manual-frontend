@@ -20,6 +20,7 @@ import { Route as AuthSignupInstructorRouteImport } from './routes/auth/signup/i
 import { Route as AuthLoginStudentsRouteImport } from './routes/auth/login/students'
 import { Route as AuthLoginInstructorRouteImport } from './routes/auth/login/instructor'
 import { Route as AppDashboardResourcesRouteImport } from './routes/_app/dashboard/resources'
+import { Route as AppDashboardEnrolledRouteImport } from './routes/_app/dashboard/enrolled'
 import { Route as AppDashboardCoursesIndexRouteImport } from './routes/_app/dashboard/courses/index'
 import { Route as AppDashboardCoursesNewRouteImport } from './routes/_app/dashboard/courses/new'
 import { Route as AppCoursesSlugIntroductionRouteImport } from './routes/_app/courses/$slug/introduction'
@@ -79,6 +80,11 @@ const AppDashboardResourcesRoute = AppDashboardResourcesRouteImport.update({
   path: '/resources',
   getParentRoute: () => AppDashboardRouteRoute,
 } as any)
+const AppDashboardEnrolledRoute = AppDashboardEnrolledRouteImport.update({
+  id: '/enrolled',
+  path: '/enrolled',
+  getParentRoute: () => AppDashboardRouteRoute,
+} as any)
 const AppDashboardCoursesIndexRoute =
   AppDashboardCoursesIndexRouteImport.update({
     id: '/courses/',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
+  '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
   '/dashboard/resources': typeof AppDashboardResourcesRoute
   '/auth/login/instructor': typeof AuthLoginInstructorRoute
   '/auth/login/students': typeof AuthLoginStudentsRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
+  '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
   '/dashboard/resources': typeof AppDashboardResourcesRoute
   '/auth/login/instructor': typeof AuthLoginInstructorRoute
   '/auth/login/students': typeof AuthLoginStudentsRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
+  '/_app/dashboard/enrolled': typeof AppDashboardEnrolledRoute
   '/_app/dashboard/resources': typeof AppDashboardResourcesRoute
   '/auth/login/instructor': typeof AuthLoginInstructorRoute
   '/auth/login/students': typeof AuthLoginStudentsRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/login'
     | '/auth/signup'
+    | '/dashboard/enrolled'
     | '/dashboard/resources'
     | '/auth/login/instructor'
     | '/auth/login/students'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/login'
     | '/auth/signup'
+    | '/dashboard/enrolled'
     | '/dashboard/resources'
     | '/auth/login/instructor'
     | '/auth/login/students'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/auth/login'
     | '/auth/signup'
+    | '/_app/dashboard/enrolled'
     | '/_app/dashboard/resources'
     | '/auth/login/instructor'
     | '/auth/login/students'
@@ -290,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardResourcesRouteImport
       parentRoute: typeof AppDashboardRouteRoute
     }
+    '/_app/dashboard/enrolled': {
+      id: '/_app/dashboard/enrolled'
+      path: '/enrolled'
+      fullPath: '/dashboard/enrolled'
+      preLoaderRoute: typeof AppDashboardEnrolledRouteImport
+      parentRoute: typeof AppDashboardRouteRoute
+    }
     '/_app/dashboard/courses/': {
       id: '/_app/dashboard/courses/'
       path: '/courses'
@@ -322,6 +341,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppDashboardRouteRouteChildren {
+  AppDashboardEnrolledRoute: typeof AppDashboardEnrolledRoute
   AppDashboardResourcesRoute: typeof AppDashboardResourcesRoute
   AppDashboardCoursesNewRoute: typeof AppDashboardCoursesNewRoute
   AppDashboardCoursesIndexRoute: typeof AppDashboardCoursesIndexRoute
@@ -329,6 +349,7 @@ interface AppDashboardRouteRouteChildren {
 }
 
 const AppDashboardRouteRouteChildren: AppDashboardRouteRouteChildren = {
+  AppDashboardEnrolledRoute: AppDashboardEnrolledRoute,
   AppDashboardResourcesRoute: AppDashboardResourcesRoute,
   AppDashboardCoursesNewRoute: AppDashboardCoursesNewRoute,
   AppDashboardCoursesIndexRoute: AppDashboardCoursesIndexRoute,

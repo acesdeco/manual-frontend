@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { instructorOnly } from "@/functions/global";
+import { instructorOnlyFn } from "@/functions/global";
 import {
   iCreateCourseFn,
   iCreateCourseSchema,
@@ -43,7 +43,7 @@ const CustomInput: FC<RequireFields<ComponentProps<"input">, "id">> = ({
 );
 
 export const Route = createFileRoute("/_app/dashboard/courses/new")({
-  beforeLoad: async () => await instructorOnly(),
+  beforeLoad: async () => await instructorOnlyFn(),
   component: RouteComponent,
   head: () => ({
     meta: [

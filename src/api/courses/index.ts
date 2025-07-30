@@ -1,4 +1,10 @@
-import { courseSchema, parseResponse, weekSchema } from "@/schemas";
+import {
+  courseSchema,
+  parseResponse,
+  userSchema,
+  weekSchema,
+  type User,
+} from "@/schemas";
 import { api } from "../clients";
 import {
   addWeekSchema,
@@ -8,6 +14,7 @@ import {
   type UpdateCourse,
   type UpdateWeek,
 } from "./schema";
+import z from "zod";
 
 export * from "./schema";
 
@@ -56,4 +63,19 @@ export async function addWeek(input: AddWeek) {
     })
     .json();
   return parseResponse(res, weekSchema);
+}
+
+async function getUsersEnrolledCourseIds(userId: User["_id"]) {
+  userSchema.shape._id.parse(userId);
+  const res = await api.get(`users/courses/${userId}`).json();
+  return parseResponse(res, z.string().array());
+}
+
+export async function getCoursesByUserId(userId: User["_id"]) {
+  userSchema.shape._id.parse(userId);
+  const [userCourses, allCourses] = await Promise.all([
+    getUsersEnrolledCourseIds(userId),
+    getAllCourses(),
+  ]);
+  return allCourses.filter((course) => userCourses.includes(course._id));
 }

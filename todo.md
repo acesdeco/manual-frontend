@@ -38,7 +38,7 @@
   - [x] courses
   - [x] courses/:slug/edit
   - [x] courses/new
-  - [ ] enrolled
+  - [x] enrolled
   - [x] resources
   - [ ] home
 - [ ] payments
