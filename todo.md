@@ -9,6 +9,7 @@
 - [ ] Brand with Shadcn
 - [ ] Update quill
 - [ ] Layout for dashboards
+- [ ] Replace every image with imports
 
 ## Issues
 
@@ -34,13 +35,13 @@
   - [ ] $week
   - [ ] introduction
 - [x] dashboard layout
-- [ ] dashboard
+- [x] dashboard
   - [x] courses
   - [x] courses/:slug/edit
   - [x] courses/new
   - [x] enrolled
   - [x] resources
-  - [ ] home
+  - [x] home
 - [ ] payments
   - [ ] callback
   - [ ] pay
