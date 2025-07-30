@@ -37,7 +37,7 @@
   - [x] courses/:slug/edit
   - [x] courses/new
   - [ ] enrolled
-  - [ ] resources
+  - [x] resources
   - [ ] home
 - [ ] payments
   - [ ] callback
