@@ -23,8 +23,12 @@ import { Route as AuthLoginInstructorRouteImport } from './routes/auth/login/ins
 import { Route as AppDashboardResourcesRouteImport } from './routes/_app/dashboard/resources'
 import { Route as AppDashboardHomeRouteImport } from './routes/_app/dashboard/home'
 import { Route as AppDashboardEnrolledRouteImport } from './routes/_app/dashboard/enrolled'
+import { Route as AppPaymentCourseIdRouteRouteImport } from './routes/_app/payment/$courseId/route'
 import { Route as AppCoursesCourseIdRouteRouteImport } from './routes/_app/courses/$courseId/route'
 import { Route as AppDashboardCoursesIndexRouteImport } from './routes/_app/dashboard/courses/index'
+import { Route as AppPaymentCourseIdPayRouteImport } from './routes/_app/payment/$courseId/pay'
+import { Route as AppPaymentCourseIdCallbackRouteImport } from './routes/_app/payment/$courseId/callback'
+import { Route as AppPaymentCourseIdSplatRouteImport } from './routes/_app/payment/$courseId/$'
 import { Route as AppDashboardCoursesNewRouteImport } from './routes/_app/dashboard/courses/new'
 import { Route as AppCoursesCourseIdIntroductionRouteImport } from './routes/_app/courses/$courseId/introduction'
 import { Route as AppCoursesCourseIdWeekRouteImport } from './routes/_app/courses/$courseId/$week'
@@ -99,6 +103,11 @@ const AppDashboardEnrolledRoute = AppDashboardEnrolledRouteImport.update({
   path: '/enrolled',
   getParentRoute: () => AppDashboardRouteRoute,
 } as any)
+const AppPaymentCourseIdRouteRoute = AppPaymentCourseIdRouteRouteImport.update({
+  id: '/payment/$courseId',
+  path: '/payment/$courseId',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppCoursesCourseIdRouteRoute = AppCoursesCourseIdRouteRouteImport.update({
   id: '/courses/$courseId',
   path: '/courses/$courseId',
@@ -110,6 +119,22 @@ const AppDashboardCoursesIndexRoute =
     path: '/courses/',
     getParentRoute: () => AppDashboardRouteRoute,
   } as any)
+const AppPaymentCourseIdPayRoute = AppPaymentCourseIdPayRouteImport.update({
+  id: '/pay',
+  path: '/pay',
+  getParentRoute: () => AppPaymentCourseIdRouteRoute,
+} as any)
+const AppPaymentCourseIdCallbackRoute =
+  AppPaymentCourseIdCallbackRouteImport.update({
+    id: '/callback',
+    path: '/callback',
+    getParentRoute: () => AppPaymentCourseIdRouteRoute,
+  } as any)
+const AppPaymentCourseIdSplatRoute = AppPaymentCourseIdSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => AppPaymentCourseIdRouteRoute,
+} as any)
 const AppDashboardCoursesNewRoute = AppDashboardCoursesNewRouteImport.update({
   id: '/courses/new',
   path: '/courses/new',
@@ -141,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
   '/courses/$courseId': typeof AppCoursesCourseIdRouteRouteWithChildren
+  '/payment/$courseId': typeof AppPaymentCourseIdRouteRouteWithChildren
   '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
   '/dashboard/home': typeof AppDashboardHomeRoute
   '/dashboard/resources': typeof AppDashboardResourcesRoute
@@ -151,6 +177,9 @@ export interface FileRoutesByFullPath {
   '/courses/$courseId/$week': typeof AppCoursesCourseIdWeekRoute
   '/courses/$courseId/introduction': typeof AppCoursesCourseIdIntroductionRoute
   '/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
+  '/payment/$courseId/$': typeof AppPaymentCourseIdSplatRoute
+  '/payment/$courseId/callback': typeof AppPaymentCourseIdCallbackRoute
+  '/payment/$courseId/pay': typeof AppPaymentCourseIdPayRoute
   '/dashboard/courses': typeof AppDashboardCoursesIndexRoute
   '/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
 }
@@ -162,6 +191,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
   '/courses/$courseId': typeof AppCoursesCourseIdRouteRouteWithChildren
+  '/payment/$courseId': typeof AppPaymentCourseIdRouteRouteWithChildren
   '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
   '/dashboard/home': typeof AppDashboardHomeRoute
   '/dashboard/resources': typeof AppDashboardResourcesRoute
@@ -172,6 +202,9 @@ export interface FileRoutesByTo {
   '/courses/$courseId/$week': typeof AppCoursesCourseIdWeekRoute
   '/courses/$courseId/introduction': typeof AppCoursesCourseIdIntroductionRoute
   '/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
+  '/payment/$courseId/$': typeof AppPaymentCourseIdSplatRoute
+  '/payment/$courseId/callback': typeof AppPaymentCourseIdCallbackRoute
+  '/payment/$courseId/pay': typeof AppPaymentCourseIdPayRoute
   '/dashboard/courses': typeof AppDashboardCoursesIndexRoute
   '/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
 }
@@ -185,6 +218,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRouteRouteWithChildren
   '/auth/signup': typeof AuthSignupRouteRouteWithChildren
   '/_app/courses/$courseId': typeof AppCoursesCourseIdRouteRouteWithChildren
+  '/_app/payment/$courseId': typeof AppPaymentCourseIdRouteRouteWithChildren
   '/_app/dashboard/enrolled': typeof AppDashboardEnrolledRoute
   '/_app/dashboard/home': typeof AppDashboardHomeRoute
   '/_app/dashboard/resources': typeof AppDashboardResourcesRoute
@@ -195,6 +229,9 @@ export interface FileRoutesById {
   '/_app/courses/$courseId/$week': typeof AppCoursesCourseIdWeekRoute
   '/_app/courses/$courseId/introduction': typeof AppCoursesCourseIdIntroductionRoute
   '/_app/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
+  '/_app/payment/$courseId/$': typeof AppPaymentCourseIdSplatRoute
+  '/_app/payment/$courseId/callback': typeof AppPaymentCourseIdCallbackRoute
+  '/_app/payment/$courseId/pay': typeof AppPaymentCourseIdPayRoute
   '/_app/dashboard/courses/': typeof AppDashboardCoursesIndexRoute
   '/_app/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
 }
@@ -208,6 +245,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/courses/$courseId'
+    | '/payment/$courseId'
     | '/dashboard/enrolled'
     | '/dashboard/home'
     | '/dashboard/resources'
@@ -218,6 +256,9 @@ export interface FileRouteTypes {
     | '/courses/$courseId/$week'
     | '/courses/$courseId/introduction'
     | '/dashboard/courses/new'
+    | '/payment/$courseId/$'
+    | '/payment/$courseId/callback'
+    | '/payment/$courseId/pay'
     | '/dashboard/courses'
     | '/dashboard/courses/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -229,6 +270,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/courses/$courseId'
+    | '/payment/$courseId'
     | '/dashboard/enrolled'
     | '/dashboard/home'
     | '/dashboard/resources'
@@ -239,6 +281,9 @@ export interface FileRouteTypes {
     | '/courses/$courseId/$week'
     | '/courses/$courseId/introduction'
     | '/dashboard/courses/new'
+    | '/payment/$courseId/$'
+    | '/payment/$courseId/callback'
+    | '/payment/$courseId/pay'
     | '/dashboard/courses'
     | '/dashboard/courses/$slug/edit'
   id:
@@ -251,6 +296,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/_app/courses/$courseId'
+    | '/_app/payment/$courseId'
     | '/_app/dashboard/enrolled'
     | '/_app/dashboard/home'
     | '/_app/dashboard/resources'
@@ -261,6 +307,9 @@ export interface FileRouteTypes {
     | '/_app/courses/$courseId/$week'
     | '/_app/courses/$courseId/introduction'
     | '/_app/dashboard/courses/new'
+    | '/_app/payment/$courseId/$'
+    | '/_app/payment/$courseId/callback'
+    | '/_app/payment/$courseId/pay'
     | '/_app/dashboard/courses/'
     | '/_app/dashboard/courses/$slug/edit'
   fileRoutesById: FileRoutesById
@@ -372,6 +421,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardEnrolledRouteImport
       parentRoute: typeof AppDashboardRouteRoute
     }
+    '/_app/payment/$courseId': {
+      id: '/_app/payment/$courseId'
+      path: '/payment/$courseId'
+      fullPath: '/payment/$courseId'
+      preLoaderRoute: typeof AppPaymentCourseIdRouteRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/courses/$courseId': {
       id: '/_app/courses/$courseId'
       path: '/courses/$courseId'
@@ -385,6 +441,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/courses'
       preLoaderRoute: typeof AppDashboardCoursesIndexRouteImport
       parentRoute: typeof AppDashboardRouteRoute
+    }
+    '/_app/payment/$courseId/pay': {
+      id: '/_app/payment/$courseId/pay'
+      path: '/pay'
+      fullPath: '/payment/$courseId/pay'
+      preLoaderRoute: typeof AppPaymentCourseIdPayRouteImport
+      parentRoute: typeof AppPaymentCourseIdRouteRoute
+    }
+    '/_app/payment/$courseId/callback': {
+      id: '/_app/payment/$courseId/callback'
+      path: '/callback'
+      fullPath: '/payment/$courseId/callback'
+      preLoaderRoute: typeof AppPaymentCourseIdCallbackRouteImport
+      parentRoute: typeof AppPaymentCourseIdRouteRoute
+    }
+    '/_app/payment/$courseId/$': {
+      id: '/_app/payment/$courseId/$'
+      path: '/$'
+      fullPath: '/payment/$courseId/$'
+      preLoaderRoute: typeof AppPaymentCourseIdSplatRouteImport
+      parentRoute: typeof AppPaymentCourseIdRouteRoute
     }
     '/_app/dashboard/courses/new': {
       id: '/_app/dashboard/courses/new'
@@ -454,14 +531,34 @@ const AppCoursesCourseIdRouteRouteWithChildren =
     AppCoursesCourseIdRouteRouteChildren,
   )
 
+interface AppPaymentCourseIdRouteRouteChildren {
+  AppPaymentCourseIdSplatRoute: typeof AppPaymentCourseIdSplatRoute
+  AppPaymentCourseIdCallbackRoute: typeof AppPaymentCourseIdCallbackRoute
+  AppPaymentCourseIdPayRoute: typeof AppPaymentCourseIdPayRoute
+}
+
+const AppPaymentCourseIdRouteRouteChildren: AppPaymentCourseIdRouteRouteChildren =
+  {
+    AppPaymentCourseIdSplatRoute: AppPaymentCourseIdSplatRoute,
+    AppPaymentCourseIdCallbackRoute: AppPaymentCourseIdCallbackRoute,
+    AppPaymentCourseIdPayRoute: AppPaymentCourseIdPayRoute,
+  }
+
+const AppPaymentCourseIdRouteRouteWithChildren =
+  AppPaymentCourseIdRouteRoute._addFileChildren(
+    AppPaymentCourseIdRouteRouteChildren,
+  )
+
 interface AppRouteRouteChildren {
   AppDashboardRouteRoute: typeof AppDashboardRouteRouteWithChildren
   AppCoursesCourseIdRouteRoute: typeof AppCoursesCourseIdRouteRouteWithChildren
+  AppPaymentCourseIdRouteRoute: typeof AppPaymentCourseIdRouteRouteWithChildren
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppDashboardRouteRoute: AppDashboardRouteRouteWithChildren,
   AppCoursesCourseIdRouteRoute: AppCoursesCourseIdRouteRouteWithChildren,
+  AppPaymentCourseIdRouteRoute: AppPaymentCourseIdRouteRouteWithChildren,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

@@ -1,13 +1,13 @@
-import type { Course } from '@/schemas'
-import amico from '@/assets/images/amico.png?url'
-import type { FC, ReactNode } from 'react'
-import { Link } from '@tanstack/react-router'
-import { Button } from '../ui/button'
+import type { Course } from "@/schemas";
+import amico from "@/assets/images/amico.png?url";
+import type { FC, ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
+import { Button } from "../ui/button";
 
 type CourseCardProps = {
-  children: ReactNode
-  course: Course
-}
+  children: ReactNode;
+  course: Course;
+};
 
 const CourseCard: FC<CourseCardProps> = ({ course, children }) => {
   return (
@@ -35,41 +35,41 @@ const CourseCard: FC<CourseCardProps> = ({ course, children }) => {
         </article>
       </div>
     </>
-  )
-}
+  );
+};
 
-export const StudentsCourseCard: FC<Omit<CourseCardProps, 'children'>> = ({
+export const StudentsCourseCard: FC<Omit<CourseCardProps, "children">> = ({
   course,
 }) => {
   return (
     <CourseCard course={course}>
       <Link
-        to="/courses/$slug/introduction"
+        to="/courses/$courseId/introduction"
         params={{
-          slug: course._id,
+          courseId: course._id,
         }}
         className="w-fit"
       >
         <Button>Go to course</Button>
       </Link>
     </CourseCard>
-  )
-}
+  );
+};
 
-export const InstructorCourseCard: FC<Omit<CourseCardProps, 'children'>> = ({
+export const InstructorCourseCard: FC<Omit<CourseCardProps, "children">> = ({
   course,
 }) => {
   return (
     <CourseCard course={course}>
       <Link
-        to="/courses/$slug/introduction"
+        to="/courses/$courseId/introduction"
         params={{
-          slug: course._id,
+          courseId: course._id,
         }}
         className="w-fit"
       >
         <Button>Go to course</Button>
       </Link>
     </CourseCard>
-  )
-}
+  );
+};

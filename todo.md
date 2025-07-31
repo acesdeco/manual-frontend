@@ -44,7 +44,7 @@
   - [x] enrolled
   - [x] resources
   - [x] home
-- [ ] payments
-  - [ ] callback
-  - [ ] pay
+- [x] payments
+  - [x] callback
+  - [x] pay
 - [x] assesssment
