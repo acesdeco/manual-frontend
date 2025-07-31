@@ -11,6 +11,7 @@
 - [ ] Layout for dashboards
 - [ ] Replace every image with imports
 - [ ] Remove as never calls
+- [ ] Rollback changes to weekIds, make them numbers
 
 ## Issues
 
@@ -32,9 +33,9 @@
 
 </details>
 
-- [ ] courses
-  - [x] $week
-  - [ ] introduction
+- [x] courses
+  - [x] :week
+  - [x] :courseId/introduction
 - [x] dashboard layout
 - [x] dashboard
   - [x] courses
