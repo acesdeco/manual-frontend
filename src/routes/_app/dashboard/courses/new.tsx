@@ -62,7 +62,7 @@ function RouteComponent() {
       description: "",
       coursePrice: 0,
       instructor: {
-        id: user._id,
+        id: user.user,
         name: "",
       },
       title: "",

@@ -6,4 +6,4 @@ export const getStudentsEnrolledCoursesFn = createServerFn({
   method: "GET",
 })
   .middleware([studentsMiddleware])
-  .handler(({ context }) => coursesApi.getCoursesByUserId(context.user._id));
+  .handler(({ context }) => coursesApi.getCoursesByUserId(context.user.user));

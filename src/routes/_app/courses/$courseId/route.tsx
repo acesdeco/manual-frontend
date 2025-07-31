@@ -32,14 +32,14 @@ const courseLoader = createServerFn({ method: "GET" })
   .handler(async ({ data, context: { user } }) => {
     const [course, userCourses] = await Promise.all([
       coursesApi.getCourse(data.courseId),
-      coursesApi.getUsersEnrolledCourseIds(user._id),
+      coursesApi.getUsersEnrolledCourseIds(user.user),
     ]);
     if (!userCourses.includes(data.courseId)) return "NotEnrolled";
     return {
       course,
       studentInfo: {
-        student_id: user._id,
-        student_name: `${user.firstName} ${user.lastName}`,
+        student_id: user.user,
+        student_name: user.fullName,
         reg_number: user.registrationNumber,
       },
     };

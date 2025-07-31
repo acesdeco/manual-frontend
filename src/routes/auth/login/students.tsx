@@ -1,3 +1,4 @@
+import PasswordField from "@/components/auth/password-field";
 import Input from "@/components/global/input";
 import { Loader } from "@/components/svg";
 import {
@@ -77,7 +78,7 @@ function RouteComponent() {
             render={({ field }) => (
               <FormItem className="mb-6">
                 <FormControl>
-                  <Input {...field} type="password" placeholder="Password" />
+                  <PasswordField field={field} placeholder="Password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

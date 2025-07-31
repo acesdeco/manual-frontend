@@ -1,4 +1,4 @@
-import { parseResponse, userSchema } from "@/schemas";
+import { parseResponse, userCookieSchema } from "@/schemas";
 import { api } from "../clients";
 import { updateUserSchema, type UpdateUserInput } from "./schema";
 
@@ -12,5 +12,5 @@ export async function updateUser(input: UpdateUserInput) {
       json: input.data,
     })
     .json();
-  return parseResponse(res, userSchema);
+  return parseResponse(res, userCookieSchema);
 }

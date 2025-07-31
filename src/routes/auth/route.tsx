@@ -1,17 +1,17 @@
-import { redirectUsers } from '@/functions/global'
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { redirectUsers } from "@/functions/global";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/auth')({
+export const Route = createFileRoute("/auth")({
   component: RouteComponent,
   beforeLoad: async () => await redirectUsers(),
-})
+});
 
 function RouteComponent() {
   return (
     <main className="w-full h-screen flex flex-col md:px-16 px-4 py-8 fade-in-bottom">
       <header>
         <h1 className="text-4xl font-bold mb-4">CPE Lab</h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-ring">
           Welcome to Computer Engineering UNIUYO
         </p>
       </header>
@@ -19,5 +19,5 @@ function RouteComponent() {
         <Outlet />
       </section>
     </main>
-  )
+  );
 }

@@ -73,3 +73,14 @@ export function parseResponse<V, T>(
     })
     .parse(value).data;
 }
+
+export const userCookieSchema = z.object({
+  token: z.jwt(),
+  user: z.string(),
+  email: z.email(),
+  registrationNumber: registrationNumberSchema,
+  fullName: z.string(),
+  role: userSchema.shape.role,
+  courses: z.string().array().default([]),
+});
+export type UserCookie = z.infer<typeof userCookieSchema>;

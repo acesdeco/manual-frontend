@@ -11,7 +11,7 @@ export * from "./schema";
 export const iGetCoursesByUserFn = createServerFn({ method: "GET" })
   .middleware([instructorMiddleware])
   .handler(async ({ context }) => {
-    const res = await api.get(`course/creator/${context.user._id}`).json();
+    const res = await api.get(`course/creator/${context.user.user}`).json();
     return parseResponse(res, courseSchema.array());
   });
 

@@ -27,9 +27,9 @@ export const paymentCallbackFn = createServerFn({ method: "GET" })
         data: {
           courses: [...(user.courses ?? []), data.courseId],
         },
-        userId: user._id,
+        userId: user.user,
       });
-      setUserCookie(newUser);
+      setUserCookie(user.role, newUser);
     }
     return { course, txState };
   });
@@ -43,7 +43,7 @@ export const checkExistingPaymentFn = createServerFn({ method: "GET" })
   .middleware([studentsMiddleware])
   .handler(({ data: { courseId }, context: { user } }) => {
     // check if already paid
-    if (user.courses?.includes(courseId)) {
+    if (user.courses.includes(courseId)) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw redirect({
         to: "/courses/$courseId",
@@ -72,7 +72,7 @@ export const coursePaymentDetailsFn = createServerFn({ method: "GET" })
       email: user.email,
       paymentDate: Date.now().toString(),
       status: "pending",
-      userId: user._id,
+      userId: user.user,
     });
     return { course, cappedCharge, totalAmount, paymentData };
   });
