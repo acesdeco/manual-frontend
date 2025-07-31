@@ -6,7 +6,7 @@
 - [ ] Switch prettier from using single quotes to double quotes
 - [ ] Copy CSS keyframes
 - [ ] Shadcn: Buttons, Label, Textarea, Input
-- [ ] Brand with Shadcn
+- [ ] Brand with zod
 - [ ] Update quill
 - [ ] Layout for dashboards
 - [ ] Replace every image with imports
