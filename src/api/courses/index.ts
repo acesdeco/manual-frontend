@@ -3,6 +3,7 @@ import {
   parseResponse,
   userSchema,
   weekSchema,
+  type Course,
   type User,
 } from "@/schemas";
 import { api } from "../clients";
@@ -65,7 +66,7 @@ export async function addWeek(input: AddWeek) {
   return parseResponse(res, weekSchema);
 }
 
-async function getUsersEnrolledCourseIds(userId: User["_id"]) {
+export async function getUsersEnrolledCourseIds(userId: User["_id"]) {
   userSchema.shape._id.parse(userId);
   const res = await api.get(`users/courses/${userId}`).json();
   return parseResponse(res, z.string().array());
@@ -78,4 +79,10 @@ export async function getCoursesByUserId(userId: User["_id"]) {
     getAllCourses(),
   ]);
   return allCourses.filter((course) => userCourses.includes(course._id));
+}
+
+export async function getCourse(courseId: Course["_id"]) {
+  courseSchema.shape._id.parse(courseId);
+  const res = await api.get(`course/${courseId}`).json();
+  return parseResponse(res, courseSchema);
 }

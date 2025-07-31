@@ -10,6 +10,7 @@
 - [ ] Update quill
 - [ ] Layout for dashboards
 - [ ] Replace every image with imports
+- [ ] Remove as never calls
 
 ## Issues
 
@@ -32,7 +33,7 @@
 </details>
 
 - [ ] courses
-  - [ ] $week
+  - [x] $week
   - [ ] introduction
 - [x] dashboard layout
 - [x] dashboard

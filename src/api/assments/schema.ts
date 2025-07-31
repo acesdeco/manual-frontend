@@ -54,6 +54,7 @@ export const questionSchema = z.discriminatedUnion("question_type", [
 export type Question = z.infer<typeof questionSchema>;
 export const assessmentSchema = z.object({
   _id: z.string(),
+  id: z.string(),
   title: z.string(),
   description: z.string(),
   courseId: z.string(),
@@ -61,8 +62,8 @@ export const assessmentSchema = z.object({
   created_by: z.string(),
   questions: questionSchema.array(),
   dueDate: z.string(),
-  startTime: z.string().optional(),
-  endTime: z.string().optional(),
+  startTime: z.string(),
+  endTime: z.string(),
 });
 export type Assessment = z.infer<typeof assessmentSchema>;
 
@@ -77,3 +78,23 @@ export const newAssessmentSchema = z.object({
   }).shape,
 });
 export type NewAssment = z.infer<typeof newAssessmentSchema>;
+
+export const submitAssessmentSchema = z.object({
+  assessmentId: assessmentSchema.shape.id,
+  student: z.object({
+    student_id: z.string(),
+    student_name: z.string(),
+    reg_number: z.string(),
+  }),
+  answers: z
+    .object({
+      question: {
+        question_id: z.string(),
+        question_text: z.string(),
+      },
+      answer_text: z.string(),
+    })
+    .array(),
+  submitted_at: z.string(),
+});
+export type SubmitAssessmentInput = z.infer<typeof submitAssessmentSchema>;

@@ -3,7 +3,9 @@ import { api } from "../clients";
 import {
   assessmentSchema,
   newAssessmentSchema,
+  submitAssessmentSchema,
   type NewAssment,
+  type SubmitAssessmentInput,
 } from "./schema";
 
 export async function getAssessment(
@@ -37,4 +39,11 @@ export async function getAssessmentsByWeek(
     })
     .json();
   return assessmentSchema.array().parse(res);
+}
+
+export async function submitAssessment(input: SubmitAssessmentInput) {
+  submitAssessmentSchema.parse(input);
+  await api.post("assessment/submit", {
+    json: input,
+  });
 }

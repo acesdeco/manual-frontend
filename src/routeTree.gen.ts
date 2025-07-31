@@ -8,384 +8,422 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as AssessmentRouteImport } from './routes/assessment'
-import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as AppRouteRouteImport } from './routes/_app/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthSignupRouteRouteImport } from './routes/auth/signup/route'
-import { Route as AuthLoginRouteRouteImport } from './routes/auth/login/route'
-import { Route as AppDashboardRouteRouteImport } from './routes/_app/dashboard/route'
-import { Route as AuthSignupStudentsRouteImport } from './routes/auth/signup/students'
-import { Route as AuthSignupInstructorRouteImport } from './routes/auth/signup/instructor'
-import { Route as AuthLoginStudentsRouteImport } from './routes/auth/login/students'
-import { Route as AuthLoginInstructorRouteImport } from './routes/auth/login/instructor'
-import { Route as AppDashboardResourcesRouteImport } from './routes/_app/dashboard/resources'
-import { Route as AppDashboardHomeRouteImport } from './routes/_app/dashboard/home'
-import { Route as AppDashboardEnrolledRouteImport } from './routes/_app/dashboard/enrolled'
-import { Route as AppDashboardCoursesIndexRouteImport } from './routes/_app/dashboard/courses/index'
-import { Route as AppDashboardCoursesNewRouteImport } from './routes/_app/dashboard/courses/new'
-import { Route as AppCoursesSlugIntroductionRouteImport } from './routes/_app/courses/$slug/introduction'
-import { Route as AppDashboardCoursesSlugEditRouteImport } from './routes/_app/dashboard/courses/$slug/edit'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as AssessmentRouteImport } from "./routes/assessment";
+import { Route as AuthRouteRouteImport } from "./routes/auth/route";
+import { Route as AppRouteRouteImport } from "./routes/_app/route";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as AuthSignupRouteRouteImport } from "./routes/auth/signup/route";
+import { Route as AuthLoginRouteRouteImport } from "./routes/auth/login/route";
+import { Route as AppDashboardRouteRouteImport } from "./routes/_app/dashboard/route";
+import { Route as AuthSignupStudentsRouteImport } from "./routes/auth/signup/students";
+import { Route as AuthSignupInstructorRouteImport } from "./routes/auth/signup/instructor";
+import { Route as AuthLoginStudentsRouteImport } from "./routes/auth/login/students";
+import { Route as AuthLoginInstructorRouteImport } from "./routes/auth/login/instructor";
+import { Route as AppDashboardResourcesRouteImport } from "./routes/_app/dashboard/resources";
+import { Route as AppDashboardHomeRouteImport } from "./routes/_app/dashboard/home";
+import { Route as AppDashboardEnrolledRouteImport } from "./routes/_app/dashboard/enrolled";
+import { Route as AppCoursesCourseIdRouteRouteImport } from "./routes/_app/courses/$courseId/route";
+import { Route as AppDashboardCoursesIndexRouteImport } from "./routes/_app/dashboard/courses/index";
+import { Route as AppDashboardCoursesNewRouteImport } from "./routes/_app/dashboard/courses/new";
+import { Route as AppCoursesSlugIntroductionRouteImport } from "./routes/_app/courses/$slug/introduction";
+import { Route as AppCoursesCourseIdWeekRouteImport } from "./routes/_app/courses/$courseId/$week";
+import { Route as AppDashboardCoursesSlugEditRouteImport } from "./routes/_app/dashboard/courses/$slug/edit";
 
 const AssessmentRoute = AssessmentRouteImport.update({
-  id: '/assessment',
-  path: '/assessment',
+  id: "/assessment",
+  path: "/assessment",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+  id: "/auth",
+  path: "/auth",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AppRouteRoute = AppRouteRouteImport.update({
-  id: '/_app',
+  id: "/_app",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthSignupRouteRoute = AuthSignupRouteRouteImport.update({
-  id: '/signup',
-  path: '/signup',
+  id: "/signup",
+  path: "/signup",
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const AppDashboardRouteRoute = AppDashboardRouteRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+  id: "/dashboard",
+  path: "/dashboard",
   getParentRoute: () => AppRouteRoute,
-} as any)
+} as any);
 const AuthSignupStudentsRoute = AuthSignupStudentsRouteImport.update({
-  id: '/students',
-  path: '/students',
+  id: "/students",
+  path: "/students",
   getParentRoute: () => AuthSignupRouteRoute,
-} as any)
+} as any);
 const AuthSignupInstructorRoute = AuthSignupInstructorRouteImport.update({
-  id: '/instructor',
-  path: '/instructor',
+  id: "/instructor",
+  path: "/instructor",
   getParentRoute: () => AuthSignupRouteRoute,
-} as any)
+} as any);
 const AuthLoginStudentsRoute = AuthLoginStudentsRouteImport.update({
-  id: '/students',
-  path: '/students',
+  id: "/students",
+  path: "/students",
   getParentRoute: () => AuthLoginRouteRoute,
-} as any)
+} as any);
 const AuthLoginInstructorRoute = AuthLoginInstructorRouteImport.update({
-  id: '/instructor',
-  path: '/instructor',
+  id: "/instructor",
+  path: "/instructor",
   getParentRoute: () => AuthLoginRouteRoute,
-} as any)
+} as any);
 const AppDashboardResourcesRoute = AppDashboardResourcesRouteImport.update({
-  id: '/resources',
-  path: '/resources',
+  id: "/resources",
+  path: "/resources",
   getParentRoute: () => AppDashboardRouteRoute,
-} as any)
+} as any);
 const AppDashboardHomeRoute = AppDashboardHomeRouteImport.update({
-  id: '/home',
-  path: '/home',
+  id: "/home",
+  path: "/home",
   getParentRoute: () => AppDashboardRouteRoute,
-} as any)
+} as any);
 const AppDashboardEnrolledRoute = AppDashboardEnrolledRouteImport.update({
-  id: '/enrolled',
-  path: '/enrolled',
+  id: "/enrolled",
+  path: "/enrolled",
   getParentRoute: () => AppDashboardRouteRoute,
-} as any)
+} as any);
+const AppCoursesCourseIdRouteRoute = AppCoursesCourseIdRouteRouteImport.update({
+  id: "/courses/$courseId",
+  path: "/courses/$courseId",
+  getParentRoute: () => AppRouteRoute,
+} as any);
 const AppDashboardCoursesIndexRoute =
   AppDashboardCoursesIndexRouteImport.update({
-    id: '/courses/',
-    path: '/courses/',
+    id: "/courses/",
+    path: "/courses/",
     getParentRoute: () => AppDashboardRouteRoute,
-  } as any)
+  } as any);
 const AppDashboardCoursesNewRoute = AppDashboardCoursesNewRouteImport.update({
-  id: '/courses/new',
-  path: '/courses/new',
+  id: "/courses/new",
+  path: "/courses/new",
   getParentRoute: () => AppDashboardRouteRoute,
-} as any)
+} as any);
 const AppCoursesSlugIntroductionRoute =
   AppCoursesSlugIntroductionRouteImport.update({
-    id: '/courses/$slug/introduction',
-    path: '/courses/$slug/introduction',
+    id: "/courses/$slug/introduction",
+    path: "/courses/$slug/introduction",
     getParentRoute: () => AppRouteRoute,
-  } as any)
+  } as any);
+const AppCoursesCourseIdWeekRoute = AppCoursesCourseIdWeekRouteImport.update({
+  id: "/$week",
+  path: "/$week",
+  getParentRoute: () => AppCoursesCourseIdRouteRoute,
+} as any);
 const AppDashboardCoursesSlugEditRoute =
   AppDashboardCoursesSlugEditRouteImport.update({
-    id: '/courses/$slug/edit',
-    path: '/courses/$slug/edit',
+    id: "/courses/$slug/edit",
+    path: "/courses/$slug/edit",
     getParentRoute: () => AppDashboardRouteRoute,
-  } as any)
+  } as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/assessment': typeof AssessmentRoute
-  '/dashboard': typeof AppDashboardRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRouteRouteWithChildren
-  '/auth/signup': typeof AuthSignupRouteRouteWithChildren
-  '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
-  '/dashboard/home': typeof AppDashboardHomeRoute
-  '/dashboard/resources': typeof AppDashboardResourcesRoute
-  '/auth/login/instructor': typeof AuthLoginInstructorRoute
-  '/auth/login/students': typeof AuthLoginStudentsRoute
-  '/auth/signup/instructor': typeof AuthSignupInstructorRoute
-  '/auth/signup/students': typeof AuthSignupStudentsRoute
-  '/courses/$slug/introduction': typeof AppCoursesSlugIntroductionRoute
-  '/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
-  '/dashboard/courses': typeof AppDashboardCoursesIndexRoute
-  '/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
+  "/": typeof IndexRoute;
+  "/auth": typeof AuthRouteRouteWithChildren;
+  "/assessment": typeof AssessmentRoute;
+  "/dashboard": typeof AppDashboardRouteRouteWithChildren;
+  "/auth/login": typeof AuthLoginRouteRouteWithChildren;
+  "/auth/signup": typeof AuthSignupRouteRouteWithChildren;
+  "/courses/$courseId": typeof AppCoursesCourseIdRouteRouteWithChildren;
+  "/dashboard/enrolled": typeof AppDashboardEnrolledRoute;
+  "/dashboard/home": typeof AppDashboardHomeRoute;
+  "/dashboard/resources": typeof AppDashboardResourcesRoute;
+  "/auth/login/instructor": typeof AuthLoginInstructorRoute;
+  "/auth/login/students": typeof AuthLoginStudentsRoute;
+  "/auth/signup/instructor": typeof AuthSignupInstructorRoute;
+  "/auth/signup/students": typeof AuthSignupStudentsRoute;
+  "/courses/$courseId/$week": typeof AppCoursesCourseIdWeekRoute;
+  "/courses/$slug/introduction": typeof AppCoursesSlugIntroductionRoute;
+  "/dashboard/courses/new": typeof AppDashboardCoursesNewRoute;
+  "/dashboard/courses": typeof AppDashboardCoursesIndexRoute;
+  "/dashboard/courses/$slug/edit": typeof AppDashboardCoursesSlugEditRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/assessment': typeof AssessmentRoute
-  '/dashboard': typeof AppDashboardRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRouteRouteWithChildren
-  '/auth/signup': typeof AuthSignupRouteRouteWithChildren
-  '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
-  '/dashboard/home': typeof AppDashboardHomeRoute
-  '/dashboard/resources': typeof AppDashboardResourcesRoute
-  '/auth/login/instructor': typeof AuthLoginInstructorRoute
-  '/auth/login/students': typeof AuthLoginStudentsRoute
-  '/auth/signup/instructor': typeof AuthSignupInstructorRoute
-  '/auth/signup/students': typeof AuthSignupStudentsRoute
-  '/courses/$slug/introduction': typeof AppCoursesSlugIntroductionRoute
-  '/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
-  '/dashboard/courses': typeof AppDashboardCoursesIndexRoute
-  '/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
+  "/": typeof IndexRoute;
+  "/auth": typeof AuthRouteRouteWithChildren;
+  "/assessment": typeof AssessmentRoute;
+  "/dashboard": typeof AppDashboardRouteRouteWithChildren;
+  "/auth/login": typeof AuthLoginRouteRouteWithChildren;
+  "/auth/signup": typeof AuthSignupRouteRouteWithChildren;
+  "/courses/$courseId": typeof AppCoursesCourseIdRouteRouteWithChildren;
+  "/dashboard/enrolled": typeof AppDashboardEnrolledRoute;
+  "/dashboard/home": typeof AppDashboardHomeRoute;
+  "/dashboard/resources": typeof AppDashboardResourcesRoute;
+  "/auth/login/instructor": typeof AuthLoginInstructorRoute;
+  "/auth/login/students": typeof AuthLoginStudentsRoute;
+  "/auth/signup/instructor": typeof AuthSignupInstructorRoute;
+  "/auth/signup/students": typeof AuthSignupStudentsRoute;
+  "/courses/$courseId/$week": typeof AppCoursesCourseIdWeekRoute;
+  "/courses/$slug/introduction": typeof AppCoursesSlugIntroductionRoute;
+  "/dashboard/courses/new": typeof AppDashboardCoursesNewRoute;
+  "/dashboard/courses": typeof AppDashboardCoursesIndexRoute;
+  "/dashboard/courses/$slug/edit": typeof AppDashboardCoursesSlugEditRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_app': typeof AppRouteRouteWithChildren
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/assessment': typeof AssessmentRoute
-  '/_app/dashboard': typeof AppDashboardRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRouteRouteWithChildren
-  '/auth/signup': typeof AuthSignupRouteRouteWithChildren
-  '/_app/dashboard/enrolled': typeof AppDashboardEnrolledRoute
-  '/_app/dashboard/home': typeof AppDashboardHomeRoute
-  '/_app/dashboard/resources': typeof AppDashboardResourcesRoute
-  '/auth/login/instructor': typeof AuthLoginInstructorRoute
-  '/auth/login/students': typeof AuthLoginStudentsRoute
-  '/auth/signup/instructor': typeof AuthSignupInstructorRoute
-  '/auth/signup/students': typeof AuthSignupStudentsRoute
-  '/_app/courses/$slug/introduction': typeof AppCoursesSlugIntroductionRoute
-  '/_app/dashboard/courses/new': typeof AppDashboardCoursesNewRoute
-  '/_app/dashboard/courses/': typeof AppDashboardCoursesIndexRoute
-  '/_app/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/_app": typeof AppRouteRouteWithChildren;
+  "/auth": typeof AuthRouteRouteWithChildren;
+  "/assessment": typeof AssessmentRoute;
+  "/_app/dashboard": typeof AppDashboardRouteRouteWithChildren;
+  "/auth/login": typeof AuthLoginRouteRouteWithChildren;
+  "/auth/signup": typeof AuthSignupRouteRouteWithChildren;
+  "/_app/courses/$courseId": typeof AppCoursesCourseIdRouteRouteWithChildren;
+  "/_app/dashboard/enrolled": typeof AppDashboardEnrolledRoute;
+  "/_app/dashboard/home": typeof AppDashboardHomeRoute;
+  "/_app/dashboard/resources": typeof AppDashboardResourcesRoute;
+  "/auth/login/instructor": typeof AuthLoginInstructorRoute;
+  "/auth/login/students": typeof AuthLoginStudentsRoute;
+  "/auth/signup/instructor": typeof AuthSignupInstructorRoute;
+  "/auth/signup/students": typeof AuthSignupStudentsRoute;
+  "/_app/courses/$courseId/$week": typeof AppCoursesCourseIdWeekRoute;
+  "/_app/courses/$slug/introduction": typeof AppCoursesSlugIntroductionRoute;
+  "/_app/dashboard/courses/new": typeof AppDashboardCoursesNewRoute;
+  "/_app/dashboard/courses/": typeof AppDashboardCoursesIndexRoute;
+  "/_app/dashboard/courses/$slug/edit": typeof AppDashboardCoursesSlugEditRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/auth'
-    | '/assessment'
-    | '/dashboard'
-    | '/auth/login'
-    | '/auth/signup'
-    | '/dashboard/enrolled'
-    | '/dashboard/home'
-    | '/dashboard/resources'
-    | '/auth/login/instructor'
-    | '/auth/login/students'
-    | '/auth/signup/instructor'
-    | '/auth/signup/students'
-    | '/courses/$slug/introduction'
-    | '/dashboard/courses/new'
-    | '/dashboard/courses'
-    | '/dashboard/courses/$slug/edit'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | "/auth"
+    | "/assessment"
+    | "/dashboard"
+    | "/auth/login"
+    | "/auth/signup"
+    | "/courses/$courseId"
+    | "/dashboard/enrolled"
+    | "/dashboard/home"
+    | "/dashboard/resources"
+    | "/auth/login/instructor"
+    | "/auth/login/students"
+    | "/auth/signup/instructor"
+    | "/auth/signup/students"
+    | "/courses/$courseId/$week"
+    | "/courses/$slug/introduction"
+    | "/dashboard/courses/new"
+    | "/dashboard/courses"
+    | "/dashboard/courses/$slug/edit";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/auth'
-    | '/assessment'
-    | '/dashboard'
-    | '/auth/login'
-    | '/auth/signup'
-    | '/dashboard/enrolled'
-    | '/dashboard/home'
-    | '/dashboard/resources'
-    | '/auth/login/instructor'
-    | '/auth/login/students'
-    | '/auth/signup/instructor'
-    | '/auth/signup/students'
-    | '/courses/$slug/introduction'
-    | '/dashboard/courses/new'
-    | '/dashboard/courses'
-    | '/dashboard/courses/$slug/edit'
+    | "/"
+    | "/auth"
+    | "/assessment"
+    | "/dashboard"
+    | "/auth/login"
+    | "/auth/signup"
+    | "/courses/$courseId"
+    | "/dashboard/enrolled"
+    | "/dashboard/home"
+    | "/dashboard/resources"
+    | "/auth/login/instructor"
+    | "/auth/login/students"
+    | "/auth/signup/instructor"
+    | "/auth/signup/students"
+    | "/courses/$courseId/$week"
+    | "/courses/$slug/introduction"
+    | "/dashboard/courses/new"
+    | "/dashboard/courses"
+    | "/dashboard/courses/$slug/edit";
   id:
-    | '__root__'
-    | '/'
-    | '/_app'
-    | '/auth'
-    | '/assessment'
-    | '/_app/dashboard'
-    | '/auth/login'
-    | '/auth/signup'
-    | '/_app/dashboard/enrolled'
-    | '/_app/dashboard/home'
-    | '/_app/dashboard/resources'
-    | '/auth/login/instructor'
-    | '/auth/login/students'
-    | '/auth/signup/instructor'
-    | '/auth/signup/students'
-    | '/_app/courses/$slug/introduction'
-    | '/_app/dashboard/courses/new'
-    | '/_app/dashboard/courses/'
-    | '/_app/dashboard/courses/$slug/edit'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/_app"
+    | "/auth"
+    | "/assessment"
+    | "/_app/dashboard"
+    | "/auth/login"
+    | "/auth/signup"
+    | "/_app/courses/$courseId"
+    | "/_app/dashboard/enrolled"
+    | "/_app/dashboard/home"
+    | "/_app/dashboard/resources"
+    | "/auth/login/instructor"
+    | "/auth/login/students"
+    | "/auth/signup/instructor"
+    | "/auth/signup/students"
+    | "/_app/courses/$courseId/$week"
+    | "/_app/courses/$slug/introduction"
+    | "/_app/dashboard/courses/new"
+    | "/_app/dashboard/courses/"
+    | "/_app/dashboard/courses/$slug/edit";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AppRouteRoute: typeof AppRouteRouteWithChildren
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  AssessmentRoute: typeof AssessmentRoute
+  IndexRoute: typeof IndexRoute;
+  AppRouteRoute: typeof AppRouteRouteWithChildren;
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren;
+  AssessmentRoute: typeof AssessmentRoute;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/assessment': {
-      id: '/assessment'
-      path: '/assessment'
-      fullPath: '/assessment'
-      preLoaderRoute: typeof AssessmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_app': {
-      id: '/_app'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AppRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth/signup': {
-      id: '/auth/signup'
-      path: '/signup'
-      fullPath: '/auth/signup'
-      preLoaderRoute: typeof AuthSignupRouteRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/_app/dashboard': {
-      id: '/_app/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/auth/signup/students': {
-      id: '/auth/signup/students'
-      path: '/students'
-      fullPath: '/auth/signup/students'
-      preLoaderRoute: typeof AuthSignupStudentsRouteImport
-      parentRoute: typeof AuthSignupRouteRoute
-    }
-    '/auth/signup/instructor': {
-      id: '/auth/signup/instructor'
-      path: '/instructor'
-      fullPath: '/auth/signup/instructor'
-      preLoaderRoute: typeof AuthSignupInstructorRouteImport
-      parentRoute: typeof AuthSignupRouteRoute
-    }
-    '/auth/login/students': {
-      id: '/auth/login/students'
-      path: '/students'
-      fullPath: '/auth/login/students'
-      preLoaderRoute: typeof AuthLoginStudentsRouteImport
-      parentRoute: typeof AuthLoginRouteRoute
-    }
-    '/auth/login/instructor': {
-      id: '/auth/login/instructor'
-      path: '/instructor'
-      fullPath: '/auth/login/instructor'
-      preLoaderRoute: typeof AuthLoginInstructorRouteImport
-      parentRoute: typeof AuthLoginRouteRoute
-    }
-    '/_app/dashboard/resources': {
-      id: '/_app/dashboard/resources'
-      path: '/resources'
-      fullPath: '/dashboard/resources'
-      preLoaderRoute: typeof AppDashboardResourcesRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
-    '/_app/dashboard/home': {
-      id: '/_app/dashboard/home'
-      path: '/home'
-      fullPath: '/dashboard/home'
-      preLoaderRoute: typeof AppDashboardHomeRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
-    '/_app/dashboard/enrolled': {
-      id: '/_app/dashboard/enrolled'
-      path: '/enrolled'
-      fullPath: '/dashboard/enrolled'
-      preLoaderRoute: typeof AppDashboardEnrolledRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
-    '/_app/dashboard/courses/': {
-      id: '/_app/dashboard/courses/'
-      path: '/courses'
-      fullPath: '/dashboard/courses'
-      preLoaderRoute: typeof AppDashboardCoursesIndexRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
-    '/_app/dashboard/courses/new': {
-      id: '/_app/dashboard/courses/new'
-      path: '/courses/new'
-      fullPath: '/dashboard/courses/new'
-      preLoaderRoute: typeof AppDashboardCoursesNewRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
-    '/_app/courses/$slug/introduction': {
-      id: '/_app/courses/$slug/introduction'
-      path: '/courses/$slug/introduction'
-      fullPath: '/courses/$slug/introduction'
-      preLoaderRoute: typeof AppCoursesSlugIntroductionRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/dashboard/courses/$slug/edit': {
-      id: '/_app/dashboard/courses/$slug/edit'
-      path: '/courses/$slug/edit'
-      fullPath: '/dashboard/courses/$slug/edit'
-      preLoaderRoute: typeof AppDashboardCoursesSlugEditRouteImport
-      parentRoute: typeof AppDashboardRouteRoute
-    }
+    "/assessment": {
+      id: "/assessment";
+      path: "/assessment";
+      fullPath: "/assessment";
+      preLoaderRoute: typeof AssessmentRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/auth": {
+      id: "/auth";
+      path: "/auth";
+      fullPath: "/auth";
+      preLoaderRoute: typeof AuthRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/_app": {
+      id: "/_app";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AppRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/auth/signup": {
+      id: "/auth/signup";
+      path: "/signup";
+      fullPath: "/auth/signup";
+      preLoaderRoute: typeof AuthSignupRouteRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
+    "/auth/login": {
+      id: "/auth/login";
+      path: "/login";
+      fullPath: "/auth/login";
+      preLoaderRoute: typeof AuthLoginRouteRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
+    "/_app/dashboard": {
+      id: "/_app/dashboard";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof AppDashboardRouteRouteImport;
+      parentRoute: typeof AppRouteRoute;
+    };
+    "/auth/signup/students": {
+      id: "/auth/signup/students";
+      path: "/students";
+      fullPath: "/auth/signup/students";
+      preLoaderRoute: typeof AuthSignupStudentsRouteImport;
+      parentRoute: typeof AuthSignupRouteRoute;
+    };
+    "/auth/signup/instructor": {
+      id: "/auth/signup/instructor";
+      path: "/instructor";
+      fullPath: "/auth/signup/instructor";
+      preLoaderRoute: typeof AuthSignupInstructorRouteImport;
+      parentRoute: typeof AuthSignupRouteRoute;
+    };
+    "/auth/login/students": {
+      id: "/auth/login/students";
+      path: "/students";
+      fullPath: "/auth/login/students";
+      preLoaderRoute: typeof AuthLoginStudentsRouteImport;
+      parentRoute: typeof AuthLoginRouteRoute;
+    };
+    "/auth/login/instructor": {
+      id: "/auth/login/instructor";
+      path: "/instructor";
+      fullPath: "/auth/login/instructor";
+      preLoaderRoute: typeof AuthLoginInstructorRouteImport;
+      parentRoute: typeof AuthLoginRouteRoute;
+    };
+    "/_app/dashboard/resources": {
+      id: "/_app/dashboard/resources";
+      path: "/resources";
+      fullPath: "/dashboard/resources";
+      preLoaderRoute: typeof AppDashboardResourcesRouteImport;
+      parentRoute: typeof AppDashboardRouteRoute;
+    };
+    "/_app/dashboard/home": {
+      id: "/_app/dashboard/home";
+      path: "/home";
+      fullPath: "/dashboard/home";
+      preLoaderRoute: typeof AppDashboardHomeRouteImport;
+      parentRoute: typeof AppDashboardRouteRoute;
+    };
+    "/_app/dashboard/enrolled": {
+      id: "/_app/dashboard/enrolled";
+      path: "/enrolled";
+      fullPath: "/dashboard/enrolled";
+      preLoaderRoute: typeof AppDashboardEnrolledRouteImport;
+      parentRoute: typeof AppDashboardRouteRoute;
+    };
+    "/_app/courses/$courseId": {
+      id: "/_app/courses/$courseId";
+      path: "/courses/$courseId";
+      fullPath: "/courses/$courseId";
+      preLoaderRoute: typeof AppCoursesCourseIdRouteRouteImport;
+      parentRoute: typeof AppRouteRoute;
+    };
+    "/_app/dashboard/courses/": {
+      id: "/_app/dashboard/courses/";
+      path: "/courses";
+      fullPath: "/dashboard/courses";
+      preLoaderRoute: typeof AppDashboardCoursesIndexRouteImport;
+      parentRoute: typeof AppDashboardRouteRoute;
+    };
+    "/_app/dashboard/courses/new": {
+      id: "/_app/dashboard/courses/new";
+      path: "/courses/new";
+      fullPath: "/dashboard/courses/new";
+      preLoaderRoute: typeof AppDashboardCoursesNewRouteImport;
+      parentRoute: typeof AppDashboardRouteRoute;
+    };
+    "/_app/courses/$slug/introduction": {
+      id: "/_app/courses/$slug/introduction";
+      path: "/courses/$slug/introduction";
+      fullPath: "/courses/$slug/introduction";
+      preLoaderRoute: typeof AppCoursesSlugIntroductionRouteImport;
+      parentRoute: typeof AppRouteRoute;
+    };
+    "/_app/courses/$courseId/$week": {
+      id: "/_app/courses/$courseId/$week";
+      path: "/$week";
+      fullPath: "/courses/$courseId/$week";
+      preLoaderRoute: typeof AppCoursesCourseIdWeekRouteImport;
+      parentRoute: typeof AppCoursesCourseIdRouteRoute;
+    };
+    "/_app/dashboard/courses/$slug/edit": {
+      id: "/_app/dashboard/courses/$slug/edit";
+      path: "/courses/$slug/edit";
+      fullPath: "/dashboard/courses/$slug/edit";
+      preLoaderRoute: typeof AppDashboardCoursesSlugEditRouteImport;
+      parentRoute: typeof AppDashboardRouteRoute;
+    };
   }
 }
 
 interface AppDashboardRouteRouteChildren {
-  AppDashboardEnrolledRoute: typeof AppDashboardEnrolledRoute
-  AppDashboardHomeRoute: typeof AppDashboardHomeRoute
-  AppDashboardResourcesRoute: typeof AppDashboardResourcesRoute
-  AppDashboardCoursesNewRoute: typeof AppDashboardCoursesNewRoute
-  AppDashboardCoursesIndexRoute: typeof AppDashboardCoursesIndexRoute
-  AppDashboardCoursesSlugEditRoute: typeof AppDashboardCoursesSlugEditRoute
+  AppDashboardEnrolledRoute: typeof AppDashboardEnrolledRoute;
+  AppDashboardHomeRoute: typeof AppDashboardHomeRoute;
+  AppDashboardResourcesRoute: typeof AppDashboardResourcesRoute;
+  AppDashboardCoursesNewRoute: typeof AppDashboardCoursesNewRoute;
+  AppDashboardCoursesIndexRoute: typeof AppDashboardCoursesIndexRoute;
+  AppDashboardCoursesSlugEditRoute: typeof AppDashboardCoursesSlugEditRoute;
 }
 
 const AppDashboardRouteRouteChildren: AppDashboardRouteRouteChildren = {
@@ -395,73 +433,89 @@ const AppDashboardRouteRouteChildren: AppDashboardRouteRouteChildren = {
   AppDashboardCoursesNewRoute: AppDashboardCoursesNewRoute,
   AppDashboardCoursesIndexRoute: AppDashboardCoursesIndexRoute,
   AppDashboardCoursesSlugEditRoute: AppDashboardCoursesSlugEditRoute,
-}
+};
 
 const AppDashboardRouteRouteWithChildren =
-  AppDashboardRouteRoute._addFileChildren(AppDashboardRouteRouteChildren)
+  AppDashboardRouteRoute._addFileChildren(AppDashboardRouteRouteChildren);
+
+interface AppCoursesCourseIdRouteRouteChildren {
+  AppCoursesCourseIdWeekRoute: typeof AppCoursesCourseIdWeekRoute;
+}
+
+const AppCoursesCourseIdRouteRouteChildren: AppCoursesCourseIdRouteRouteChildren =
+  {
+    AppCoursesCourseIdWeekRoute: AppCoursesCourseIdWeekRoute,
+  };
+
+const AppCoursesCourseIdRouteRouteWithChildren =
+  AppCoursesCourseIdRouteRoute._addFileChildren(
+    AppCoursesCourseIdRouteRouteChildren,
+  );
 
 interface AppRouteRouteChildren {
-  AppDashboardRouteRoute: typeof AppDashboardRouteRouteWithChildren
-  AppCoursesSlugIntroductionRoute: typeof AppCoursesSlugIntroductionRoute
+  AppDashboardRouteRoute: typeof AppDashboardRouteRouteWithChildren;
+  AppCoursesCourseIdRouteRoute: typeof AppCoursesCourseIdRouteRouteWithChildren;
+  AppCoursesSlugIntroductionRoute: typeof AppCoursesSlugIntroductionRoute;
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppDashboardRouteRoute: AppDashboardRouteRouteWithChildren,
+  AppCoursesCourseIdRouteRoute: AppCoursesCourseIdRouteRouteWithChildren,
   AppCoursesSlugIntroductionRoute: AppCoursesSlugIntroductionRoute,
-}
+};
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
   AppRouteRouteChildren,
-)
+);
 
 interface AuthLoginRouteRouteChildren {
-  AuthLoginInstructorRoute: typeof AuthLoginInstructorRoute
-  AuthLoginStudentsRoute: typeof AuthLoginStudentsRoute
+  AuthLoginInstructorRoute: typeof AuthLoginInstructorRoute;
+  AuthLoginStudentsRoute: typeof AuthLoginStudentsRoute;
 }
 
 const AuthLoginRouteRouteChildren: AuthLoginRouteRouteChildren = {
   AuthLoginInstructorRoute: AuthLoginInstructorRoute,
   AuthLoginStudentsRoute: AuthLoginStudentsRoute,
-}
+};
 
 const AuthLoginRouteRouteWithChildren = AuthLoginRouteRoute._addFileChildren(
   AuthLoginRouteRouteChildren,
-)
+);
 
 interface AuthSignupRouteRouteChildren {
-  AuthSignupInstructorRoute: typeof AuthSignupInstructorRoute
-  AuthSignupStudentsRoute: typeof AuthSignupStudentsRoute
+  AuthSignupInstructorRoute: typeof AuthSignupInstructorRoute;
+  AuthSignupStudentsRoute: typeof AuthSignupStudentsRoute;
 }
 
 const AuthSignupRouteRouteChildren: AuthSignupRouteRouteChildren = {
   AuthSignupInstructorRoute: AuthSignupInstructorRoute,
   AuthSignupStudentsRoute: AuthSignupStudentsRoute,
-}
+};
 
 const AuthSignupRouteRouteWithChildren = AuthSignupRouteRoute._addFileChildren(
   AuthSignupRouteRouteChildren,
-)
+);
 
 interface AuthRouteRouteChildren {
-  AuthLoginRouteRoute: typeof AuthLoginRouteRouteWithChildren
-  AuthSignupRouteRoute: typeof AuthSignupRouteRouteWithChildren
+  AuthLoginRouteRoute: typeof AuthLoginRouteRouteWithChildren;
+  AuthSignupRouteRoute: typeof AuthSignupRouteRouteWithChildren;
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthLoginRouteRoute: AuthLoginRouteRouteWithChildren,
   AuthSignupRouteRoute: AuthSignupRouteRouteWithChildren,
-}
+};
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
-)
+);
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRouteRoute: AppRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AssessmentRoute: AssessmentRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
