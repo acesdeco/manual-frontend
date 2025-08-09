@@ -2,10 +2,8 @@ import { courseSchema, weekSchema } from "@/schemas";
 import z from "zod";
 
 export const updateCourseSchema = z.object({
-  courseId: courseSchema.shape._id,
-  update: courseSchema.partial().omit({
-    _id: true,
-  }),
+  courseId: z.string(),
+  update: courseSchema.in.partial(),
 });
 export type UpdateCourse = z.infer<typeof updateCourseSchema>;
 
@@ -23,10 +21,11 @@ export const updateWeekSchema = z.object({
 export type UpdateWeek = z.infer<typeof updateWeekSchema>;
 
 export const addWeekSchema = z.object({
-  courseId: courseSchema.shape._id,
+  courseId: z.string(),
   week: weekSchema.omit({
     _id: true,
     assessment: true,
+    courseId: true,
   }),
 });
 export type AddWeek = z.infer<typeof addWeekSchema>;

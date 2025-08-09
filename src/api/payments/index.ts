@@ -1,5 +1,5 @@
 import z from "zod";
-import { api } from "../clients";
+import { api } from "../utils";
 import { parseResponse } from "@/schemas";
 import {
   initializePaymentResult,

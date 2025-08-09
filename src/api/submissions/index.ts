@@ -1,6 +1,6 @@
 import { parseResponse } from "@/schemas";
 import { assessmentSchema, type Assessment } from "../assments/schema";
-import { api } from "../clients";
+import { api } from "../utils";
 import {
   submissionSchema,
   updateSubmissionSchema,

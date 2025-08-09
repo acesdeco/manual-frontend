@@ -44,9 +44,9 @@ export const StudentsCourseCard: FC<Omit<CourseCardProps, "children">> = ({
   return (
     <CourseCard course={course}>
       <Link
-        to="/courses/$courseId/introduction"
+        to="/courses/$slug/introduction"
         params={{
-          courseId: course._id,
+          slug: course.slug,
         }}
         className="w-fit"
       >
@@ -62,9 +62,9 @@ export const InstructorCourseCard: FC<Omit<CourseCardProps, "children">> = ({
   return (
     <CourseCard course={course}>
       <Link
-        to="/courses/$courseId/introduction"
+        to="/dashboard/courses/$slug/edit"
         params={{
-          courseId: course._id,
+          slug: course.slug,
         }}
         className="w-fit"
       >

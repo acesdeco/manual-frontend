@@ -27,22 +27,31 @@ const locations = linkOptions([
   {
     label: "Courses",
     to: "/dashboard/courses",
+    role: "all",
   },
   {
     label: "Enrolled",
-    to: "/dashboard/enrolled" as never,
+    to: "/dashboard/enrolled",
+    role: "student",
   },
   {
     label: "Resources",
     to: "/dashboard/resources",
+    role: "student",
+  },
+  {
+    label: "Notifications",
+    to: "/dashboard/notifications" as never,
+    role: "instructor",
   },
 ]);
 
 function DashboardLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBottomUp, setIsBottomUp] = useState(false);
+  const { role } = Route.useRouteContext();
   return (
-    <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed">
+    <main className="w-[100vw] min-h-[100vh] bg-[#f9f9f9] flex flex-col /fixed">
       <header className="w-[100%] bg-white h-fit md:h-[15%] flex flex-row items-center py-5 justify-between bg-transparent px-10">
         <div className="left">
           <Link from={Route.fullPath} className="w-5" to="/dashboard/courses">
@@ -89,7 +98,7 @@ function DashboardLayout() {
         </div>
       </header>
       <hr />
-      <section className="h-[85%] bg-transparent w-6/6 px-4 md:px-10 gap-2 mt-4 md:mt-10 flex flex-col md:flex-row justify-between items-start relative w-[100%] ">
+      <section className="bg-transparent w-6/6 px-4 md:px-10 gap-2 mt-4 md:mt-10 flex flex-col md:flex-row justify-between items-start relative w-[100%]">
         <aside
           className={`absolute md:static bg-white px-3 z-50 pt-10 h-full duration-500 w-[300px] ${
             isMenuOpen
@@ -98,11 +107,13 @@ function DashboardLayout() {
           }`}
         >
           <ul className="w-[100%]">
-            {locations.map((location) => (
-              <li className="w-full" key={location.label}>
-                <NavLink {...location} />
-              </li>
-            ))}
+            {locations
+              .filter((link) => link.role === "all" || link.role === role)
+              .map((location) => (
+                <li className="w-full" key={location.label}>
+                  <NavLink {...location} />
+                </li>
+              ))}
           </ul>
         </aside>
 
@@ -124,7 +135,7 @@ function DashboardLayout() {
             <IoIosArrowUp size={20} color="#ffffff" />
           )}
         </button>
-        <aside
+        {/* <aside
           className={clsx(
             "absolute md:static bg-gray-600 px-3 z-40 pt-10 h-fit duration-500 w-full md:w-1/6",
             isBottomUp
@@ -133,7 +144,7 @@ function DashboardLayout() {
           )}
         >
           <DatePicker />
-        </aside>
+        </aside> */}
       </section>
     </main>
   );

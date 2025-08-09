@@ -11,6 +11,12 @@ const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
   const [quillEditor, setQuillEditor] = useState<unknown>(null); // Store Quill instance in state
 
   useEffect(() => {
+    if (quillRef.current) {
+      quillRef.current.innerHTML = value;
+    }
+  }, [value]);
+
+  useEffect(() => {
     if (typeof window !== "undefined" && !quillEditor) {
       import("quill")
         .then((module) => {
@@ -63,7 +69,7 @@ const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
     return () => {
       if (quillEditor) {
         // quillEditor.off("text-change");
-        // setQuillEditor(null);
+        setQuillEditor(null);
       }
     };
   }, [quillEditor, value, onChange]); // Only run effect when `quillEditor`, `value`, or `onChange` changes

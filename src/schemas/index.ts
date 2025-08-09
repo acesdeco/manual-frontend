@@ -21,8 +21,8 @@ export const passwordSchema = z
 export const userSchema = z.object({
   _id: z.string(),
   email: z.email(),
-  firstName: z.string(),
-  lastName: z.string(),
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
   registrationNumber: registrationNumberSchema,
   courses: z.array(z.string()).optional(),
   role: z.enum(["student", "instructor"]),
@@ -30,38 +30,56 @@ export const userSchema = z.object({
 export type User = z.infer<typeof userSchema>;
 export type UserRole = User["role"];
 
-export const courseSchema = z.object({
+export const weekSchema = z.object({
   _id: z.string(),
-  title: z.string(),
-  code: z.string(),
-  description: z.string(),
-  instructor: z.object({
-    name: z.string(),
-    id: z.string(),
-  }),
-  courseImage: z.url().optional(),
-  coursePrice: z.number(),
-  slug: z.string(),
-  introduction: z.object({
-    video: z.url(),
-    notes: z.string(),
-  }),
-  weeks: z.record(
-    z.number(),
-    z.object({
-      _id: z.string(),
-      video: z.url(),
-      assessment: z.string(),
-      notes: z.string(),
-      topic: z.string(),
-      weekNumber: z.number(),
-    }),
-  ),
-  published: z.boolean(),
+  video: z.url().or(z.string()),
+  // assessment: z.string(),
+  notes: z.string(),
+  topic: z.string(),
+  weekNumber: z.number(),
+  courseId: z.string(),
 });
-export const weekSchema = courseSchema.shape.weeks.valueType;
-export type Course = z.infer<typeof courseSchema>;
 export type Week = z.infer<typeof weekSchema>;
+export const courseSchema = z
+  .object({
+    _id: z.string(),
+    title: z.string(),
+    code: z.string(),
+    description: z.string(),
+    instructor: z.object({
+      name: z.string(),
+      id: z.string(),
+    }),
+    courseImage: z.url(),
+    coursePrice: z.number(),
+    weeks: z.record(z.string(), weekSchema).optional(),
+    published: z.boolean(),
+    // slug: z.string(),
+    introduction: z
+      .object({
+        video: z.url(),
+        topic: z.string(),
+        notes: z.string(),
+      })
+      .optional(),
+    // .optional(),
+    // weeks: z.record(
+    //   z.number(),
+    //   z.object({
+    //     _id: z.string(),
+    //     video: z.url(),
+    //     assessment: z.string(),
+    //     notes: z.string(),
+    //     topic: z.string(),
+    //     weekNumber: z.number(),
+    //   }),
+    // ),
+  })
+  .transform((data) => ({
+    ...data,
+    slug: data.title.toLowerCase().replaceAll(" ", "-"),
+  }));
+export type Course = z.infer<typeof courseSchema>;
 
 export function parseResponse<V, T>(
   value: V,
@@ -73,14 +91,3 @@ export function parseResponse<V, T>(
     })
     .parse(value).data;
 }
-
-export const userCookieSchema = z.object({
-  token: z.jwt(),
-  user: z.string(),
-  email: z.email(),
-  registrationNumber: registrationNumberSchema,
-  fullName: z.string(),
-  role: userSchema.shape.role,
-  courses: z.string().array().default([]),
-});
-export type UserCookie = z.infer<typeof userCookieSchema>;

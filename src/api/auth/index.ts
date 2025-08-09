@@ -1,5 +1,6 @@
-import { parseResponse, userCookieSchema } from "@/schemas";
-import { api } from "../clients";
+import { authResultSchema } from "@/functions/auth";
+import { parseResponse } from "@/schemas";
+import { api } from "../utils";
 import { updateUserSchema, type UpdateUserInput } from "./schema";
 
 export * from "./schema";
@@ -12,5 +13,5 @@ export async function updateUser(input: UpdateUserInput) {
       json: input.data,
     })
     .json();
-  return parseResponse(res, userCookieSchema);
+  return parseResponse(res, authResultSchema);
 }

@@ -9,11 +9,13 @@ type AuthOutletProps = {
 const AuthOutlet: FC<AuthOutletProps> = ({ img }) => {
   return (
     <>
-      <section className="md:w-1/2 w-full h-full pt-10">
-        <Outlet />
-      </section>
-      <section className="w-1/2 hidden md:flex flex-col justify-center items-center">
-        <img {...img} className="w-3/5" />
+      <section className="h-full flex items-center justify-center">
+        <section className="md:w-1/2 w-full">
+          <Outlet />
+        </section>
+        <section className="w-1/2 hidden md:flex flex-col justify-center items-center">
+          <img {...img} className="w-3/5" />
+        </section>
       </section>
     </>
   );

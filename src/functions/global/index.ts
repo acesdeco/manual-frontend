@@ -4,7 +4,6 @@ import { createServerFn } from "@tanstack/react-start";
 
 export const redirectUsers = createServerFn({ method: "GET" }).handler(() => {
   if (hasUserCookie()) {
-    // eslint-disable-next-line @typescript-eslint/only-throw-error
     throw redirect({
       to: "/dashboard/courses",
     });
@@ -13,9 +12,8 @@ export const redirectUsers = createServerFn({ method: "GET" }).handler(() => {
 
 export const redirectGuests = createServerFn({ method: "GET" }).handler(() => {
   if (!hasUserCookie()) {
-    // eslint-disable-next-line @typescript-eslint/only-throw-error
     throw redirect({
-      to: "/auth/login/students",
+      to: "/login",
     });
   }
 });

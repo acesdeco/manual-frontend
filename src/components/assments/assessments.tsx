@@ -1,12 +1,14 @@
 import type { Assessment as TAssessment } from "@/api/assments/schema";
 import { assessmentByWeekOptions } from "@/queries";
+import type { Course, Week } from "@/schemas";
 import { useQuery } from "@tanstack/react-query";
 import { useState, type FC } from "react";
 import { Loader } from "../global/loader";
 import AssessmentForm from "./assessment-form";
 
 interface AssessmentsProps {
-  weekId: string;
+  weekId: Week["_id"];
+  courseId: Course["_id"];
 }
 
 type Mode =
@@ -14,7 +16,7 @@ type Mode =
   | { state: "new" }
   | { state: "view" };
 
-export const Assessment: FC<AssessmentsProps> = ({ weekId }) => {
+export const Assessment: FC<AssessmentsProps> = ({ weekId, courseId }) => {
   const {
     data: assessments,
     isPending: loadingAssesments,
@@ -37,10 +39,26 @@ export const Assessment: FC<AssessmentsProps> = ({ weekId }) => {
 
   switch (mode.state) {
     case "edit": {
-      return <AssessmentForm initialFormState={mode.assessment} />;
+      return (
+        <AssessmentForm
+          weekId={weekId}
+          courseId={courseId}
+          initialFormState={{
+            ...mode.assessment,
+            week_id: weekId,
+            courseId: courseId,
+          }}
+        />
+      );
     }
     case "new": {
-      return <AssessmentForm initialFormState={null} />;
+      return (
+        <AssessmentForm
+          weekId={weekId}
+          courseId={courseId}
+          initialFormState={null}
+        />
+      );
     }
     case "view": {
       return (

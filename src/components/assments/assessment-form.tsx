@@ -5,10 +5,12 @@ import {
   type Question,
 } from "@/api/assments/schema";
 import { cn } from "@/lib/utils";
+import type { Course, Week } from "@/schemas";
 import type { RequireFields } from "@/types";
+import { responseErrorToast } from "@/utils/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { getRouteApi, useNavigate, useRouter } from "@tanstack/react-router";
 import { nanoid } from "nanoid";
 import { useCallback, type ComponentProps, type FC } from "react";
 import { useForm } from "react-hook-form";
@@ -48,12 +50,21 @@ const CustomInput: FC<RequireFields<ComponentProps<"input">, "id">> = ({
 
 type AssessmentFormProps = {
   initialFormState: NewAssment | null;
+  weekId: Week["_id"];
+  courseId: Course["_id"];
 };
 
-const AssessmentForm: FC<AssessmentFormProps> = ({ initialFormState }) => {
+const editRoute = getRouteApi("/_app/dashboard/courses/$slug/edit");
+
+const AssessmentForm: FC<AssessmentFormProps> = ({
+  initialFormState,
+  weekId,
+  courseId,
+}) => {
   const router = useRouter();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { user } = editRoute.useRouteContext();
 
   const goBack = useCallback(
     () =>
@@ -73,6 +84,9 @@ const AssessmentForm: FC<AssessmentFormProps> = ({ initialFormState }) => {
       questions: [],
       startTime: "",
       title: "",
+      week_id: weekId,
+      courseId,
+      created_by: user.user,
     },
   });
 
@@ -92,7 +106,7 @@ const AssessmentForm: FC<AssessmentFormProps> = ({ initialFormState }) => {
     },
     onError(error, { title }) {
       console.error("Error creating assessment:", error);
-      toast.error("There was a problem with your request", {
+      responseErrorToast(error, {
         id: title,
       });
     },
@@ -100,9 +114,6 @@ const AssessmentForm: FC<AssessmentFormProps> = ({ initialFormState }) => {
 
   return (
     <section>
-      <button className="text-blue-600 underline mb-2" onClick={goBack}>
-        Back
-      </button>
       <h1 className="text-2xl font-semibold mb-2">Create Assessment</h1>
       <Form {...form}>
         <form

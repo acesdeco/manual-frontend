@@ -1,4 +1,4 @@
-import { paymentCallbackFn } from "@/functions/payments/students";
+import { paymentCallbackFn } from "@/functions/payments";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";

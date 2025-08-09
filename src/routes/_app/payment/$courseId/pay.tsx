@@ -1,7 +1,7 @@
 import {
   checkExistingPaymentFn,
   coursePaymentDetailsFn,
-} from "@/functions/payments/students";
+} from "@/functions/payments";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_app/payment/$courseId/pay")({

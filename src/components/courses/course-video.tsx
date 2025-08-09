@@ -18,10 +18,14 @@ export const CourseVideo: FC<CourseVideoProps> = ({
   return (
     <div className="video-component">
       <div className="">
+        {/* NOTE TOPIC */}
         <h2 className="text-gray-600 font-semibold text-xl mt-1 mb-4">
-          {content.topic}
+          Introductory Video
         </h2>
-        <p className="text-gray-600 my-4">{content.assessment}</p>
+        {/* NOTE DESCRIPTION */}
+        <p className="text-gray-600 my-4">
+          Introduction to This Particular Course
+        </p>
       </div>
       <div className="video-wrapper">
         <iframe

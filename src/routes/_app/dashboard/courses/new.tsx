@@ -7,14 +7,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { instructorOnlyFn } from "@/functions/global";
 import {
   iCreateCourseFn,
   iCreateCourseSchema,
   type ICreateCourse,
-} from "@/functions/instructor/courses";
+} from "@/functions/courses";
+import { instructorOnlyFn } from "@/functions/global";
 import { cn } from "@/lib/utils";
 import type { RequireFields } from "@/types";
+import { responseErrorMessage } from "@/utils/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -63,7 +64,7 @@ function RouteComponent() {
       coursePrice: 0,
       instructor: {
         id: user.user,
-        name: "",
+        name: user.fullName,
       },
       title: "",
     },
@@ -83,7 +84,7 @@ function RouteComponent() {
     },
     onError(error, { data }) {
       console.error("Error creating instructor's course:", error);
-      toast.error("Sorry, an error occured", {
+      toast.error(responseErrorMessage(error), {
         id: data.code,
       });
     },
@@ -145,7 +146,14 @@ function RouteComponent() {
                       </CustomLabel>
                     </FormLabel>
                     <FormControl>
-                      <CustomInput {...field} id={field.name} type="number" />
+                      <CustomInput
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(e.currentTarget.valueAsNumber)
+                        }
+                        id={field.name}
+                        type="number"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -1,9 +1,7 @@
 import { coursesApi } from "@/api";
 import union from "@/assets/images/Union.png?url";
 import { NavLink } from "@/components/global/nav-link";
-import { studentOnlyFn } from "@/functions/global";
 import { authMiddleware } from "@/middleware";
-import { assessmentByWeekOptions } from "@/queries";
 import {
   createFileRoute,
   Link,
@@ -24,17 +22,18 @@ const courseLoader = createServerFn({ method: "GET" })
   .validator(
     zodValidator(
       z.object({
-        courseId: z.string(),
+        slug: z.string(),
       }),
     ),
   )
   .middleware([authMiddleware])
-  .handler(async ({ data, context: { user } }) => {
+  .handler(async ({ data: { slug }, context: { user } }) => {
     const [course, userCourses] = await Promise.all([
-      coursesApi.getCourse(data.courseId),
-      coursesApi.getUsersEnrolledCourseIds(user.user),
+      coursesApi.getCourseBySlug(slug),
+      coursesApi.getUsersEnrolledCourses(user.user),
     ]);
-    if (!userCourses.includes(data.courseId)) return "NotEnrolled";
+    if (!userCourses.find(({ slug }) => course.slug === slug))
+      return "NotEnrolled";
     return {
       course,
       studentInfo: {
@@ -47,24 +46,22 @@ const courseLoader = createServerFn({ method: "GET" })
 
 class NotEnrolledError extends Error {}
 
-export const Route = createFileRoute("/_app/courses/$courseId")({
+export const Route = createFileRoute("/_app/courses/$slug")({
   component: CourseLayout,
-  beforeLoad: async () => await studentOnlyFn(),
-  loader: async ({ params, context }) => {
+  pendingComponent: () => "Loadng",
+  // beforeLoad: async () => await studentOnlyFn(),
+  loader: async ({ params }) => {
     const result = await courseLoader({
       data: params,
     });
     if (result === "NotEnrolled") {
       throw new NotEnrolledError();
     }
-    void context.queryClient.prefetchQuery(
-      assessmentByWeekOptions(result.course._id),
-    );
     return result;
   },
   head: ({ loaderData, params }) => ({
     meta: [
-      { title: loaderData?.course.title ?? `Course ${params.courseId}` },
+      { title: loaderData?.course.title ?? `Course ${params.slug}` },
       { name: "description", content: "View Courses" },
     ],
   }),
@@ -102,9 +99,9 @@ function NotEnrolled({ error }: ErrorComponentProps) {
 function CourseLayout() {
   const { course } = Route.useLoaderData();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const locations = Object.keys(course.weeks).map((week) =>
+  const locations = Object.keys(course.weeks ?? {}).map((week) =>
     linkOptions({
-      to: "/courses/$courseId/$week",
+      to: "/courses/$slug/$week",
       params: {
         week: week,
       },

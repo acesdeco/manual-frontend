@@ -1,10 +1,11 @@
-import { api } from "@/api/clients";
+import { api, parseApiResponse } from "@/api/utils";
 import { instructorMiddleware } from "@/middleware";
-import { courseSchema, parseResponse } from "@/schemas";
-import { redirect } from "@tanstack/react-router";
+import { courseSchema } from "@/schemas";
 import { createServerFn } from "@tanstack/react-start";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { iCreateCourseSchema } from "./schema";
+import { redirect } from "@tanstack/react-router";
+import { handleServerFnError } from "@/utils/server";
 
 export * from "./schema";
 
@@ -12,24 +13,26 @@ export const iGetCoursesByUserFn = createServerFn({ method: "GET" })
   .middleware([instructorMiddleware])
   .handler(async ({ context }) => {
     const res = await api.get(`course/creator/${context.user.user}`).json();
-    return parseResponse(res, courseSchema.array());
+    return parseApiResponse(res, courseSchema.array());
   });
 
 export const iCreateCourseFn = createServerFn({ method: "POST" })
   .middleware([instructorMiddleware])
   .validator(zodValidator(iCreateCourseSchema))
   .handler(async ({ data }) => {
-    const res = await api
-      .post("course", {
-        json: data,
-      })
-      .json();
-    const course = parseResponse(res, courseSchema);
-    // eslint-disable-next-line @typescript-eslint/only-throw-error
+    try {
+      await api
+        .post("course", {
+          json: data,
+        })
+        .json();
+    } catch (error) {
+      return handleServerFnError(error);
+    }
     throw redirect({
       to: "/dashboard/courses/$slug/edit",
       params: {
-        slug: course.slug,
+        slug: data.title.toLowerCase().replaceAll(" ", "-"),
       },
       from: "/dashboard/courses/new",
     });

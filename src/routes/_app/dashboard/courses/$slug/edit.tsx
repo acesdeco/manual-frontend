@@ -8,6 +8,7 @@ import Toggle from "@/components/global/toggle";
 import { SubmissionFlow } from "@/components/submissions/submission-flow";
 import { instructorOnlyFn } from "@/functions/global";
 import { assessmentByWeekOptions } from "@/queries";
+import { responseErrorToast } from "@/utils/client";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -52,7 +53,7 @@ function RouteComponent() {
   const { week: weekSearchParam } = Route.useSearch();
   const [isWeeksOpen, setIsWeeksOpen] = useState(true);
 
-  const week = useMemo(() => {
+  const activeWeek = useMemo(() => {
     const newWeek = weeks[weekSearchParam - 1] ?? null;
     if (newWeek) {
       void queryClient.prefetchQuery(assessmentByWeekOptions(newWeek._id));
@@ -78,8 +79,9 @@ function RouteComponent() {
 
   const { mutate: updateWeek, isPending: isUpdatingWeek } = useMutation({
     mutationFn: async (input: UpdateWeek) => {
-      if (!week) return;
+      if (!activeWeek) return;
       await coursesApi.updateWeek(input);
+      // await router.invalidate;
       await navigate({
         to: ".",
         search: {
@@ -93,6 +95,7 @@ function RouteComponent() {
     },
   });
 
+  // TODO loading toast
   const { mutate: createWeek, isPending: isCreatingWeek } = useMutation({
     mutationFn: async () => {
       const result = await coursesApi.addWeek({
@@ -113,7 +116,7 @@ function RouteComponent() {
     },
     onError(error) {
       console.error("Error adding week:", error);
-      toast.error("Unable to add new week");
+      responseErrorToast(error);
     },
   });
 
@@ -123,10 +126,10 @@ function RouteComponent() {
   );
 
   return (
-    <div className=" w-[100vw] h-[100vh] fixed overflow-y-auto">
+    <div className=" w-[100vw] h-[100vh] /fixed overflow-y-auto">
       <HeaderComp />
       <Overloader isLoading={isLoading} />
-      <section className="bg-blue-200 text-black w-full h-[90%] fixed pb-0">
+      <section className="bg-blue-200 text-black w-full h-[90%] /fixed pb-0">
         <div className="bg-[#0000ff] justify-between flex items-center text-white px-10 py-4">
           <div className="flex items-center">
             <span className="cursor-pointer">
@@ -168,7 +171,7 @@ function RouteComponent() {
                 <div
                   className={clsx(
                     "weeks flex flex-col duration-300 gap-3",
-                    isWeeksOpen ? "h-full" : "h-0 overflow-hidden",
+                    // isWeeksOpen ? "h-full" : "h-0 overflow-hidden",
                   )}
                 >
                   {weeks.length < 1 ? (
@@ -220,13 +223,15 @@ function RouteComponent() {
               ))}
             </div>
             <div className="mt-4 flex flex-col gap-3">
-              {activeTab === "materials" && week && (
-                <CourseEditor submit={updateWeek} week={week} />
+              {activeTab === "materials" && activeWeek && (
+                <CourseEditor submit={updateWeek} week={activeWeek} />
               )}
-              {activeTab === "assessment" && <Assessment weekId={week._id} />}
+              {activeTab === "assessment" && (
+                <Assessment courseId={course._id} weekId={activeWeek._id} />
+              )}
               {activeTab === "submissions" && (
                 <div>
-                  <SubmissionFlow weekId={week._id} />
+                  <SubmissionFlow weekId={activeWeek._id} />
                 </div>
               )}
             </div>

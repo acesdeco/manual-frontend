@@ -4,11 +4,11 @@ import {
   StudentsCourseCard,
 } from "@/components/courses/course-card";
 import Button from "@/components/global/button";
-import { iGetCoursesByUserFn } from "@/functions/instructor/courses";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import notFoundImg from "@/assets/images/notfound.png";
 import { Fragment } from "react/jsx-runtime";
 import clsx from "clsx";
+import { iGetCoursesByUserFn } from "@/functions/courses";
 
 export const Route = createFileRoute("/_app/dashboard/courses/")({
   component: RouteComponent,
@@ -46,7 +46,7 @@ function RouteComponent() {
           courses.map((course) => {
             const Card =
               role === "instructor" ? InstructorCourseCard : StudentsCourseCard;
-            return <Card course={course} key={course._id} />;
+            return <Card course={course} key={course.slug} />;
           })
         ) : (
           <div className="col-span-2 text-center flex flex-col items-center">

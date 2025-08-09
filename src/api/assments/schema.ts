@@ -1,5 +1,6 @@
 // FIXME I believe the questions are theory, not subjective
 
+import { courseSchema, userSchema, weekSchema } from "@/schemas";
 import z from "zod";
 
 const baseQuestion = {
@@ -53,17 +54,19 @@ export const questionSchema = z.discriminatedUnion("question_type", [
 
 export type Question = z.infer<typeof questionSchema>;
 export const assessmentSchema = z.object({
-  _id: z.string(),
-  id: z.string(),
+  _id: z.string().optional(),
+  id: z.string().optional(),
   title: z.string(),
-  description: z.string(),
-  courseId: z.string(),
-  week_id: z.string(),
-  created_by: z.string(),
+  description: z.string().optional(),
+  // courseId: z.string(),
+  // week_id: z.string(),
+  created_by: userSchema.shape._id,
   questions: questionSchema.array(),
-  dueDate: z.string(),
+  // dueDate: z.string(),
   startTime: z.string(),
   endTime: z.string(),
+  created_at: z.iso.datetime().optional(),
+  updated_at: z.iso.datetime().optional(),
 });
 export type Assessment = z.infer<typeof assessmentSchema>;
 
@@ -75,7 +78,10 @@ export const newAssessmentSchema = z.object({
     startTime: true,
     endTime: true,
     questions: true,
+    created_by: true,
   }).shape,
+  week_id: weekSchema.shape._id,
+  courseId: courseSchema.in.shape._id,
 });
 export type NewAssment = z.infer<typeof newAssessmentSchema>;
 

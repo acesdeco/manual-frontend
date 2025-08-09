@@ -16,10 +16,10 @@ const tabs = ["notes", "slides", "video"] as const;
 
 export default function CourseEditor({ week, submit }: CourseEditorProps) {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("notes");
-  const [weekTopicInp, setWeekTopicInp] = useState("");
-  const [weekNotesInp, setWeekNotesInp] = useState("");
+  const [weekTopicInp, setWeekTopicInp] = useState(week.topic);
+  const [weekNotesInp, setWeekNotesInp] = useState(week.notes);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [videoUrl, setVideoUrl] = useState<string>(week.video);
 
   const handleEditorChange = (change: string) => {
     setWeekNotesInp(change);

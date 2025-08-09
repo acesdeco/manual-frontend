@@ -13,11 +13,11 @@ function App() {
           Welcome to Computer Engineering UNIUYO
         </p>
         <p className="text-center space-x-4">
-          <Link to="/auth/login/students" from={Route.fullPath}>
-            Student?
+          <Link to="/login" from={Route.fullPath}>
+            Log In?
           </Link>
-          <Link to="/auth/login/instructor" from={Route.fullPath}>
-            Instructor?
+          <Link to="/signup" from={Route.fullPath}>
+            Sign Up?
           </Link>
         </p>
       </header>

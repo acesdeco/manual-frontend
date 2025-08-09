@@ -1,7 +1,6 @@
 import { authApi, coursesApi, paymentsApi } from "@/api";
 import { setUserCookie } from "@/helpers/server/cookies";
 import { studentsMiddleware } from "@/middleware";
-import { courseSchema } from "@/schemas";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -35,7 +34,7 @@ export const paymentCallbackFn = createServerFn({ method: "GET" })
   });
 
 const courseIdSchema = z.object({
-  courseId: courseSchema.shape._id,
+  courseId: z.string(),
 });
 
 export const checkExistingPaymentFn = createServerFn({ method: "GET" })
@@ -44,7 +43,6 @@ export const checkExistingPaymentFn = createServerFn({ method: "GET" })
   .handler(({ data: { courseId }, context: { user } }) => {
     // check if already paid
     if (user.courses.includes(courseId)) {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw redirect({
         to: "/courses/$courseId",
         params: {

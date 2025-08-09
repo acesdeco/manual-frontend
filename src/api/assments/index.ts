@@ -1,5 +1,5 @@
 import { parseResponse, weekSchema, type Week } from "@/schemas";
-import { api } from "../clients";
+import { api, parseApiResponse } from "../utils";
 import {
   assessmentSchema,
   newAssessmentSchema,
@@ -34,11 +34,11 @@ export async function getAssessmentsByWeek(
 ) {
   weekSchema.shape._id.parse(weekId);
   const res = await api
-    .get(`assessment/wek/${weekId}`, {
+    .get(`assessment/week/${weekId}`, {
       signal,
     })
     .json();
-  return assessmentSchema.array().parse(res);
+  return parseApiResponse(res, assessmentSchema.array());
 }
 
 export async function submitAssessment(input: SubmitAssessmentInput) {

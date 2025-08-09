@@ -1,6 +1,6 @@
-import { userCookieSchema, userSchema, type UserCookie } from "@/schemas";
+import { userCookieSchema, type UserCookie } from "@/functions/auth";
+import { type User } from "@/schemas";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
-import type z from "zod";
 
 const secondsIn30Days = 60 * 60 * 24 * 30;
 function cookieOptions() {
@@ -15,7 +15,7 @@ function cookieOptions() {
 }
 
 export function setUserCookie(
-  role: z.infer<typeof userSchema.shape.role>,
+  role: User["role"],
   cookie: Omit<UserCookie, "role">,
 ) {
   setCookie(

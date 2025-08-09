@@ -46,6 +46,12 @@ export default defineConfig([
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-argument": "off",
       "@typescript-eslint/no-deprecated": "warn",
+      "@typescript-eslint/only-throw-error": [
+        "error",
+        {
+          allow: ["Redirect"],
+        },
+      ],
     },
   },
   globalIgnores([
