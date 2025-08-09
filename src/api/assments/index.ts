@@ -28,6 +28,13 @@ export async function createAssessment(input: NewAssment) {
   });
 }
 
+export async function updateAssessment(input: NewAssment) {
+  newAssessmentSchema.parse(input);
+  await api.put(`assessment/${input._id}`, {
+    json: input,
+  });
+}
+
 export async function getAssessmentsByWeek(
   weekId: Week["_id"],
   signal?: AbortSignal,

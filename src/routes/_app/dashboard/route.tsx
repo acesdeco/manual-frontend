@@ -135,7 +135,7 @@ function DashboardLayout() {
             <IoIosArrowUp size={20} color="#ffffff" />
           )}
         </button>
-        {/* <aside
+        <aside
           className={clsx(
             "absolute md:static bg-gray-600 px-3 z-40 pt-10 h-fit duration-500 w-full md:w-1/6",
             isBottomUp
@@ -144,7 +144,7 @@ function DashboardLayout() {
           )}
         >
           <DatePicker />
-        </aside> */}
+        </aside>
       </section>
     </main>
   );

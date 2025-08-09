@@ -10,9 +10,9 @@ import type { RequireFields } from "@/types";
 import { responseErrorToast } from "@/utils/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getRouteApi, useNavigate, useRouter } from "@tanstack/react-router";
+import { getRouteApi } from "@tanstack/react-router";
 import { nanoid } from "nanoid";
-import { useCallback, type ComponentProps, type FC } from "react";
+import { type ComponentProps, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { BiPlus } from "react-icons/bi";
 import { toast } from "sonner";
@@ -52,6 +52,7 @@ type AssessmentFormProps = {
   initialFormState: NewAssment | null;
   weekId: Week["_id"];
   courseId: Course["_id"];
+  goBack?: () => void;
 };
 
 const editRoute = getRouteApi("/_app/dashboard/courses/$slug/edit");
@@ -60,21 +61,10 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
   initialFormState,
   weekId,
   courseId,
+  goBack,
 }) => {
-  const router = useRouter();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = editRoute.useRouteContext();
-
-  const goBack = useCallback(
-    () =>
-      router.history.canGoBack()
-        ? router.history.back()
-        : void navigate({
-            to: "/dashboard/courses",
-          }),
-    [navigate, router.history],
-  );
 
   const form = useForm<NewAssment>({
     resolver: zodResolver(newAssessmentSchema),
@@ -90,22 +80,27 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
     },
   });
 
-  const { mutate } = useMutation({
-    mutationFn: assessmentsApi.createAssessment,
-    onMutate({ title }) {
-      toast.loading("Creating assessment", {
+  const { mutate, isPending } = useMutation({
+    mutationFn: initialFormState
+      ? assessmentsApi.updateAssessment
+      : assessmentsApi.createAssessment,
+    onMutate({ title, _id }) {
+      toast.loading(`${_id ? "Creating" : "Updating"} assessment"`, {
         id: title,
       });
     },
-    async onSuccess(_, { title }) {
-      toast.success("Assessment created successfully!", {
+    async onSuccess(_, { title, _id }) {
+      toast.success(`Assessment ${_id ? "updated" : "created"} successfully!`, {
         id: title,
       });
       await queryClient.invalidateQueries();
-      goBack();
+      goBack?.();
     },
-    onError(error, { title }) {
-      console.error("Error creating assessment:", error);
+    onError(error, { title, _id }) {
+      console.error(
+        `Error ${_id ? "updating" : "creating"} assessment:"`,
+        error,
+      );
       responseErrorToast(error, {
         id: title,
       });
@@ -250,6 +245,7 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
           <button
             className="py-1 px-4 w-fit bg-blue-600 text-white rounded-md"
             type="submit"
+            disabled={isPending}
           >
             Submit
           </button>

@@ -16,6 +16,8 @@ function Week() {
     <main className="bg-white w-full h-[90%] p-4 overflow-auto">
       <CourseVideo
         user={studentInfo}
+        // TODO
+        // @ts-expect-error we shall revisit this
         content={course.weeks[+week]}
         weekId={week}
       />

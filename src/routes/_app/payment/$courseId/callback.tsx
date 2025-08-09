@@ -41,7 +41,10 @@ function Callback() {
             </p>
             <Link
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-              to="/courses/$courseId/introduction"
+              to="/courses/$slug/introduction"
+              params={{
+                slug: course.slug,
+              }}
               from={Route.fullPath}
             >
               Go to Course

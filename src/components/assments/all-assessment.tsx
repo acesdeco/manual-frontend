@@ -7,7 +7,7 @@ import { useState, type FC } from "react";
 import SubmitAssessment from "./submit-assessment";
 
 interface AllAssessmentsProps {
-  // weekId: Week["_id"];
+  weekId: Week["_id"];
   user: Student;
 }
 

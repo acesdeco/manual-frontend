@@ -1,6 +1,7 @@
 import { authApi, coursesApi, paymentsApi } from "@/api";
 import { setUserCookie } from "@/helpers/server/cookies";
 import { studentsMiddleware } from "@/middleware";
+import { courseSchema } from "@/schemas";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -12,7 +13,7 @@ export const paymentCallbackFn = createServerFn({ method: "GET" })
     zodValidator(
       z.object({
         reference: z.string(),
-        courseId: z.string(),
+        courseId: courseSchema.in.shape._id,
       }),
     ),
   )
@@ -33,30 +34,34 @@ export const paymentCallbackFn = createServerFn({ method: "GET" })
     return { course, txState };
   });
 
-const courseIdSchema = z.object({
+const courseSlugSchema = z.object({
   courseId: z.string(),
 });
 
 export const checkExistingPaymentFn = createServerFn({ method: "GET" })
-  .validator(zodValidator(courseIdSchema))
+  .validator(zodValidator(courseSlugSchema))
   .middleware([studentsMiddleware])
-  .handler(({ data: { courseId }, context: { user } }) => {
+  .handler(async ({ data, context: { user } }) => {
+    const enrolledCourses = await coursesApi.getUsersEnrolledCourses(user.user);
     // check if already paid
-    if (user.courses.includes(courseId)) {
+    const target = enrolledCourses.find(
+      (course) => course._id === data.courseId,
+    );
+    if (target) {
       throw redirect({
-        to: "/courses/$courseId",
+        to: "/courses/$slug/introduction",
         params: {
-          courseId,
+          slug: target.slug,
         },
       });
     }
   });
 
 export const coursePaymentDetailsFn = createServerFn({ method: "GET" })
-  .validator(courseIdSchema)
+  .validator(courseSlugSchema)
   .middleware([studentsMiddleware])
-  .handler(async ({ data: { courseId }, context: { user } }) => {
-    const course = await coursesApi.getCourse(courseId);
+  .handler(async ({ data, context: { user } }) => {
+    const course = await coursesApi.getCourse(data.courseId);
     const APP_URL =
       process.env.APP_URL ?? import.meta.baseURL ?? "http://localhost:5173";
     const transactionFee = course.coursePrice < 2500 ? 0 : 100;
@@ -64,9 +69,9 @@ export const coursePaymentDetailsFn = createServerFn({ method: "GET" })
     const cappedCharge = charge > 2000 ? 2000 : charge;
     const totalAmount = course.coursePrice + cappedCharge;
     const paymentData = await paymentsApi.initializePayment({
-      courseId,
+      courseId: data.courseId,
       amount: totalAmount,
-      callback_url: `${APP_URL}/payment/${courseId}/success`,
+      callback_url: `${APP_URL}/payment/${data.courseId}/success`,
       email: user.email,
       paymentDate: Date.now().toString(),
       status: "pending",

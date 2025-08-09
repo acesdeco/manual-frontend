@@ -11,9 +11,7 @@ export const Route = createFileRoute("/_app/payment/$courseId/pay")({
   },
   loader: async ({ params }) =>
     await coursePaymentDetailsFn({
-      data: {
-        courseId: params.courseId,
-      },
+      data: params,
     }),
 });
 

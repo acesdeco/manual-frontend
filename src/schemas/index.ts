@@ -52,7 +52,7 @@ export const courseSchema = z
     }),
     courseImage: z.url(),
     coursePrice: z.number(),
-    weeks: z.record(z.string(), weekSchema).optional(),
+    weeks: z.record(z.string(), weekSchema).or(weekSchema.array()).optional(),
     published: z.boolean(),
     // slug: z.string(),
     introduction: z

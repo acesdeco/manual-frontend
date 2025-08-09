@@ -1,10 +1,8 @@
 import {
   courseSchema,
   parseResponse,
-  userSchema,
   weekSchema,
-  type Course,
-  type User,
+  type Course
 } from "@/schemas";
 import z from "zod";
 import { api } from "../utils";
@@ -70,15 +68,6 @@ export async function getUsersEnrolledCourses(userId: string) {
   z.string().parse(userId);
   const res = await api.get(`users/courses/${userId}`).json();
   return parseResponse(res, courseSchema.array());
-}
-
-export async function getCoursesByUserId(userId: User["_id"]) {
-  userSchema.shape._id.parse(userId);
-  const [userCourses, allCourses] = await Promise.all([
-    getUsersEnrolledCourses(userId),
-    getAllCourses(),
-  ]);
-  return allCourses.filter((course) => userCourses.includes(course.slug));
 }
 
 export async function getCourse(courseId: string) {

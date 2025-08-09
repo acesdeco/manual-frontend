@@ -33,7 +33,7 @@ const courseLoader = createServerFn({ method: "GET" })
       coursesApi.getUsersEnrolledCourses(user.user),
     ]);
     if (!userCourses.find(({ slug }) => course.slug === slug))
-      return "NotEnrolled";
+      return course._id + ":";
     return {
       course,
       studentInfo: {
@@ -44,18 +44,17 @@ const courseLoader = createServerFn({ method: "GET" })
     };
   });
 
-class NotEnrolledError extends Error {}
-
 export const Route = createFileRoute("/_app/courses/$slug")({
   component: CourseLayout,
   pendingComponent: () => "Loadng",
+  errorComponent: NotEnrolled,
   // beforeLoad: async () => await studentOnlyFn(),
   loader: async ({ params }) => {
     const result = await courseLoader({
       data: params,
     });
-    if (result === "NotEnrolled") {
-      throw new NotEnrolledError();
+    if (typeof result === "string") {
+      throw new Error(result);
     }
     return result;
   },
@@ -65,11 +64,11 @@ export const Route = createFileRoute("/_app/courses/$slug")({
       { name: "description", content: "View Courses" },
     ],
   }),
-  errorComponent: NotEnrolled,
 });
 
 function NotEnrolled({ error }: ErrorComponentProps) {
-  if (!(error instanceof NotEnrolledError)) throw error;
+  if (!error.message.endsWith(":")) throw error;
+  const courseId = error.message.slice(0, error.message.length - 1);
   return (
     <main className="w-[100vw] h-[100vh] bg-[#f9f9f9] flex flex-col fixed p-4">
       <div className="flex flex-col items-center justify-center h-full">
@@ -82,9 +81,15 @@ function NotEnrolled({ error }: ErrorComponentProps) {
           the course content.
         </p>
         <Link
-          to={"/payment/$courseId/pay" as never}
+          to="/payment/$courseId/pay"
+          params={{
+            courseId,
+          }}
           mask={{
-            to: "/payment/$courseId/$" as never,
+            to: "/payment/$courseId/$",
+            params: {
+              courseId,
+            },
           }}
           from={Route.fullPath}
           className="bg-blue-600 text-white p-2 rounded-lg"

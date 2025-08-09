@@ -41,6 +41,11 @@ export const Assessment: FC<AssessmentsProps> = ({ weekId, courseId }) => {
     case "edit": {
       return (
         <AssessmentForm
+          goBack={() =>
+            setMode({
+              state: "view",
+            })
+          }
           weekId={weekId}
           courseId={courseId}
           initialFormState={{
@@ -54,6 +59,11 @@ export const Assessment: FC<AssessmentsProps> = ({ weekId, courseId }) => {
     case "new": {
       return (
         <AssessmentForm
+          goBack={() =>
+            setMode({
+              state: "view",
+            })
+          }
           weekId={weekId}
           courseId={courseId}
           initialFormState={null}
