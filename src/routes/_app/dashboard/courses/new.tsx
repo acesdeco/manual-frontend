@@ -15,7 +15,7 @@ import {
 import { instructorOnlyFn } from "@/functions/global";
 import { cn } from "@/lib/utils";
 import type { RequireFields } from "@/types";
-import { responseErrorMessage } from "@/utils/client";
+import { responseErrorToast } from "@/utils/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -67,6 +67,7 @@ function RouteComponent() {
         name: user.fullName,
       },
       title: "",
+      published: false,
     },
   });
   const createCourseFn = useServerFn(iCreateCourseFn);
@@ -84,7 +85,7 @@ function RouteComponent() {
     },
     onError(error, { data }) {
       console.error("Error creating instructor's course:", error);
-      toast.error(responseErrorMessage(error), {
+      responseErrorToast(error, {
         id: data.code,
       });
     },

@@ -1,5 +1,5 @@
 import z from "zod";
-import { api } from "../utils";
+import { api, parseApiResponse } from "../utils";
 import { parseResponse } from "@/schemas";
 import {
   initializePaymentResult,
@@ -23,5 +23,5 @@ export async function initializePayment(input: InitializePaymentInput) {
       json: input,
     })
     .json();
-  return parseResponse(res, initializePaymentResult);
+  return parseApiResponse(res, initializePaymentResult);
 }

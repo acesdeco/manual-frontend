@@ -50,7 +50,7 @@ export const courseSchema = z
       name: z.string(),
       id: z.string(),
     }),
-    courseImage: z.url(),
+    courseImage: z.url().optional(),
     coursePrice: z.number(),
     weeks: z.record(z.string(), weekSchema).or(weekSchema.array()).optional(),
     published: z.boolean(),

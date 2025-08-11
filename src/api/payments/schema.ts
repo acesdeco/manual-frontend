@@ -23,8 +23,10 @@ export const initializePaymentSchema = paymentSchema.omit({
   authorization_url: true,
 });
 
-export const initializePaymentResult = paymentSchema.omit({
-  callback_url: true,
+export const initializePaymentResult = z.object({
+  authorization_url: z.url(),
+  access_code: z.string(),
+  reference: z.string(),
 });
 
 export type InitializePaymentInput = z.infer<typeof initializePaymentSchema>;

@@ -71,7 +71,7 @@ export const coursePaymentDetailsFn = createServerFn({ method: "GET" })
     const paymentData = await paymentsApi.initializePayment({
       courseId: data.courseId,
       amount: totalAmount,
-      callback_url: `${APP_URL}/payment/${data.courseId}/success`,
+      callback_url: `${APP_URL}/payment/${data.courseId}/callback`,
       email: user.email,
       paymentDate: Date.now().toString(),
       status: "pending",
