@@ -30,9 +30,9 @@ const courseLoader = createServerFn({ method: "GET" })
   .handler(async ({ data: { slug }, context: { user } }) => {
     const [course, userCourses] = await Promise.all([
       coursesApi.getCourseBySlug(slug),
-      coursesApi.getUsersEnrolledCourses(user.user),
+      coursesApi.getUsersEnrolledCourseIds(user.user),
     ]);
-    if (!userCourses.find(({ slug }) => course.slug === slug))
+    if (!userCourses.find((courseId) => course._id === courseId))
       return course._id + ":";
     return {
       course,

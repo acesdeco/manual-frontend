@@ -18,6 +18,14 @@ export const Route = createFileRoute("/_app/payment/$courseId/callback")({
   ),
   loaderDeps: ({ search }) => search,
   loader: ({ params, deps }) => {
+    // return {
+    //   course: {
+
+    //   },
+    //   txState: {
+
+    //   }
+    // }
     return paymentCallbackFn({
       data: {
         courseId: params.courseId,

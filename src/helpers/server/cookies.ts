@@ -8,8 +8,8 @@ function cookieOptions() {
     httpOnly: true,
     path: "/",
     maxAge: secondsIn30Days,
-    sameSite: "strict",
-    secure: import.meta.env.PROD,
+    sameSite: import.meta.env.PROD ? "none" : undefined,
+    secure: import.meta.env.PROD || undefined,
     expires: new Date(Date.now() + 1000 * secondsIn30Days),
   } satisfies NonNullable<Parameters<typeof setCookie>[3]>;
 }
@@ -35,5 +35,6 @@ export function hasUserCookie() {
 export function getUserCookie() {
   const cookie = getCookie("user")!;
   const json = JSON.parse(cookie);
+  // console.log(json);
   return userCookieSchema.parse(json);
 }

@@ -62,7 +62,7 @@ export const iSignupSchema = z
 export type InstructorSignUp = z.infer<typeof iSignupSchema>;
 
 export const authResultSchema = z.object({
-  token: z.jwt(),
+  token: z.jwt().or(z.literal("")),
   user: z.string(),
   email: z.email(),
   registrationNumber: registrationNumberSchema.or(z.literal("")),

@@ -42,16 +42,17 @@ export const checkExistingPaymentFn = createServerFn({ method: "GET" })
   .validator(zodValidator(courseSlugSchema))
   .middleware([studentsMiddleware])
   .handler(async ({ data, context: { user } }) => {
-    const enrolledCourses = await coursesApi.getUsersEnrolledCourses(user.user);
-    // check if already paid
-    const target = enrolledCourses.find(
-      (course) => course._id === data.courseId,
+    const enrolledCourses = await coursesApi.getUsersEnrolledCourseIds(
+      user.user,
     );
+    // check if already paid
+    const target = enrolledCourses.find((course) => course === data.courseId);
     if (target) {
+      const targetCourse = await coursesApi.getCourse(target);
       throw redirect({
         to: "/courses/$slug/introduction",
         params: {
-          slug: target.slug,
+          slug: targetCourse.slug,
         },
       });
     }
@@ -71,7 +72,7 @@ export const coursePaymentDetailsFn = createServerFn({ method: "GET" })
     const paymentData = await paymentsApi.initializePayment({
       courseId: data.courseId,
       amount: totalAmount,
-      callback_url: `${APP_URL}/payment/${data.courseId}/callback`,
+      callback_url: new URL(`/payment/${data.courseId}/callback`, APP_URL).href,
       email: user.email,
       paymentDate: Date.now().toString(),
       status: "pending",

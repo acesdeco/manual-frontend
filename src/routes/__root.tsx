@@ -18,6 +18,9 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  // beforeLoad: ({ location }) => {
+  //   console.log("VISITING", location.pathname);
+  // },
   loader: async () => await getThemeServerFn(),
   component: RootComponent,
   head: () => ({
