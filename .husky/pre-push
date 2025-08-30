@@ -1,0 +1,2 @@
+echo "Running build before push to ensure code quality and catch errors early..."
+npm run build
