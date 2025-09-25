@@ -10,7 +10,7 @@ function App() {
       <header>
         <h1 className="text-4xl text-center font-bold mb-4">CPE Lab</h1>
         <p className="text-lg text-center text-foreground">
-          Welcome to Computer Engineering UNIUYO
+         Welcome to Modools
         </p>
         <p className="text-center space-x-4">
           <Link to="/login" from={Route.fullPath}>
