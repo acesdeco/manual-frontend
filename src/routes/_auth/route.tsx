@@ -12,7 +12,7 @@ function RouteComponent() {
       <header>
         <h1 className="text-4xl font-bold mb-4">CPE Lab</h1>
         <p className="text-lg text-muted-foreground">
-          Welcome to Computer Engineering UNIUYO
+          Modools
         </p>
       </header>
       <section className="h-full flex items-center justify-center [&_form]:space-y-4">
