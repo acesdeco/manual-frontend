@@ -8,6 +8,8 @@
     "*.js"
   ],
 
+  "exclude": [".vercel", ".nitro", ".tanstack", ".output", "node_modules"],
+
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",

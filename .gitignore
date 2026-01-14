@@ -12,3 +12,4 @@ count.txt
 count.txt
 tsconfig.tsbuild*
 note.*
+.vercel

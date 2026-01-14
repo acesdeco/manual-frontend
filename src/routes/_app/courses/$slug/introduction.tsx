@@ -1,83 +1,137 @@
-import AllAssessments from "@/components/assments/all-assessment";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
-import clsx from "clsx";
-import { useState } from "react";
+import { Suspense } from "react";
 
 export const Route = createFileRoute("/_app/courses/$slug/introduction")({
   component: Introduction,
+  head: () => ({
+    meta: [
+      { title: "Course Introduction" },
+      { name: "description", content: "Course introduction and overview" },
+    ],
+  }),
 });
 
 const courseLayout = getRouteApi("/_app/courses/$slug");
 
-const tabs = ["Notes", "Comments", "Assessments"] as const;
-
 function Introduction() {
-  const { course, studentInfo } = courseLayout.useLoaderData();
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("Notes");
+  const { course } = courseLayout.useLoaderData();
+
   return (
-    <main className="bg-white w-full h-[90%] p-4 overflow-auto">
-      <div className="video-component">
-        <div className="">
-          {/* NOTE TOPIC */}
-          <h2 className="text-gray-600 font-semibold text-xl mt-1 mb-4">
-            Introductory Video
-          </h2>
-          {/* NOTE DESCRIPTION */}
-          <p className="text-gray-600 my-4">
-            Introduction to This Particular Course
-          </p>
-        </div>
-        <div className="video-wrapper">
-          <iframe
-            width="100%"
-            height="400"
-            src={course.introduction?.video ?? ""}
-            title={course.introduction?.topic ?? ""}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="rounded-xl"
-          />
-        </div>
-        <div
-          className={
-            activeTab === "Assessments"
-              ? "w-full h-full fixed top-0 bg-white transform fade-in-bottom"
-              : "tab-content"
-          }
-        >
-          <div className="my-4">
-            {tabs.map((tab) => (
-              <button
-                key={tab}
-                className={clsx(
-                  "tab text-gray-800 mr-4  px-4 pb-1",
-                  activeTab === tab ? "border-b-2 border-blue-600" : "",
-                )}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-          <div className="tab-content">
-            {activeTab === "Notes" && (
-              <div className="text-gray-700">{course.introduction?.notes}</div>
-            )}
-            {activeTab === "Comments" && (
-              <div className="text-gray-700">No comments yet</div>
-            )}
-            {activeTab === "Assessments" && (
-              // @ts-expect-error TODO
-              <AllAssessments user={studentInfo} weekId={weekId} />
-            )}
-          </div>
-        </div>
+    <div className="space-y-6">
+      {/* Video Header */}
+      <div className="space-y-2">
+        <h2 className="text-xl font-semibold">
+          {course.introduction?.topic || "Course Introduction"}
+        </h2>
+        <p className="text-muted-foreground">
+          Welcome to {course.title}. Start your learning journey here.
+        </p>
       </div>
-      {/* <CourseVideo
-        user={studentInfo}
-        content={course.weeks[0] ?? course.weeks[1]}
-        weekId={"1"}
-      /> */}
-    </main>
+
+      {/* Video Player */}
+      {course.introduction?.video && (
+        <Card className="overflow-hidden">
+          <div className="aspect-video">
+            <iframe
+              width="100%"
+              height="100%"
+              src={course.introduction.video}
+              title={course.introduction.topic || "Introduction"}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="border-0"
+            />
+          </div>
+        </Card>
+      )}
+
+      {/* Content Tabs */}
+      <Tabs defaultValue="notes" className="w-full">
+        <TabsList className="w-full justify-start">
+          <TabsTrigger value="notes">Notes</TabsTrigger>
+          <TabsTrigger value="comments">Comments</TabsTrigger>
+          <TabsTrigger value="assessments">Assessments</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="notes" className="mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Course Overview</CardTitle>
+              <CardDescription>
+                Important information about this course
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {course.introduction?.notes ? (
+                <div className="prose prose-sm max-w-none dark:prose-invert">
+                  {course.introduction.notes}
+                </div>
+              ) : (
+                <p className="text-muted-foreground">
+                  No notes available for the introduction.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="comments" className="mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Comments</CardTitle>
+              <CardDescription>Discussion and questions</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                No comments yet. Be the first to start a discussion!
+              </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="assessments" className="mt-4">
+          <Suspense fallback={<AssessmentsSkeleton />}>
+            {/* Note: Introduction doesn't have a weekId, this component needs adjustment */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Assessments</CardTitle>
+                <CardDescription>
+                  Test your understanding of the course material
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Complete the course introduction to unlock assessments.
+                </p>
+              </CardContent>
+            </Card>
+          </Suspense>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
+function AssessmentsSkeleton() {
+  return (
+    <Card>
+      <CardHeader>
+        <Skeleton className="h-6 w-48" />
+        <Skeleton className="h-4 w-64" />
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
+      </CardContent>
+    </Card>
   );
 }

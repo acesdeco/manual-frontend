@@ -1,4 +1,11 @@
-import Modal from "@/components/global/modal";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -7,41 +14,22 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   iCreateCourseFn,
   iCreateCourseSchema,
   type ICreateCourse,
 } from "@/functions/courses";
 import { instructorOnlyFn } from "@/functions/global";
-import { cn } from "@/lib/utils";
-import type { RequireFields } from "@/types";
 import { responseErrorToast } from "@/utils/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import type { ComponentProps, FC } from "react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-const CustomLabel: FC<
-  RequireFields<ComponentProps<"label">, "children" | "htmlFor">
-> = ({ className, ...props }) => (
-  <label {...props} className={cn("text-black", className)} />
-);
-
-const CustomInput: FC<RequireFields<ComponentProps<"input">, "id">> = ({
-  className,
-  ...props
-}) => (
-  <input
-    {...props}
-    className={cn(
-      "bg-white focus:outline-none outline-none border-b-2 border-b-[#D9D9D9] text-black",
-      className,
-    )}
-  />
-);
 
 export const Route = createFileRoute("/_app/dashboard/courses/new")({
   beforeLoad: async () => await instructorOnlyFn(),
@@ -49,7 +37,7 @@ export const Route = createFileRoute("/_app/dashboard/courses/new")({
   head: () => ({
     meta: [
       { title: "Create Course" },
-      { name: "description", content: "Creating course..." },
+      { name: "description", content: "Create a new course" },
     ],
   }),
 });
@@ -70,117 +58,140 @@ function RouteComponent() {
       published: false,
     },
   });
+
   const createCourseFn = useServerFn(iCreateCourseFn);
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: createCourseFn,
     onMutate({ data }) {
-      toast.loading(`Creating ${data.code}`, {
-        id: data.code,
+      toast.loading(`Creating ${data.code || "course"}...`, {
+        id: "create-course",
       });
     },
     onSuccess(_, { data }) {
       toast.success(`${data.code} created successfully`, {
-        id: data.code,
+        id: "create-course",
       });
     },
-    onError(error, { data }) {
+    onError(error) {
       console.error("Error creating instructor's course:", error);
       responseErrorToast(error, {
-        id: data.code,
+        id: "create-course",
       });
     },
   });
+
   return (
-    <>
-      <Form {...form}>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={form.handleSubmit((data) => mutate({ data }))}>
-          <Modal
-            isModalOpen={true}
-            header="Create Course"
-            isForm={true}
-            acceptText="Create Course"
-          >
-            <div className="flex gap-5 flex-col">
+    <div className="space-y-6">
+      {/* Back Link */}
+      <Link
+        to="/dashboard/courses"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft className="size-4" />
+        Back to courses
+      </Link>
+
+      <Card className="mx-auto max-w-2xl">
+        <CardHeader>
+          <CardTitle>Create New Course</CardTitle>
+          <CardDescription>
+            Fill in the details below to create a new course. You can add
+            content and weeks after creation.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onSubmit={form.handleSubmit((data) => mutate({ data }))}
+              className="space-y-6"
+            >
               <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
-                  <FormItem className="flex gap-1 flex-col">
-                    <FormLabel asChild>
-                      <CustomLabel htmlFor={field.name}>
-                        Course Name
-                      </CustomLabel>
-                    </FormLabel>
+                  <FormItem>
+                    <FormLabel>Course Title</FormLabel>
                     <FormControl>
-                      <CustomInput {...field} id={field.name} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="code"
-                render={({ field }) => (
-                  <FormItem className="flex gap-1 flex-col">
-                    <FormLabel asChild>
-                      <CustomLabel htmlFor={field.name}>
-                        Course Code
-                      </CustomLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <CustomInput {...field} id={field.name} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="coursePrice"
-                render={({ field }) => (
-                  <FormItem className="flex gap-1 flex-col">
-                    <FormLabel asChild>
-                      <CustomLabel htmlFor={field.name}>
-                        Course Price
-                      </CustomLabel>
-                    </FormLabel>
-                    <FormControl>
-                      <CustomInput
+                      <Input
                         {...field}
-                        onChange={(e) =>
-                          field.onChange(e.currentTarget.valueAsNumber)
-                        }
-                        id={field.name}
-                        type="number"
+                        placeholder="e.g., Introduction to Computer Science"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
-                name="description"
+                name="code"
                 render={({ field }) => (
-                  <FormItem className="flex gap-1 flex-col">
-                    <FormLabel asChild>
-                      <CustomLabel htmlFor={field.name}>
-                        Course Description
-                      </CustomLabel>
-                    </FormLabel>
+                  <FormItem>
+                    <FormLabel>Course Code</FormLabel>
                     <FormControl>
-                      <CustomInput {...field} id={field.name} />
+                      <Input {...field} placeholder="e.g., CSC101" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-          </Modal>
-        </form>
-      </Form>
-    </>
+
+              <FormField
+                control={form.control}
+                name="coursePrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Course Price (₦)</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(e.currentTarget.valueAsNumber || 0)
+                        }
+                        type="number"
+                        min={0}
+                        placeholder="0"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Describe what students will learn in this course..."
+                        rows={4}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex justify-end gap-4">
+                <Button variant="outline" type="button" asChild>
+                  <Link to="/dashboard/courses">Cancel</Link>
+                </Button>
+                <Button type="submit" disabled={isPending}>
+                  {isPending && (
+                    <Loader2 className="mr-2 size-4 animate-spin" />
+                  )}
+                  Create Course
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

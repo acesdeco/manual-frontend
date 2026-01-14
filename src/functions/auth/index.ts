@@ -1,5 +1,6 @@
 import { api, parseApiResponse } from "@/api/utils";
-import { setUserCookie } from "@/helpers/server/cookies";
+import { deleteUserCookie, setUserCookie } from "@/helpers/server/cookies";
+import { authMiddleware } from "@/middleware";
 import { handleServerFnError } from "@/utils/server";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
@@ -99,5 +100,14 @@ export const iSignupFn = createServerFn({ method: "POST" })
     throw redirect({
       to: "/dashboard/courses",
       from: "/signup",
+    });
+  });
+
+export const logoutFn = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .handler(() => {
+    deleteUserCookie();
+    throw redirect({
+      to: "/login",
     });
   });

@@ -22,10 +22,9 @@ export type UpdateWeek = z.infer<typeof updateWeekSchema>;
 
 export const addWeekSchema = z.object({
   courseId: z.string(),
-  week: weekSchema.omit({
-    _id: true,
-    assessment: true,
-    courseId: true,
-  }),
+  video: z.string().optional(),
+  notes: z.string().optional(),
+  topic: z.string(),
+  weekNumber: z.number(),
 });
 export type AddWeek = z.infer<typeof addWeekSchema>;

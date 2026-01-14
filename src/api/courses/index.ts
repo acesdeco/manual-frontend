@@ -26,6 +26,7 @@ export async function getCourseBySlug(slug: string) {
 export async function getWeeksByCourseId(courseId: Course["_id"]) {
   courseSchema.in.shape._id.parse(courseId);
   const res = await api.get(`course/weeks/${courseId}`).json();
+  console.log(res);
   return parseApiResponse(res, weekSchema.array().default([]));
 }
 
@@ -53,7 +54,7 @@ export async function addWeek(input: AddWeek) {
   addWeekSchema.parse(input);
   const res = await api
     .post(`course/${input.courseId}/week`, {
-      json: input.week,
+      json: input,
     })
     .json();
   return parseApiResponse(res, weekSchema);
