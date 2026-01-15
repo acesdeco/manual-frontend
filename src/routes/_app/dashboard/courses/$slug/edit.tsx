@@ -1,21 +1,31 @@
 import { coursesApi } from "@/api";
 import type { UpdateWeek } from "@/api/courses";
+import logoImg from "@/assets/images/Union.png?url";
 import { Assessment } from "@/components/assments/assessments";
 import CourseEditor from "@/components/courses/course-editor";
-import { HeaderComp } from "@/components/global/header";
-import { Overloader } from "@/components/global/loader";
-import Toggle from "@/components/global/toggle";
 import { SubmissionFlow } from "@/components/submissions/submission-flow";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { instructorOnlyFn } from "@/functions/global";
+import { cn } from "@/lib/utils";
 import { assessmentByWeekOptions } from "@/queries";
+import { OverlayLoader } from "@/shared/components/feedback";
 import { responseErrorToast } from "@/utils/client";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
-import clsx from "clsx";
+import { ArrowLeft, ChevronDown, Loader2, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
-import { BiPlus } from "react-icons/bi";
-import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -27,7 +37,7 @@ export const Route = createFileRoute("/_app/dashboard/courses/$slug/edit")({
         .positive()
         .catch(1)
         .optional()
-        .transform((val) => (typeof val === "number" ? val : 1)),
+        .transform((val) => val ?? 1),
     }),
   ),
   component: RouteComponent,
@@ -37,21 +47,23 @@ export const Route = createFileRoute("/_app/dashboard/courses/$slug/edit")({
     const weeks = await coursesApi.getWeeksByCourseId(course._id);
     return { course, weeks };
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      { title: `Edit: ${loaderData?.course.title ?? "Course"}` },
+      { name: "description", content: "Edit course content" },
+    ],
+  }),
 });
-
-const tabs = ["materials", "assessment", "submissions"] as const;
 
 function RouteComponent() {
   const router = useRouter();
   const navigate = Route.useNavigate();
   const { queryClient } = Route.useRouteContext();
 
-  const [activeTab, setActiveTab] =
-    useState<(typeof tabs)[number]>("materials");
-
   const { course, weeks } = Route.useLoaderData();
   const { week: weekSearchParam } = Route.useSearch();
-  const [isWeeksOpen, setIsWeeksOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [weeksExpanded, setWeeksExpanded] = useState(true);
 
   const activeWeek = useMemo(() => {
     const newWeek = weeks[weekSearchParam - 1] ?? null;
@@ -81,7 +93,6 @@ function RouteComponent() {
     mutationFn: async (input: UpdateWeek) => {
       if (!activeWeek) return;
       await coursesApi.updateWeek(input);
-      // await router.invalidate;
       await navigate({
         to: ".",
         search: {
@@ -95,17 +106,14 @@ function RouteComponent() {
     },
   });
 
-  // TODO loading toast
   const { mutate: createWeek, isPending: isCreatingWeek } = useMutation({
     mutationFn: async () => {
       const result = await coursesApi.addWeek({
         courseId: course._id,
-        week: {
-          weekNumber: weeks.length + 1,
-          topic: "Untitled",
-          notes: "",
-          video: "",
-        },
+        topic: "Untitled",
+        weekNumber: weeks.length + 1,
+        notes: "",
+        video: "",
       });
       await navigate({
         to: ".",
@@ -120,124 +128,200 @@ function RouteComponent() {
     },
   });
 
-  const isLoading = useMemo(
-    () => isTogglingPublish || isUpdatingWeek || isCreatingWeek,
-    [isCreatingWeek, isTogglingPublish, isUpdatingWeek],
+  const isLoading = isTogglingPublish || isUpdatingWeek || isCreatingWeek;
+
+  const SidebarContent = () => (
+    <ScrollArea className="h-full py-4">
+      <div className="px-4 space-y-4">
+        <div>
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+            Course Settings
+          </h3>
+          <div className="mt-4 flex items-center justify-between">
+            <Label htmlFor="publish-switch" className="text-sm font-medium">
+              {course.published ? "Published" : "Draft"}
+            </Label>
+            <Switch
+              id="publish-switch"
+              checked={course.published}
+              onCheckedChange={() => togglePublish()}
+              disabled={isTogglingPublish}
+            />
+          </div>
+        </div>
+
+        <div className="border-t pt-4">
+          <Collapsible open={weeksExpanded} onOpenChange={setWeeksExpanded}>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                Content
+              </h3>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8"
+                  onClick={() => createWeek()}
+                  disabled={isCreatingWeek}
+                >
+                  {isCreatingWeek ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Plus className="size-4" />
+                  )}
+                </Button>
+                <CollapsibleTrigger asChild>
+                  <Button variant="ghost" size="icon" className="size-8">
+                    <ChevronDown
+                      className={cn(
+                        "size-4 transition-transform",
+                        weeksExpanded ? "rotate-180" : "",
+                      )}
+                    />
+                  </Button>
+                </CollapsibleTrigger>
+              </div>
+            </div>
+            <CollapsibleContent>
+              <nav className="mt-4 flex flex-col gap-1">
+                {weeks.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      No weeks added yet
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Click + to add a week
+                    </p>
+                  </div>
+                ) : (
+                  weeks.map((aWeek, index) => (
+                    <Link
+                      key={aWeek._id}
+                      to="."
+                      search={{ week: index + 1 }}
+                      onClick={() => setSidebarOpen(false)}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                        weekSearchParam === index + 1
+                          ? "bg-primary text-primary-foreground"
+                          : "hover:bg-accent",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "flex size-7 items-center justify-center rounded-full text-xs font-medium",
+                          weekSearchParam === index + 1
+                            ? "bg-primary-foreground text-primary"
+                            : "bg-accent",
+                        )}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="truncate">{aWeek.topic}</span>
+                    </Link>
+                  ))
+                )}
+              </nav>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      </div>
+    </ScrollArea>
   );
 
   return (
-    <div className=" w-[100vw] h-[100vh] /fixed overflow-y-auto">
-      <HeaderComp />
-      <Overloader isLoading={isLoading} />
-      <section className="bg-blue-200 text-black w-full h-[90%] /fixed pb-0">
-        <div className="bg-[#0000ff] justify-between flex items-center text-white px-10 py-4">
-          <div className="flex items-center">
-            <span className="cursor-pointer">
-              <IoIosArrowBack size={30} />
-            </span>
-            <p className="text-xl font-semibold">
-              <Link to="/dashboard/courses">Course</Link> / {course.title}
-            </p>
+    <div className="flex min-h-screen flex-col bg-background">
+      <OverlayLoader isLoading={isLoading} />
+
+      {/* Header */}
+      <header className="sticky top-0 z-40 border-b bg-card">
+        <div className="flex h-14 items-center gap-4 px-4 md:px-6">
+          {/* Mobile Menu */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <ArrowLeft className="size-5" />
+          </Button>
+
+          {/* Logo */}
+          <Link
+            to="/dashboard/courses"
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="hidden size-4 md:block" />
+            <img src={logoImg} alt="Modools" className="h-6 w-auto" />
+          </Link>
+
+          {/* Course Title */}
+          <div className="flex-1">
+            <span className="text-muted-foreground">Course /</span>{" "}
+            <span className="font-medium">{course.title}</span>
           </div>
-          <label className="flex items-center gap-3">
-            <span>{course.published ? "Published" : "Publish"}</span>
-            <Toggle toggle={togglePublish} isToggled={course?.published} />
-          </label>
         </div>
-        <div className="h-[90%] flex">
-          <div className="left flex h-full flex-col gap-4 pl-8 pr-5 py-4 bg-[#F3F4F5] w-1/4">
-            <h3 className="text-xl font-semibold">Course Upload</h3>
-            {!course ? (
-              <div>Failed to get course Data</div>
-            ) : (
-              <div className="flex gap-4 h-full flex-col">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">Content</h3>
-                  <div className="flex items-center gap-4">
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => createWeek()}
-                    >
-                      <BiPlus size={22} />
-                    </button>
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => setIsWeeksOpen(!isWeeksOpen)}
-                    >
-                      <IoIosArrowDown size={22} />
-                    </button>
-                  </div>
-                </div>
-                <div
-                  className={clsx(
-                    "weeks flex flex-col duration-300 gap-3",
-                    // isWeeksOpen ? "h-full" : "h-0 overflow-hidden",
-                  )}
-                >
-                  {weeks.length < 1 ? (
-                    <div className="h-full justify-center flex-col items-center w-full flex">
-                      <p className="text-sm">No Weeks added yet</p>
-                      <p className="flex items-center font-medium">
-                        Press <BiPlus size={25} /> to add week
-                      </p>
-                    </div>
+      </header>
+
+      <div className="flex flex-1">
+        {/* Desktop Sidebar */}
+        <aside className="hidden w-64 shrink-0 border-r bg-card md:block">
+          <SidebarContent />
+        </aside>
+
+        {/* Mobile Sidebar */}
+        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+          <SheetContent side="left" className="w-64 p-0">
+            <SidebarContent />
+          </SheetContent>
+        </Sheet>
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-auto p-4 md:p-6">
+          <Card>
+            <CardHeader className="border-b">
+              <Tabs defaultValue="materials" className="w-full">
+                <TabsList>
+                  <TabsTrigger value="materials">Materials</TabsTrigger>
+                  <TabsTrigger value="assessment">Assessment</TabsTrigger>
+                  <TabsTrigger value="submissions">Submissions</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <Tabs defaultValue="materials" className="w-full">
+                <TabsContent value="materials">
+                  {activeWeek ? (
+                    <CourseEditor submit={updateWeek} week={activeWeek} />
                   ) : (
-                    weeks.map((aWeek, index) => (
-                      <Link
-                        to="."
-                        search={{
-                          week: index + 1,
-                        }}
-                        key={aWeek._id}
-                        className={clsx(
-                          `cursor-pointer hover:bg-slate-400 flex text-sm items-center gap-2 p-2 rounded-md`,
-                          weekSearchParam === index + 1 && "bg-slate-200 ",
-                        )}
-                      >
-                        <span className="w-8 flex justify-center items-center h-8 bg-[#A9D4FF] rounded-full">
-                          0{index + 1}
-                        </span>
-                        <p className="font-medium ">{aWeek.topic}</p>
-                      </Link>
-                    ))
+                    <div className="text-center py-12 text-muted-foreground">
+                      Select a week to edit or create a new one.
+                    </div>
                   )}
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="right px-6 pt-6 gap-5 w-full h-full bg-white pb-10 overflow-auto  flex flex-col text-black">
-            <div className="flex text-lg font-medium gap-3 border-b">
-              {tabs.map((tab) => (
-                <button
-                  key={tab}
-                  className={clsx(
-                    "cursor-pointer border-b-4 px-4 capitalize",
-                    activeTab === tab
-                      ? "text-[#0080FF] border-[#0080FF]"
-                      : "border-transparent",
+                </TabsContent>
+                <TabsContent value="assessment">
+                  {activeWeek ? (
+                    <Assessment courseId={course._id} weekId={activeWeek._id} />
+                  ) : (
+                    <div className="text-center py-12 text-muted-foreground">
+                      Select a week to manage assessments.
+                    </div>
                   )}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-            <div className="mt-4 flex flex-col gap-3">
-              {activeTab === "materials" && activeWeek && (
-                <CourseEditor submit={updateWeek} week={activeWeek} />
-              )}
-              {activeTab === "assessment" && (
-                <Assessment courseId={course._id} weekId={activeWeek._id} />
-              )}
-              {activeTab === "submissions" && (
-                <div>
-                  <SubmissionFlow weekId={activeWeek._id} />
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+                </TabsContent>
+                <TabsContent value="submissions">
+                  {activeWeek ? (
+                    <SubmissionFlow weekId={activeWeek._id} />
+                  ) : (
+                    <div className="text-center py-12 text-muted-foreground">
+                      Select a week to view submissions.
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </main>
+      </div>
     </div>
   );
 }

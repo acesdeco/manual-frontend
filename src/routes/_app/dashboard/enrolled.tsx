@@ -1,40 +1,70 @@
-import { StudentsCourseCard } from "@/components/courses/course-card";
-import Button from "@/components/global/button";
+import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { studentOnlyFn } from "@/functions/global";
 import { getStudentsEnrolledCoursesFn } from "@/functions/students/courses";
+import { PageHeader } from "@/shared/components/layout";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { BookOpen } from "lucide-react";
 
 export const Route = createFileRoute("/_app/dashboard/enrolled")({
   component: RouteComponent,
   beforeLoad: async () => await studentOnlyFn(),
   loader: async () => await getStudentsEnrolledCoursesFn(),
+  head: () => ({
+    meta: [
+      { title: "My Enrolled Courses" },
+      { name: "description", content: "View your enrolled courses" },
+    ],
+  }),
 });
 
 function RouteComponent() {
   const courses = Route.useLoaderData();
+
   return (
-    <>
-      <header className="mb-10">
-        <h1 className="text-black text-2xl font-semibold">My Courses</h1>
-      </header>
-      <section className="grid grid-cols-2 gap-3">
-        {courses.length ? (
-          courses.map((course) => (
-            <StudentsCourseCard course={course} key={course.code} />
-          ))
-        ) : (
-          <div className="text-gray-500 col-span-2 text-center">
-            <p>You haven&apos;t enrolled for any courses yet.</p>
+    <div className="space-y-6">
+      <PageHeader title="My Courses" description="Courses you've enrolled in" />
+      {courses.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {courses.map((course) => (
             <Link
-              to="/dashboard/courses"
-              from={Route.fullPath}
-              className="w-fit"
+              key={course.code}
+              to="/courses/$slug/introduction"
+              params={{ slug: course.slug }}
+              className="group block"
             >
-              <Button>Browse Courses</Button>
+              <div className="rounded-xl border bg-card p-6 transition-shadow hover:shadow-lg">
+                <h3 className="font-semibold">{course.title}</h3>
+                <p className="text-sm text-muted-foreground">{course.code}</p>
+              </div>
             </Link>
-          </div>
-        )}
-      </section>
-    </>
+          ))}
+        </div>
+      ) : (
+        <Empty className="min-h-[400px] border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <BookOpen />
+            </EmptyMedia>
+            <EmptyTitle>No enrolled courses yet</EmptyTitle>
+            <EmptyDescription>
+              Browse available courses and enroll to start learning.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button asChild>
+              <Link to="/dashboard/courses">Browse Courses</Link>
+            </Button>
+          </EmptyContent>
+        </Empty>
+      )}
+    </div>
   );
 }

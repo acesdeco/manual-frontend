@@ -32,7 +32,7 @@ export type UserRole = User["role"];
 
 export const weekSchema = z.object({
   _id: z.string(),
-  video: z.url().or(z.string()),
+  video: z.union([z.url(), z.literal("")]).catch(""),
   // assessment: z.string(),
   notes: z.string(),
   topic: z.string(),

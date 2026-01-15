@@ -1,6 +1,10 @@
 import { userCookieSchema, type UserCookie } from "@/functions/auth";
 import { type User } from "@/schemas";
-import { getCookie, setCookie } from "@tanstack/react-start/server";
+import {
+  deleteCookie,
+  getCookie,
+  setCookie,
+} from "@tanstack/react-start/server";
 
 const secondsIn30Days = 60 * 60 * 24 * 30;
 function cookieOptions() {
@@ -37,4 +41,8 @@ export function getUserCookie() {
   const json = JSON.parse(cookie);
   // console.log(json);
   return userCookieSchema.parse(json);
+}
+
+export function deleteUserCookie() {
+  deleteCookie("user");
 }

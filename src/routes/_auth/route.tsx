@@ -8,16 +8,23 @@ export const Route = createFileRoute("/_auth")({
 
 function RouteComponent() {
   return (
-    <main className="w-full /h-screen space-y-6 md:px-16 px-4 py-8 fade-in-bottom">
-      <header>
-        <h1 className="text-4xl font-bold mb-4">Modools</h1>
-        <p className="text-lg text-muted-foreground">
-          Modools
-        </p>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b">
+        <div className="container mx-auto flex h-16 items-center px-4">
+          <div className="space-y-0.5">
+            <h1 className="text-2xl font-bold text-primary">Modools</h1>
+            <p className="text-xs text-muted-foreground">
+              Learning Management System
+            </p>
+          </div>
+        </div>
       </header>
-      <section className="h-full flex items-center justify-center [&_form]:space-y-4">
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-12">
         <Outlet />
-      </section>
-    </main>
+      </main>
+    </div>
   );
 }

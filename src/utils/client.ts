@@ -1,4 +1,5 @@
 import { toast, type ExternalToast } from "sonner";
+import { prettifyError, ZodError } from "zod";
 
 export function responseErrorMessage(error: unknown) {
   return typeof error === "object" &&
@@ -6,9 +7,11 @@ export function responseErrorMessage(error: unknown) {
     "result" in error &&
     typeof error.result === "string"
     ? error.result
-    : error instanceof Error
-      ? error.message
-      : null;
+    : error instanceof ZodError
+      ? prettifyError(error)
+      : error instanceof Error
+        ? error.message
+        : null;
 }
 
 export function responseErrorToast(

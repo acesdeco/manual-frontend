@@ -67,7 +67,7 @@ export default function CourseEditor({ week, submit }: CourseEditorProps) {
         </button>
       </div>
       <input
-        className="text-2xl hover:border-b py-2 text-black  font-semibold bg-transparent focus:outline-none"
+        className="text-2xl hover:border-b py-2 /text-black  font-semibold bg-transparent focus:outline-none"
         value={weekTopicInp}
         placeholder="Add Course"
         onChange={(e) => setWeekTopicInp(e.target.value)}

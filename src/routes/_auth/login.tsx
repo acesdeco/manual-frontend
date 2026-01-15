@@ -1,7 +1,4 @@
 import amicoImg from "@/assets/images/amico.png";
-import AuthButton from "@/components/auth/auth-button";
-import PasswordField from "@/components/auth/password-field";
-import Input from "@/components/global/input";
 import {
   Form,
   FormControl,
@@ -9,6 +6,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  AuthButton,
+  AuthLayout,
+  PasswordField,
+} from "@/features/auth/components";
 import {
   iLoginFn,
   iLoginSchema,
@@ -17,7 +20,6 @@ import {
   type InstructorLogin as TInstructorLogin,
   type StudentLogin as TStudentLogin,
 } from "@/functions/auth";
-import AuthLayout from "@/layout/auth";
 import { responseErrorMessage } from "@/utils/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -32,16 +34,17 @@ export const Route = createFileRoute("/_auth/login")({
       InstructorComponent={InstructorLogin}
       StudentComponent={StudentLogin}
       imgSrc={amicoImg}
-      title="Log In"
+      title="Welcome Back"
+      description="Sign in to continue learning"
       route="login"
     />
   ),
   head: () => ({
     meta: [
-      { title: "Login" },
+      { title: "Login - Modools" },
       {
         name: "description",
-        content: "Welcome to Computer Engineering UNIUYO",
+        content: "Sign in to your Modools account",
       },
     ],
   }),
@@ -61,46 +64,47 @@ function InstructorLogin() {
     mutationFn: loginFn,
     onError(error) {
       console.error("Error during instructor login:", error);
-      toast.error(responseErrorMessage(error));
+      toast.error(responseErrorMessage(error) ?? "Login failed");
     },
   });
+
   return (
-    <>
-      <Form {...form}>
-        <form
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onSubmit={form.handleSubmit((data) => mutate({ data }))}
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input {...field} type="email" placeholder="Email" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <PasswordField field={field} placeholder="Password" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <AuthButton type="submit" isLoading={isPending}>
-            Log In
-          </AuthButton>
-        </form>
-      </Form>
-    </>
+    <Form {...form}>
+      { }
+      <form
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onSubmit={form.handleSubmit((data) => mutate({ data }))}
+        className="space-y-4"
+      >
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input {...field} type="email" placeholder="Email address" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <PasswordField field={field} placeholder="Password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <AuthButton type="submit" isLoading={isPending}>
+          Sign In
+        </AuthButton>
+      </form>
+    </Form>
   );
 }
 
@@ -118,49 +122,49 @@ function StudentLogin() {
     mutationFn: loginFn,
     onError(error) {
       console.error("Error during login:", error);
-      toast.error(responseErrorMessage(error));
+      toast.error(responseErrorMessage(error) ?? "Login failed");
     },
   });
+
   return (
-    <>
-      <Form {...form}>
-        <form
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onSubmit={form.handleSubmit((data) => mutate({ data }))}
-        >
-          <FormField
-            control={form.control}
-            name="registrationNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    placeholder="Registration number"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <PasswordField field={field} placeholder="Password" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <AuthButton type="submit" isLoading={isPending}>
-            Log In
-          </AuthButton>
-        </form>
-      </Form>
-    </>
+    <Form {...form}>
+      <form
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onSubmit={form.handleSubmit((data) => mutate({ data }))}
+        className="space-y-4"
+      >
+        <FormField
+          control={form.control}
+          name="registrationNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="text"
+                  placeholder="Registration number"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <PasswordField field={field} placeholder="Password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <AuthButton type="submit" isLoading={isPending}>
+          Sign In
+        </AuthButton>
+      </form>
+    </Form>
   );
 }

@@ -1,10 +1,10 @@
 import js from "@eslint/js";
+import pluginRouter from "@tanstack/eslint-plugin-router";
+import pluginReact from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
-import { defineConfig, globalIgnores } from "eslint/config";
-import reactHooks from "eslint-plugin-react-hooks";
-import pluginRouter from "@tanstack/eslint-plugin-router";
 
 export default defineConfig([
   {
@@ -61,5 +61,6 @@ export default defineConfig([
     ".tanstack",
     ".nitro",
     ".output",
+    ".vercel",
   ]),
 ]);

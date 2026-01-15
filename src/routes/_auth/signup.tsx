@@ -1,7 +1,4 @@
 import illustrationImg from "@/assets/images/Illustration.png";
-import AuthButton from "@/components/auth/auth-button";
-import PasswordField from "@/components/auth/password-field";
-import Input from "@/components/global/input";
 import {
   Form,
   FormControl,
@@ -9,6 +6,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  AuthButton,
+  AuthLayout,
+  PasswordField,
+} from "@/features/auth/components";
 import {
   iSignupFn,
   iSignupSchema,
@@ -17,7 +20,6 @@ import {
   type InstructorSignUp as TInstructorSignUp,
   type StudentSignUp as TStudentSignUp,
 } from "@/functions/auth";
-import AuthLayout from "@/layout/auth";
 import { responseErrorMessage } from "@/utils/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -33,15 +35,16 @@ export const Route = createFileRoute("/_auth/signup")({
       StudentComponent={StudentSignUp}
       imgSrc={illustrationImg}
       title="Create Account"
+      description="Start your learning journey today"
       route="signup"
     />
   ),
   head: () => ({
     meta: [
-      { title: "Create account" },
+      { title: "Sign Up - Modools" },
       {
         name: "description",
-        content: "Welcome to Computer Engineering UNIUYO",
+        content: "Create a new Modools account",
       },
     ],
   }),
@@ -64,48 +67,26 @@ function InstructorSignUp() {
     mutationFn: signupFn,
     onError(error) {
       console.error("Error during instructor signup:", error);
-      toast.error(responseErrorMessage(error));
+      toast.error(responseErrorMessage(error) ?? "Sign up failed");
     },
   });
-  return (
-    <>
-      <Form {...form}>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={form.handleSubmit((data) => mutate({ data }))}>
-          <div className="justify-between flex flex-col md:flex-row gap-0 md:gap-6 lg:gap-10 w-full">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input {...field} placeholder="First Name" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input {...field} placeholder="Last Name" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
 
+  return (
+    <Form {...form}>
+      { }
+      <form
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onSubmit={form.handleSubmit((data) => mutate({ data }))}
+        className="space-y-4"
+      >
+        <div className="grid gap-4 sm:grid-cols-2">
           <FormField
             control={form.control}
-            name="email"
+            name="firstName"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} type="email" placeholder="Email address" />
+                  <Input {...field} placeholder="First Name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -113,34 +94,59 @@ function InstructorSignUp() {
           />
           <FormField
             control={form.control}
-            name="password"
+            name="lastName"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <PasswordField field={field} placeholder="Password" />
+                  <Input {...field} placeholder="Last Name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <PasswordField field={field} placeholder="Confirm Password" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <AuthButton type="submit" isLoading={isPending}>
-            Create Account
-          </AuthButton>
-        </form>
-      </Form>
-    </>
+        </div>
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input {...field} type="email" placeholder="Email address" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <PasswordField field={field} placeholder="Password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <PasswordField field={field} placeholder="Confirm Password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <AuthButton type="submit" isLoading={isPending}>
+          Create Account
+        </AuthButton>
+      </form>
+    </Form>
   );
 }
 
@@ -162,54 +168,26 @@ function StudentSignUp() {
     mutationFn: signUpFn,
     onError(error) {
       console.error("Error during sign up:", error);
-      toast.error(responseErrorMessage(error));
+      toast.error(responseErrorMessage(error) ?? "Sign up failed");
     },
   });
-  return (
-    <>
-      <Form {...form}>
-        <form
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onSubmit={form.handleSubmit((data) =>
-            mutate({
-              data,
-            }),
-          )}
-        >
-          <div className="justify-between flex flex-col md:flex-row gap-0 md:gap-6 lg:gap-10 w-full">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input {...field} placeholder="First Name" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input {...field} placeholder="Last Name" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
 
+  return (
+    <Form {...form}>
+      { }
+      <form
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onSubmit={form.handleSubmit((data) => mutate({ data }))}
+        className="space-y-4"
+      >
+        <div className="grid gap-4 sm:grid-cols-2">
           <FormField
             control={form.control}
-            name="registrationNumber"
+            name="firstName"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} placeholder="Registration Number" />
+                  <Input {...field} placeholder="First Name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -217,45 +195,70 @@ function StudentSignUp() {
           />
           <FormField
             control={form.control}
-            name="email"
+            name="lastName"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} type="email" placeholder="Email address" />
+                  <Input {...field} placeholder="Last Name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <PasswordField field={field} placeholder="Password" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <PasswordField field={field} placeholder="Confirm Password" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <AuthButton type="submit" isLoading={isPending}>
-            Create Account
-          </AuthButton>
-        </form>
-      </Form>
-    </>
+        </div>
+
+        <FormField
+          control={form.control}
+          name="registrationNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input {...field} placeholder="Registration Number" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input {...field} type="email" placeholder="Email address" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <PasswordField field={field} placeholder="Password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <PasswordField field={field} placeholder="Confirm Password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <AuthButton type="submit" isLoading={isPending}>
+          Create Account
+        </AuthButton>
+      </form>
+    </Form>
   );
 }
