@@ -1,19 +1,19 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { ArrowLeft, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import {
-  checkExistingPaymentFn,
-  coursePaymentDetailsFn,
+    checkExistingPaymentFn,
+    coursePaymentDetailsFn,
 } from "@/functions/payments"
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { ArrowLeft, CreditCard } from "lucide-react"
 
 export const Route = createFileRoute("/_app/payment/$courseId/pay")({
   component: Pay,

@@ -1,11 +1,12 @@
+import { authApi, coursesApi, paymentsApi } from "@/api"
+import { APP_URL } from "@/constants"
+import { setUserCookie } from "@/helpers/server/cookies"
+import { studentsMiddleware } from "@/middleware"
+import { courseSchema } from "@/schemas"
 import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import z from "zod"
-import { authApi, coursesApi, paymentsApi } from "@/api"
-import { setUserCookie } from "@/helpers/server/cookies"
-import { studentsMiddleware } from "@/middleware"
-import { courseSchema } from "@/schemas"
 
 export const paymentCallbackFn = createServerFn({ method: "GET" })
   .middleware([studentsMiddleware])
@@ -63,8 +64,6 @@ export const coursePaymentDetailsFn = createServerFn({ method: "GET" })
   .middleware([studentsMiddleware])
   .handler(async ({ data, context: { user } }) => {
     const course = await coursesApi.getCourse(data.courseId)
-    const APP_URL =
-      process.env.APP_URL ?? import.meta.baseURL ?? "http://localhost:5173"
     const transactionFee = course.coursePrice < 2500 ? 0 : 100
     const charge = course.coursePrice * 0.015 + transactionFee
     const cappedCharge = charge > 2000 ? 2000 : charge
