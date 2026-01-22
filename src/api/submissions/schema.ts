@@ -1,5 +1,5 @@
-import { registrationNumberSchema } from "@/schemas";
-import z from "zod";
+import z from "zod"
+import { registrationNumberSchema } from "@/schemas"
 
 export const submissionSchema = z.object({
   _id: z.string(),
@@ -22,8 +22,8 @@ export const submissionSchema = z.object({
     })
     .array(),
   submitted_at: z.string(),
-});
-export type Submission = z.infer<typeof submissionSchema>;
+})
+export type Submission = z.infer<typeof submissionSchema>
 
 export const updateSubmissionSchema = z.object({
   id: submissionSchema.shape._id,
@@ -32,5 +32,5 @@ export const updateSubmissionSchema = z.object({
       _id: true,
     })
     .partial(),
-});
-export type UpdateSubmissionInput = z.infer<typeof updateSubmissionSchema>;
+})
+export type UpdateSubmissionInput = z.infer<typeof updateSubmissionSchema>

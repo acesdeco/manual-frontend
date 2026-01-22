@@ -1,15 +1,15 @@
-import badgeOfHonourImg from "@/assets/images/badge-of-honour.png";
-import { Button } from "@/components/ui/button";
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { ArrowRight, BookOpen, GraduationCap, Trophy } from "lucide-react"
+import badgeOfHonourImg from "@/assets/images/badge-of-honour.png"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { PageHeader } from "@/shared/components/layout";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, GraduationCap, Trophy } from "lucide-react";
+} from "@/components/ui/card"
+import { PageHeader } from "@/shared/components/layout"
 
 export const Route = createFileRoute("/_app/dashboard/home")({
   component: RouteComponent,
@@ -19,11 +19,11 @@ export const Route = createFileRoute("/_app/dashboard/home")({
       { name: "description", content: "Your learning dashboard" },
     ],
   }),
-});
+})
 
 function RouteComponent() {
-  const { role } = Route.useRouteContext();
-  const isInstructor = role === "instructor";
+  const { role } = Route.useRouteContext()
+  const isInstructor = role === "instructor"
 
   return (
     <div className="space-y-6">
@@ -171,5 +171,5 @@ function RouteComponent() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

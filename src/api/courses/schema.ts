@@ -1,11 +1,11 @@
-import { courseSchema, weekSchema } from "@/schemas";
-import z from "zod";
+import z from "zod"
+import { courseSchema, weekSchema } from "@/schemas"
 
 export const updateCourseSchema = z.object({
   courseId: z.string(),
   update: courseSchema.in.partial(),
-});
-export type UpdateCourse = z.infer<typeof updateCourseSchema>;
+})
+export type UpdateCourse = z.infer<typeof updateCourseSchema>
 
 export const updateWeekSchema = z.object({
   weekId: weekSchema.shape._id,
@@ -17,8 +17,8 @@ export const updateWeekSchema = z.object({
       weekNumber: true,
     }).shape,
   }),
-});
-export type UpdateWeek = z.infer<typeof updateWeekSchema>;
+})
+export type UpdateWeek = z.infer<typeof updateWeekSchema>
 
 export const addWeekSchema = z.object({
   courseId: z.string(),
@@ -26,5 +26,5 @@ export const addWeekSchema = z.object({
   notes: z.string().optional(),
   topic: z.string(),
   weekNumber: z.number(),
-});
-export type AddWeek = z.infer<typeof addWeekSchema>;
+})
+export type AddWeek = z.infer<typeof addWeekSchema>

@@ -1,13 +1,13 @@
-import logoImg from "@/assets/images/Union.png?url";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Link } from "@tanstack/react-router";
-import { Bell, Menu, Search } from "lucide-react";
-import { useDashboard } from "./dashboard-shell";
-import { UserNav } from "./user-nav";
+import { Link } from "@tanstack/react-router"
+import { Bell, Menu, Search } from "lucide-react"
+import { useDashboard } from "./dashboard-shell"
+import { UserNav } from "./user-nav"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import logoImg from "@/assets/images/Union.png?url"
 
 export function DashboardHeader() {
-  const { setSidebarOpen } = useDashboard();
+  const { setSidebarOpen } = useDashboard()
 
   return (
     <header className="sticky top-0 z-40 border-b bg-card">
@@ -61,5 +61,5 @@ export function DashboardHeader() {
         </div>
       </div>
     </header>
-  );
+  )
 }

@@ -1,24 +1,24 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react"
 
 export const useHeaderActive = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const openMenu = useCallback(() => {
-    setMenuOpen(true);
-  }, []);
+    setMenuOpen(true)
+  }, [])
 
   const closeMenu = useCallback(() => {
-    setMenuOpen(false);
-  }, []);
+    setMenuOpen(false)
+  }, [])
 
   const toggleMenu = useCallback(() => {
-    setMenuOpen((prevState) => !prevState);
-  }, []);
+    setMenuOpen((prevState) => !prevState)
+  }, [])
 
   return {
     menuOpen,
     openMenu,
     closeMenu,
     toggleMenu,
-  };
-};
+  }
+}

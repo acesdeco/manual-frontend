@@ -1,32 +1,32 @@
-import type { Assessment } from "@/api/assments/schema";
-import { assessmentByWeekOptions } from "@/queries";
-import type { Week } from "@/schemas";
-import { useQuery } from "@tanstack/react-query";
-import { useState, type FC } from "react";
-import { Loader } from "../global/loader";
-import { SubmissionsList } from "./submissions-list";
+import { useQuery } from "@tanstack/react-query"
+import { type FC, useState } from "react"
+import { Loader } from "../global/loader"
+import { SubmissionsList } from "./submissions-list"
+import type { Week } from "@/schemas"
+import type { Assessment } from "@/api/assments/schema"
+import { assessmentByWeekOptions } from "@/queries"
 
 type SubmissionProps = {
-  weekId: Week["_id"];
-};
+  weekId: Week["_id"]
+}
 
 type View =
   | { state: "assessments" }
-  | { state: "submissions"; assessmentsId: Assessment["_id"] };
+  | { state: "submissions"; assessmentsId: Assessment["_id"] }
 
 export const SubmissionFlow: FC<SubmissionProps> = ({ weekId }) => {
-  const { data, isPending, error } = useQuery(assessmentByWeekOptions(weekId));
-  const [view, setView] = useState<View>({ state: "assessments" });
+  const { data, isPending, error } = useQuery(assessmentByWeekOptions(weekId))
+  const [view, setView] = useState<View>({ state: "assessments" })
 
   if (isPending) {
     return (
       <div className="flex justify-center items-center h-full">
         <Loader />
       </div>
-    );
+    )
   }
 
-  if (error) throw error;
+  if (error) throw error
 
   switch (view.state) {
     case "submissions": {
@@ -36,10 +36,10 @@ export const SubmissionFlow: FC<SubmissionProps> = ({ weekId }) => {
           closeSubmissionsList={() => {
             setView({
               state: "assessments",
-            });
+            })
           }}
         />
-      );
+      )
     }
     case "assessments": {
       return (
@@ -68,9 +68,9 @@ export const SubmissionFlow: FC<SubmissionProps> = ({ weekId }) => {
             </>
           )}
         </section>
-      );
+      )
     }
   }
 
-  return <></>;
-};
+  return <></>
+}

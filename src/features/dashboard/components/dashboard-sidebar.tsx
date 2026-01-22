@@ -1,17 +1,17 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { Link, useLocation } from "@tanstack/react-router";
-import { Bell, BookOpen, FolderOpen, GraduationCap, Home } from "lucide-react";
-import { useDashboard } from "./dashboard-shell";
+import { Link, useLocation } from "@tanstack/react-router"
+import { Bell, BookOpen, FolderOpen, GraduationCap, Home } from "lucide-react"
+import { useDashboard } from "./dashboard-shell"
+import { cn } from "@/lib/utils"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface NavItem {
-  label: string;
-  to: string;
-  icon: typeof BookOpen;
-  role: "all" | "student" | "instructor";
+  label: string
+  to: string
+  icon: typeof BookOpen
+  role: "all" | "student" | "instructor"
 }
 
-const navItems: NavItem[] = [
+const navItems: Array<NavItem> = [
   {
     label: "Home",
     to: "/dashboard/home",
@@ -42,15 +42,15 @@ const navItems: NavItem[] = [
     icon: Bell,
     role: "instructor",
   },
-];
+]
 
 export function DashboardSidebar() {
-  const { role, setSidebarOpen } = useDashboard();
-  const location = useLocation();
+  const { role, setSidebarOpen } = useDashboard()
+  const location = useLocation()
 
   const filteredItems = navItems.filter(
     (item) => item.role === "all" || item.role === role,
-  );
+  )
 
   return (
     <ScrollArea className="h-full py-6">
@@ -60,8 +60,8 @@ export function DashboardSidebar() {
         </h2>
         <nav className="flex flex-col gap-1">
           {filteredItems.map((item) => {
-            const isActive = location.pathname.startsWith(item.to);
-            const Icon = item.icon;
+            const isActive = location.pathname.startsWith(item.to)
+            const Icon = item.icon
 
             return (
               <Link
@@ -78,10 +78,10 @@ export function DashboardSidebar() {
                 <Icon className="size-5" />
                 {item.label}
               </Link>
-            );
+            )
           })}
         </nav>
       </div>
     </ScrollArea>
-  );
+  )
 }

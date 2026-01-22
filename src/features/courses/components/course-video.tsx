@@ -1,21 +1,21 @@
-import AllAssessments from "@/components/assments/all-assessment";
+import { Suspense } from "react"
+import type { Week } from "@/schemas"
+import type { Student } from "@/types"
+import AllAssessments from "@/components/assments/all-assessment"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Week } from "@/schemas";
-import type { Student } from "@/types";
-import { Suspense } from "react";
+} from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface CourseVideoProps {
-  content: Week;
-  user: Student;
-  weekId: Week["_id"];
+  content: Week
+  user: Student
+  weekId: Week["_id"]
 }
 
 export function CourseVideo({ content, user, weekId }: CourseVideoProps) {
@@ -95,7 +95,7 @@ export function CourseVideo({ content, user, weekId }: CourseVideoProps) {
         </TabsContent>
       </Tabs>
     </div>
-  );
+  )
 }
 
 function AssessmentsSkeleton() {
@@ -110,7 +110,7 @@ function AssessmentsSkeleton() {
         <Skeleton className="h-16 w-full" />
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export { CourseVideo as default };
+export { CourseVideo as default }

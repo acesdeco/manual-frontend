@@ -1,33 +1,33 @@
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import type { UserRole } from "@/schemas";
-import { createContext, useContext, useState, type ReactNode } from "react";
-import { DashboardHeader } from "./dashboard-header";
-import { DashboardSidebar } from "./dashboard-sidebar";
+import { type ReactNode, createContext, useContext, useState } from "react"
+import { DashboardHeader } from "./dashboard-header"
+import { DashboardSidebar } from "./dashboard-sidebar"
+import type { UserRole } from "@/schemas"
+import { cn } from "@/lib/utils"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
 
 interface DashboardContextValue {
-  sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
-  role: UserRole;
+  sidebarOpen: boolean
+  setSidebarOpen: (open: boolean) => void
+  role: UserRole
 }
 
-const DashboardContext = createContext<DashboardContextValue | null>(null);
+const DashboardContext = createContext<DashboardContextValue | null>(null)
 
 export function useDashboard() {
-  const context = useContext(DashboardContext);
+  const context = useContext(DashboardContext)
   if (!context) {
-    throw new Error("useDashboard must be used within DashboardShell");
+    throw new Error("useDashboard must be used within DashboardShell")
   }
-  return context;
+  return context
 }
 
 interface DashboardShellProps {
-  children: ReactNode;
-  role: UserRole;
+  children: ReactNode
+  role: UserRole
 }
 
 export function DashboardShell({ children, role }: DashboardShellProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <DashboardContext value={{ sidebarOpen, setSidebarOpen, role }}>
@@ -58,5 +58,5 @@ export function DashboardShell({ children, role }: DashboardShellProps) {
         </div>
       </div>
     </DashboardContext>
-  );
+  )
 }

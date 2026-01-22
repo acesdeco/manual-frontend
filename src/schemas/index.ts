@@ -1,11 +1,12 @@
-import type { KyResponse } from "ky";
-import z, { ZodType } from "zod";
+import z from "zod"
+import type { ZodType } from "zod"
+import type { KyResponse } from "ky"
 
 export const registrationNumberSchema = z
   .string()
   .regex(/^[1][5-9]|[2][0-4]\/EG\/CO\/[0-9]{1,4}$/, {
     message: "Invalid computer engineering matric number",
-  });
+  })
 
 export const passwordSchema = z
   .string()
@@ -16,7 +17,7 @@ export const passwordSchema = z
   .regex(
     /[!@#$%^&*(),.?":{}|<>_\-\\[\]\\;'/+=~`]/,
     "Password must contain at least one special character",
-  );
+  )
 
 export const userSchema = z.object({
   _id: z.string(),
@@ -26,9 +27,9 @@ export const userSchema = z.object({
   registrationNumber: registrationNumberSchema,
   courses: z.array(z.string()).optional(),
   role: z.enum(["student", "instructor"]),
-});
-export type User = z.infer<typeof userSchema>;
-export type UserRole = User["role"];
+})
+export type User = z.infer<typeof userSchema>
+export type UserRole = User["role"]
 
 export const weekSchema = z.object({
   _id: z.string(),
@@ -38,8 +39,8 @@ export const weekSchema = z.object({
   topic: z.string(),
   weekNumber: z.number(),
   courseId: z.string(),
-});
-export type Week = z.infer<typeof weekSchema>;
+})
+export type Week = z.infer<typeof weekSchema>
 export const courseSchema = z
   .object({
     _id: z.string(),
@@ -78,8 +79,8 @@ export const courseSchema = z
   .transform((data) => ({
     ...data,
     slug: data.title.toLowerCase().replaceAll(" ", "-"),
-  }));
-export type Course = z.infer<typeof courseSchema>;
+  }))
+export type Course = z.infer<typeof courseSchema>
 
 export function parseResponse<V, T>(
   value: V,
@@ -89,5 +90,5 @@ export function parseResponse<V, T>(
     .object({
       data: schema as ZodType<T>,
     })
-    .parse(value).data;
+    .parse(value).data
 }

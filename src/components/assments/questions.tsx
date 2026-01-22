@@ -1,11 +1,6 @@
-import {
-  type NewAssment,
-  type ObjectiveQuestion,
-  type Question,
-} from "@/api/assments/schema";
-import { nanoid } from "nanoid";
-import { type FC } from "react";
-import { useFormContext } from "react-hook-form";
+import { nanoid } from "nanoid"
+import { type FC } from "react"
+import { useFormContext } from "react-hook-form"
 import {
   Form,
   FormControl,
@@ -13,12 +8,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "../ui/form"
+import {
+  type NewAssment,
+  type ObjectiveQuestion,
+  type Question,
+} from "@/api/assments/schema"
 
 interface QuestionsProps {
-  questionIndex: number;
-  questionId: Question["id"];
-  removeQuestion: (id: Question["id"]) => void;
+  questionIndex: number
+  questionId: Question["id"]
+  removeQuestion: (id: Question["id"]) => void
 }
 
 const Questions: FC<QuestionsProps> = ({
@@ -26,7 +26,7 @@ const Questions: FC<QuestionsProps> = ({
   questionIndex,
   removeQuestion,
 }) => {
-  const form = useFormContext<NewAssment>();
+  const form = useFormContext<NewAssment>()
   return (
     <Form {...form}>
       <div className="flex flex-col gap-2 mt-2 border-l-8 ps-4 py-2 border rounded-lg pr-2 border-blue-300">
@@ -188,7 +188,7 @@ const Questions: FC<QuestionsProps> = ({
                         is_correct: false,
                         option_text: "",
                       },
-                    ] satisfies ObjectiveQuestion["options"]);
+                    ] satisfies ObjectiveQuestion["options"])
                   }}
                 >
                   Add Option
@@ -199,7 +199,7 @@ const Questions: FC<QuestionsProps> = ({
         )}
       </div>
     </Form>
-  );
-};
+  )
+}
 
-export default Questions;
+export default Questions

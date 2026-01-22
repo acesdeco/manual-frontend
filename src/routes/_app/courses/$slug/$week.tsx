@@ -1,6 +1,6 @@
-import { CourseVideo } from "@/features/courses/components";
-import { studentOnlyFn } from "@/functions/global";
-import { createFileRoute, getRouteApi } from "@tanstack/react-router";
+import { createFileRoute, getRouteApi } from "@tanstack/react-router"
+import { CourseVideo } from "@/features/courses/components"
+import { studentOnlyFn } from "@/functions/global"
 
 export const Route = createFileRoute("/_app/courses/$slug/$week")({
   component: Week,
@@ -11,19 +11,19 @@ export const Route = createFileRoute("/_app/courses/$slug/$week")({
       { name: "description", content: "Weekly course content" },
     ],
   }),
-});
+})
 
-const courseLayout = getRouteApi("/_app/courses/$slug");
+const courseLayout = getRouteApi("/_app/courses/$slug")
 
 function Week() {
-  const { course, studentInfo } = courseLayout.useLoaderData();
-  const { week } = Route.useParams();
+  const { course, studentInfo } = courseLayout.useLoaderData()
+  const { week } = Route.useParams()
 
   // Get the week content - weeks can be an object or array
-  const weeksData = course.weeks ?? {};
+  const weeksData = course.weeks ?? {}
   const weekContent = Array.isArray(weeksData)
     ? weeksData[+week]
-    : weeksData[week];
+    : weeksData[week]
 
   if (!weekContent) {
     return (
@@ -33,8 +33,8 @@ function Week() {
           This week&apos;s content is not available yet.
         </p>
       </div>
-    );
+    )
   }
 
-  return <CourseVideo user={studentInfo} content={weekContent} weekId={week} />;
+  return <CourseVideo user={studentInfo} content={weekContent} weekId={week} />
 }

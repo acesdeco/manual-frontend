@@ -1,10 +1,10 @@
-import { coursesApi } from "@/api";
-import { Button } from "@/components/ui/button";
-import { CourseList } from "@/features/courses/components";
-import { iGetCoursesByUserFn } from "@/functions/courses";
-import { PageHeader } from "@/shared/components/layout";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { Plus } from "lucide-react"
+import { coursesApi } from "@/api"
+import { Button } from "@/components/ui/button"
+import { CourseList } from "@/features/courses/components"
+import { iGetCoursesByUserFn } from "@/functions/courses"
+import { PageHeader } from "@/shared/components/layout"
 
 export const Route = createFileRoute("/_app/dashboard/courses/")({
   component: RouteComponent,
@@ -12,11 +12,11 @@ export const Route = createFileRoute("/_app/dashboard/courses/")({
     const courses =
       context.role === "instructor"
         ? await iGetCoursesByUserFn()
-        : await coursesApi.getAllCourses();
-    return { role: context.role, courses };
+        : await coursesApi.getAllCourses()
+    return { role: context.role, courses }
   },
   head: ({ loaderData }) => {
-    const isInstructor = loaderData?.role === "instructor";
+    const isInstructor = loaderData?.role === "instructor"
     return {
       meta: [
         {
@@ -24,13 +24,13 @@ export const Route = createFileRoute("/_app/dashboard/courses/")({
         },
         { name: "description", content: "View and manage courses" },
       ],
-    };
+    }
   },
-});
+})
 
 function RouteComponent() {
-  const { role, courses } = Route.useLoaderData();
-  const isInstructor = role === "instructor";
+  const { role, courses } = Route.useLoaderData()
+  const isInstructor = role === "instructor"
 
   return (
     <div className="space-y-6">
@@ -54,5 +54,5 @@ function RouteComponent() {
       />
       <CourseList courses={courses} role={role} />
     </div>
-  );
+  )
 }

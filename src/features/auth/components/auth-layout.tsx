@@ -1,22 +1,22 @@
+import { Link } from "@tanstack/react-router"
+import type { ComponentType, FC } from "react"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Link } from "@tanstack/react-router";
-import type { ComponentType, FC } from "react";
+} from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export type AuthLayoutProps = {
-  StudentComponent: ComponentType;
-  InstructorComponent: ComponentType;
-  imgSrc: string;
-  title: string;
-  description?: string;
-  route: "login" | "signup";
-};
+  StudentComponent: ComponentType
+  InstructorComponent: ComponentType
+  imgSrc: string
+  title: string
+  description?: string
+  route: "login" | "signup"
+}
 
 export const AuthLayout: FC<AuthLayoutProps> = ({
   imgSrc,
@@ -72,7 +72,7 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AuthLayout;
+export default AuthLayout

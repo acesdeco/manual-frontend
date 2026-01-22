@@ -1,10 +1,10 @@
-import type { RequireOnly } from "@/types";
-import { Outlet } from "@tanstack/react-router";
-import type { ComponentProps, FC } from "react";
+import { Outlet } from "@tanstack/react-router"
+import type { RequireOnly } from "@/types"
+import type { ComponentProps, FC } from "react"
 
 type AuthOutletProps = {
-  img: RequireOnly<ComponentProps<"input">, "src" | "alt">;
-};
+  img: RequireOnly<ComponentProps<"input">, "src" | "alt">
+}
 
 const AuthOutlet: FC<AuthOutletProps> = ({ img }) => {
   return (
@@ -18,7 +18,7 @@ const AuthOutlet: FC<AuthOutletProps> = ({ img }) => {
         </section>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default AuthOutlet;
+export default AuthOutlet

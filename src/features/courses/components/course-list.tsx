@@ -1,4 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router"
+import { BookOpen, Plus } from "lucide-react"
+import { CourseCard, CourseCardSkeleton } from "./course-card"
+import type { Course, UserRole } from "@/schemas"
 import {
   Empty,
   EmptyContent,
@@ -6,28 +9,25 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
-import type { Course, UserRole } from "@/schemas";
-import { Link } from "@tanstack/react-router";
-import { BookOpen, Plus } from "lucide-react";
-import { CourseCard, CourseCardSkeleton } from "./course-card";
+} from "@/components/ui/empty"
+import { Button } from "@/components/ui/button"
 
 interface CourseListProps {
-  courses: Course[];
-  role: UserRole;
-  isLoading?: boolean;
+  courses: Array<Course>
+  role: UserRole
+  isLoading?: boolean
 }
 
 export function CourseList({ courses, role, isLoading }: CourseListProps) {
   if (isLoading) {
-    return <CourseListSkeleton />;
+    return <CourseListSkeleton />
   }
 
   if (courses.length === 0) {
-    return <CourseListEmpty role={role} />;
+    return <CourseListEmpty role={role} />
   }
 
-  const variant = role === "instructor" ? "instructor" : "student";
+  const variant = role === "instructor" ? "instructor" : "student"
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -35,7 +35,7 @@ export function CourseList({ courses, role, isLoading }: CourseListProps) {
         <CourseCard key={course.slug} course={course} variant={variant} />
       ))}
     </div>
-  );
+  )
 }
 
 function CourseListSkeleton() {
@@ -45,15 +45,15 @@ function CourseListSkeleton() {
         <CourseCardSkeleton key={i} />
       ))}
     </div>
-  );
+  )
 }
 
 interface CourseListEmptyProps {
-  role: UserRole;
+  role: UserRole
 }
 
 function CourseListEmpty({ role }: CourseListEmptyProps) {
-  const isInstructor = role === "instructor";
+  const isInstructor = role === "instructor"
 
   return (
     <Empty className="min-h-[400px] border">
@@ -81,7 +81,7 @@ function CourseListEmpty({ role }: CourseListEmptyProps) {
         </EmptyContent>
       )}
     </Empty>
-  );
+  )
 }
 
-export { CourseListEmpty, CourseListSkeleton };
+export { CourseListEmpty, CourseListSkeleton }

@@ -1,32 +1,32 @@
-import illustrationImg from "@/assets/images/Illustration.png";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
+import { createFileRoute } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import illustrationImg from "@/assets/images/Illustration.png"
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import {
   AuthButton,
   AuthLayout,
   PasswordField,
-} from "@/features/auth/components";
+} from "@/features/auth/components"
 import {
+  type InstructorSignUp as TInstructorSignUp,
+  type StudentSignUp as TStudentSignUp,
   iSignupFn,
   iSignupSchema,
   sSignUpFn,
   sSignUpSchema,
-  type InstructorSignUp as TInstructorSignUp,
-  type StudentSignUp as TStudentSignUp,
-} from "@/functions/auth";
-import { responseErrorMessage } from "@/utils/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+} from "@/functions/auth"
+import { responseErrorMessage } from "@/utils/client"
 
 export const Route = createFileRoute("/_auth/signup")({
   component: () => (
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/_auth/signup")({
       },
     ],
   }),
-});
+})
 
 function InstructorSignUp() {
   const form = useForm<TInstructorSignUp>({
@@ -61,21 +61,20 @@ function InstructorSignUp() {
       confirmPassword: "",
       password: "",
     },
-  });
-  const signupFn = useServerFn(iSignupFn);
+  })
+  const signupFn = useServerFn(iSignupFn)
   const { mutate, isPending } = useMutation({
     mutationFn: signupFn,
     onError(error) {
-      console.error("Error during instructor signup:", error);
-      toast.error(responseErrorMessage(error) ?? "Sign up failed");
+      console.error("Error during instructor signup:", error)
+      toast.error(responseErrorMessage(error) ?? "Sign up failed")
     },
-  });
+  })
 
   return (
     <Form {...form}>
-      { }
+      {}
       <form
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={form.handleSubmit((data) => mutate({ data }))}
         className="space-y-4"
       >
@@ -147,7 +146,7 @@ function InstructorSignUp() {
         </AuthButton>
       </form>
     </Form>
-  );
+  )
 }
 
 function StudentSignUp() {
@@ -162,21 +161,20 @@ function StudentSignUp() {
       registrationNumber: "",
       role: "student",
     },
-  });
-  const signUpFn = useServerFn(sSignUpFn);
+  })
+  const signUpFn = useServerFn(sSignUpFn)
   const { mutate, isPending } = useMutation({
     mutationFn: signUpFn,
     onError(error) {
-      console.error("Error during sign up:", error);
-      toast.error(responseErrorMessage(error) ?? "Sign up failed");
+      console.error("Error during sign up:", error)
+      toast.error(responseErrorMessage(error) ?? "Sign up failed")
     },
-  });
+  })
 
   return (
     <Form {...form}>
-      { }
+      {}
       <form
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={form.handleSubmit((data) => mutate({ data }))}
         className="space-y-4"
       >
@@ -260,5 +258,5 @@ function StudentSignUp() {
         </AuthButton>
       </form>
     </Form>
-  );
+  )
 }

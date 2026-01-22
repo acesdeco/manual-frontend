@@ -1,42 +1,42 @@
-import { api, parseApiResponse } from "@/api/utils";
-import { deleteUserCookie, setUserCookie } from "@/helpers/server/cookies";
-import { authMiddleware } from "@/middleware";
-import { handleServerFnError } from "@/utils/server";
-import { redirect } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { zodValidator } from "@tanstack/zod-adapter";
+import { redirect } from "@tanstack/react-router"
+import { createServerFn } from "@tanstack/react-start"
+import { zodValidator } from "@tanstack/zod-adapter"
 import {
   authResultSchema,
   iLoginSchema,
   iSignupSchema,
   sLoginSchema,
   sSignUpSchema,
-} from "./schema";
+} from "./schema"
+import { api, parseApiResponse } from "@/api/utils"
+import { deleteUserCookie, setUserCookie } from "@/helpers/server/cookies"
+import { authMiddleware } from "@/middleware"
+import { handleServerFnError } from "@/utils/server"
 
-export * from "./schema";
+export * from "./schema"
 
 export const sLoginFn = createServerFn({ method: "POST" })
-  .validator(zodValidator(sLoginSchema))
+  .inputValidator(zodValidator(sLoginSchema))
   .handler(async ({ data }) => {
     try {
       const res = await api
         .post("users/login", {
           json: data,
         })
-        .json();
-      const user = parseApiResponse(res, authResultSchema);
-      setUserCookie(data.role, user);
+        .json()
+      const user = parseApiResponse(res, authResultSchema)
+      setUserCookie(data.role, user)
     } catch (error) {
-      return handleServerFnError(error);
+      return handleServerFnError(error)
     }
     throw redirect({
       to: "/dashboard/courses",
       from: "/login",
-    });
-  });
+    })
+  })
 
 export const sSignUpFn = createServerFn({ method: "POST" })
-  .validator(zodValidator(sSignUpSchema))
+  .inputValidator(zodValidator(sSignUpSchema))
   .handler(async ({ data }) => {
     try {
       const res = await api
@@ -47,40 +47,40 @@ export const sSignUpFn = createServerFn({ method: "POST" })
             })
             .parse(data),
         })
-        .json();
-      const user = parseApiResponse(res, authResultSchema);
-      setUserCookie(data.role, user);
+        .json()
+      const user = parseApiResponse(res, authResultSchema)
+      setUserCookie(data.role, user)
     } catch (error) {
-      return handleServerFnError(error);
+      return handleServerFnError(error)
     }
     throw redirect({
       to: "/dashboard/courses",
       from: "/signup",
-    });
-  });
+    })
+  })
 
 export const iLoginFn = createServerFn({ method: "POST" })
-  .validator(zodValidator(iLoginSchema))
+  .inputValidator(zodValidator(iLoginSchema))
   .handler(async ({ data }) => {
     try {
       const res = await api
         .post("users/login", {
           json: data,
         })
-        .json();
-      const user = parseApiResponse(res, authResultSchema);
-      setUserCookie(data.role, user);
+        .json()
+      const user = parseApiResponse(res, authResultSchema)
+      setUserCookie(data.role, user)
     } catch (error) {
-      return handleServerFnError(error);
+      return handleServerFnError(error)
     }
     throw redirect({
       to: "/dashboard/courses",
       from: "/login",
-    });
-  });
+    })
+  })
 
 export const iSignupFn = createServerFn({ method: "POST" })
-  .validator(zodValidator(iSignupSchema))
+  .inputValidator(zodValidator(iSignupSchema))
   .handler(async ({ data }) => {
     try {
       const res = await api
@@ -91,23 +91,23 @@ export const iSignupFn = createServerFn({ method: "POST" })
             })
             .parse(data),
         })
-        .json();
-      const user = parseApiResponse(res, authResultSchema);
-      setUserCookie(data.role, user);
+        .json()
+      const user = parseApiResponse(res, authResultSchema)
+      setUserCookie(data.role, user)
     } catch (error) {
-      return handleServerFnError(error);
+      return handleServerFnError(error)
     }
     throw redirect({
       to: "/dashboard/courses",
       from: "/signup",
-    });
-  });
+    })
+  })
 
 export const logoutFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .handler(() => {
-    deleteUserCookie();
+    deleteUserCookie()
     throw redirect({
       to: "/login",
-    });
-  });
+    })
+  })

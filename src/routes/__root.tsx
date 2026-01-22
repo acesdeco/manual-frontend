@@ -1,27 +1,23 @@
-import { ThemeProvider } from "@/components/theme-provider.tsx";
-import { Toaster } from "@/components/ui/sonner.tsx";
-import { getThemeServerFn } from "@/lib/theme.ts";
-import type { QueryClient } from "@tanstack/react-query";
+import { ThemeProvider } from "@/components/theme-provider"
+import { getThemeServerFn } from "@/lib/theme"
+import { TanStackDevtools } from "@tanstack/react-devtools"
+import type { QueryClient } from "@tanstack/react-query"
 import {
   HeadContent,
-  Outlet,
+  Link,
   Scripts,
   createRootRouteWithContext,
-} from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import TanStackQueryLayout from "../integrations/tanstack-query/layout.tsx";
-import appCss from "../styles.css?url";
+} from "@tanstack/react-router"
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import { Analytics } from "@vercel/analytics/react"
+import TanStackQueryDevtools from "../integrations/tanstack-query/devtools"
+import appCss from "../styles.css?url"
 
 interface MyRouterContext {
-  queryClient: QueryClient;
+  queryClient: QueryClient
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  // beforeLoad: ({ location }) => {
-  //   console.log("VISITING", location.pathname);
-  // },
-  loader: async () => await getThemeServerFn(),
-  component: RootComponent,
   head: () => ({
     meta: [
       {
@@ -55,6 +51,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
+  shellComponent: RootDocument,
+  loader: () => getThemeServerFn(),
   notFoundComponent: () => (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
       <div className="text-center">
@@ -63,43 +61,43 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         <p className="mt-2 text-muted-foreground">
           The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
-        <a
-          href="/dashboard/courses"
+        <Link
+          to="/dashboard/courses"
           className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
         >
           Go to Dashboard
-        </a>
+        </Link>
       </div>
     </div>
   ),
-});
-
-function RootComponent() {
-  const data = Route.useLoaderData();
-  return (
-    <ThemeProvider theme={data}>
-      <RootDocument>
-        {/* <ThemeToggle /> */}
-        <Outlet />
-        <TanStackRouterDevtools />
-        <TanStackQueryLayout />
-        <Toaster />
-      </RootDocument>
-    </ThemeProvider>
-  );
-}
+})
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const theme = Route.useLoaderData();
+  const theme = Route.useLoaderData()
   return (
-    <html lang="en" className={theme} suppressHydrationWarning>
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
+    <ThemeProvider theme={theme}>
+      <html lang="en" className={theme} suppressHydrationWarning>
+        <head>
+          <HeadContent />
+        </head>
+        <body>
+          <Analytics />
+          {children}
+          <TanStackDevtools
+            config={{
+              position: "bottom-right",
+            }}
+            plugins={[
+              {
+                name: "Tanstack Router",
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+              TanStackQueryDevtools,
+            ]}
+          />
+          <Scripts />
+        </body>
+      </html>
+    </ThemeProvider>
+  )
 }

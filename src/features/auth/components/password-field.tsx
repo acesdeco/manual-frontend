@@ -1,31 +1,31 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { Eye, EyeOff } from "lucide-react";
-import { useRef, useState, type FC } from "react";
-import type { ControllerRenderProps } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react"
+import { type FC, useRef, useState } from "react"
+import type { ControllerRenderProps } from "react-hook-form"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 
 type PasswordFieldProps = {
   field:
     | ControllerRenderProps<{ password: string }, "password">
-    | ControllerRenderProps<{ confirmPassword: string }, "confirmPassword">;
-  placeholder: string;
-  className?: string;
-};
+    | ControllerRenderProps<{ confirmPassword: string }, "confirmPassword">
+  placeholder: string
+  className?: string
+}
 
 export const PasswordField: FC<PasswordFieldProps> = ({
   field,
   placeholder,
   className,
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [showPassword, setShowPassword] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const toggleVisibility = () => {
-    setShowPassword((v) => !v);
+    setShowPassword((v) => !v)
     // Keep focus on input after toggle
-    setTimeout(() => inputRef.current?.focus(), 0);
-  };
+    setTimeout(() => inputRef.current?.focus(), 0)
+  }
 
   return (
     <div className={cn("relative", className)}>
@@ -53,7 +53,7 @@ export const PasswordField: FC<PasswordFieldProps> = ({
         </span>
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default PasswordField;
+export default PasswordField

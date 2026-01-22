@@ -1,6 +1,6 @@
 {
-  "short_name": "Modools App",
-  "name": "Modools by Applift",
+  "short_name": "TanStack App",
+  "name": "Create TanStack App Sample",
   "icons": [
     {
       "src": "favicon.ico",

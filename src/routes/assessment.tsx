@@ -1,50 +1,49 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FC } from "react";
+import { createFileRoute } from "@tanstack/react-router"
+import { type FC, useState } from "react"
 
 export const Route = createFileRoute("/assessment")({
   component: Assessment,
-});
+})
 
 // Test data (this can come from props or a state for more flexibility)
 const testTable = [
   ["A", "B", "C"],
   ["D", "E", "F"],
   ["G", "H", "I"],
-];
+]
 
 interface ResizableTableProps {
-  rows: number;
-  columns: number;
+  rows: number
+  columns: number
 }
 
 const ResizableTable: FC<ResizableTableProps> = ({ rows, columns }) => {
   // Initialize state for the table data (empty strings initially)
   const [tableData, setTableData] = useState(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     Array.from({ length: rows }, () => Array(columns).fill("")),
-  );
+  )
 
   // Function to handle cell value changes
   const handleCellChange = (row: number, col: number, value: string) => {
-    const newTableData = [...tableData];
-    newTableData[row][col] = value;
-    setTableData(newTableData);
-  };
+    const newTableData = [...tableData]
+    newTableData[row][col] = value
+    setTableData(newTableData)
+  }
 
   // Calculate score based on testTable data
   const calculateScore = () => {
-    let score = 0;
-    const maxScore = rows * columns;
+    let score = 0
+    const maxScore = rows * columns
 
     tableData.forEach((row, rowIndex) => {
       row.forEach((cell, colIndex) => {
         if (testTable[rowIndex] && testTable[rowIndex][colIndex] === cell) {
-          score += 1;
+          score += 1
         }
-      });
-    });
-    return `${score} / ${maxScore}`;
-  };
+      })
+    })
+    return `${score} / ${maxScore}`
+  }
 
   return (
     <div>
@@ -74,13 +73,13 @@ const ResizableTable: FC<ResizableTableProps> = ({ rows, columns }) => {
       </table>
       <h3>Score: {calculateScore()}</h3>
     </div>
-  );
-};
+  )
+}
 
 function Assessment() {
   return (
     <div>
       <ResizableTable rows={3} columns={2} />
     </div>
-  );
+  )
 }

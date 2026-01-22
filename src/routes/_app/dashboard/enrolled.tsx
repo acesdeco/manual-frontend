@@ -1,4 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { BookOpen } from "lucide-react"
+import type { Course } from "@/schemas"
+import { Button } from "@/components/ui/button"
 import {
   Empty,
   EmptyContent,
@@ -6,12 +9,10 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
-import { studentOnlyFn } from "@/functions/global";
-import { getStudentsEnrolledCoursesFn } from "@/functions/students/courses";
-import { PageHeader } from "@/shared/components/layout";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen } from "lucide-react";
+} from "@/components/ui/empty"
+import { studentOnlyFn } from "@/functions/global"
+import { getStudentsEnrolledCoursesFn } from "@/functions/students/courses"
+import { PageHeader } from "@/shared/components/layout"
 
 export const Route = createFileRoute("/_app/dashboard/enrolled")({
   component: RouteComponent,
@@ -23,17 +24,17 @@ export const Route = createFileRoute("/_app/dashboard/enrolled")({
       { name: "description", content: "View your enrolled courses" },
     ],
   }),
-});
+})
 
 function RouteComponent() {
-  const courses = Route.useLoaderData();
+  const courses = Route.useLoaderData()
 
   return (
     <div className="space-y-6">
       <PageHeader title="My Courses" description="Courses you've enrolled in" />
       {courses.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
+          {courses.map((course: Course) => (
             <Link
               key={course.code}
               to="/courses/$slug/introduction"
@@ -66,5 +67,5 @@ function RouteComponent() {
         </Empty>
       )}
     </div>
-  );
+  )
 }

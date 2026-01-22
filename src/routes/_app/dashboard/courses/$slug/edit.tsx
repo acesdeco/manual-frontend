@@ -1,33 +1,34 @@
-import { coursesApi } from "@/api";
-import type { UpdateWeek } from "@/api/courses";
-import logoImg from "@/assets/images/Union.png?url";
-import { Assessment } from "@/components/assments/assessments";
-import CourseEditor from "@/components/courses/course-editor";
-import { SubmissionFlow } from "@/components/submissions/submission-flow";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useMutation } from "@tanstack/react-query"
+import { Link, createFileRoute, useRouter } from "@tanstack/react-router"
+import { zodValidator } from "@tanstack/zod-adapter"
+import { ArrowLeft, ChevronDown, Loader2, Plus } from "lucide-react"
+import { useMemo, useState } from "react"
+import { toast } from "sonner"
+import z from "zod"
+import type { UpdateWeek } from "@/api/courses"
+import type { Week } from "@/schemas"
+import { coursesApi } from "@/api"
+import logoImg from "@/assets/images/Union.png?url"
+import { Assessment } from "@/components/assments/assessments"
+import CourseEditor from "@/components/courses/course-editor"
+import { SubmissionFlow } from "@/components/submissions/submission-flow"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { instructorOnlyFn } from "@/functions/global";
-import { cn } from "@/lib/utils";
-import { assessmentByWeekOptions } from "@/queries";
-import { OverlayLoader } from "@/shared/components/feedback";
-import { responseErrorToast } from "@/utils/client";
-import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
-import { zodValidator } from "@tanstack/zod-adapter";
-import { ArrowLeft, ChevronDown, Loader2, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
-import { toast } from "sonner";
-import z from "zod";
+} from "@/components/ui/collapsible"
+import { Label } from "@/components/ui/label"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Switch } from "@/components/ui/switch"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { instructorOnlyFn } from "@/functions/global"
+import { cn } from "@/lib/utils"
+import { assessmentByWeekOptions } from "@/queries"
+import { OverlayLoader } from "@/shared/components/feedback"
+import { responseErrorToast } from "@/utils/client"
 
 export const Route = createFileRoute("/_app/dashboard/courses/$slug/edit")({
   validateSearch: zodValidator(
@@ -43,9 +44,9 @@ export const Route = createFileRoute("/_app/dashboard/courses/$slug/edit")({
   component: RouteComponent,
   beforeLoad: async () => await instructorOnlyFn(),
   loader: async ({ params }) => {
-    const course = await coursesApi.getCourseBySlug(params.slug);
-    const weeks = await coursesApi.getWeeksByCourseId(course._id);
-    return { course, weeks };
+    const course = await coursesApi.getCourseBySlug(params.slug)
+    const weeks = await coursesApi.getWeeksByCourseId(course._id)
+    return { course, weeks }
   },
   head: ({ loaderData }) => ({
     meta: [
@@ -53,25 +54,25 @@ export const Route = createFileRoute("/_app/dashboard/courses/$slug/edit")({
       { name: "description", content: "Edit course content" },
     ],
   }),
-});
+})
 
 function RouteComponent() {
-  const router = useRouter();
-  const navigate = Route.useNavigate();
-  const { queryClient } = Route.useRouteContext();
+  const router = useRouter()
+  const navigate = Route.useNavigate()
+  const { queryClient } = Route.useRouteContext()
 
-  const { course, weeks } = Route.useLoaderData();
-  const { week: weekSearchParam } = Route.useSearch();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [weeksExpanded, setWeeksExpanded] = useState(true);
+  const { course, weeks } = Route.useLoaderData()
+  const { week: weekSearchParam } = Route.useSearch()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [weeksExpanded, setWeeksExpanded] = useState(true)
 
   const activeWeek = useMemo(() => {
-    const newWeek = weeks[weekSearchParam - 1] ?? null;
+    const newWeek = weeks[weekSearchParam - 1] ?? null
     if (newWeek) {
-      void queryClient.prefetchQuery(assessmentByWeekOptions(newWeek._id));
+      void queryClient.prefetchQuery(assessmentByWeekOptions(newWeek._id))
     }
-    return newWeek;
-  }, [queryClient, weekSearchParam, weeks]);
+    return newWeek
+  }, [queryClient, weekSearchParam, weeks])
 
   const { mutate: togglePublish, isPending: isTogglingPublish } = useMutation({
     mutationFn: async () => {
@@ -80,31 +81,31 @@ function RouteComponent() {
         update: {
           published: !course.published,
         },
-      });
-      await router.invalidate();
+      })
+      await router.invalidate()
     },
     onError(error) {
-      console.error("Error toggling published status:", error);
-      toast.error("Unable to toggle published status");
+      console.error("Error toggling published status:", error)
+      toast.error("Unable to toggle published status")
     },
-  });
+  })
 
   const { mutate: updateWeek, isPending: isUpdatingWeek } = useMutation({
     mutationFn: async (input: UpdateWeek) => {
-      if (!activeWeek) return;
-      await coursesApi.updateWeek(input);
+      if (!activeWeek) return
+      await coursesApi.updateWeek(input)
       await navigate({
         to: ".",
         search: {
           week: input.update.weekNumber,
         },
-      });
+      })
     },
     onError(error) {
-      console.error("Error updating week:", error);
-      toast.error("Unable to update week");
+      console.error("Error updating week:", error)
+      toast.error("Unable to update week")
     },
-  });
+  })
 
   const { mutate: createWeek, isPending: isCreatingWeek } = useMutation({
     mutationFn: async () => {
@@ -114,21 +115,21 @@ function RouteComponent() {
         weekNumber: weeks.length + 1,
         notes: "",
         video: "",
-      });
+      })
       await navigate({
         to: ".",
         search: {
           week: result.weekNumber,
         },
-      });
+      })
     },
     onError(error) {
-      console.error("Error adding week:", error);
-      responseErrorToast(error);
+      console.error("Error adding week:", error)
+      responseErrorToast(error)
     },
-  });
+  })
 
-  const isLoading = isTogglingPublish || isUpdatingWeek || isCreatingWeek;
+  const isLoading = isTogglingPublish || isUpdatingWeek || isCreatingWeek
 
   const SidebarContent = () => (
     <ScrollArea className="h-full py-4">
@@ -194,7 +195,7 @@ function RouteComponent() {
                     </p>
                   </div>
                 ) : (
-                  weeks.map((aWeek, index) => (
+                  weeks.map((aWeek: Week, index: number) => (
                     <Link
                       key={aWeek._id}
                       to="."
@@ -227,7 +228,7 @@ function RouteComponent() {
         </div>
       </div>
     </ScrollArea>
-  );
+  )
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -323,5 +324,5 @@ function RouteComponent() {
         </main>
       </div>
     </div>
-  );
+  )
 }

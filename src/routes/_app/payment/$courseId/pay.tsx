@@ -1,4 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { ArrowLeft, CreditCard } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -6,19 +8,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+} from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 import {
   checkExistingPaymentFn,
   coursePaymentDetailsFn,
-} from "@/functions/payments";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CreditCard } from "lucide-react";
+} from "@/functions/payments"
 
 export const Route = createFileRoute("/_app/payment/$courseId/pay")({
   component: Pay,
   beforeLoad: async ({ params }) => {
-    await checkExistingPaymentFn({ data: params });
+    await checkExistingPaymentFn({ data: params })
   },
   loader: async ({ params }) =>
     await coursePaymentDetailsFn({
@@ -30,11 +30,11 @@ export const Route = createFileRoute("/_app/payment/$courseId/pay")({
       { name: "description", content: "Complete your course payment" },
     ],
   }),
-});
+})
 
 function Pay() {
   const { course, cappedCharge, paymentData, totalAmount } =
-    Route.useLoaderData();
+    Route.useLoaderData()
 
   return (
     <div className="min-h-screen bg-muted/30 p-4 md:p-8">
@@ -117,5 +117,5 @@ function Pay() {
         </div>
       </div>
     </div>
-  );
+  )
 }

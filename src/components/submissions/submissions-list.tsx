@@ -1,55 +1,53 @@
-import type { Assessment } from "@/api/assments/schema";
-import { updateSubmission } from "@/api/submissions";
-import type { Submission } from "@/api/submissions/schema";
-import { submissionsByAssessmentOptions } from "@/queries";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState, type FC } from "react";
-import { toast } from "sonner";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { type FC, useMemo, useState } from "react"
+import { toast } from "sonner"
+import type { Assessment } from "@/api/assments/schema"
+import type { Submission } from "@/api/submissions/schema"
+import { updateSubmission } from "@/api/submissions"
+import { submissionsByAssessmentOptions } from "@/queries"
 
 type SubmissionsListProps = {
-  assessmentId: Assessment["_id"];
-  closeSubmissionsList: () => void;
-};
+  assessmentId: Assessment["_id"]
+  closeSubmissionsList: () => void
+}
 
-type Mode =
-  | { view: "all" }
-  | { view: "single"; submisionId: Submission["_id"] };
+type Mode = { view: "all" } | { view: "single"; submisionId: Submission["_id"] }
 
 export const SubmissionsList: FC<SubmissionsListProps> = ({
   assessmentId,
   closeSubmissionsList,
 }) => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   const queryOptions = useMemo(
     () => submissionsByAssessmentOptions(assessmentId),
     [assessmentId],
-  );
-  const { isPending, data, error } = useQuery(queryOptions);
+  )
+  const { isPending, data, error } = useQuery(queryOptions)
   const [_mode, setMode] = useState<Mode>({
     view: "all",
-  });
+  })
 
   const mode = useMemo(() => {
     switch (_mode.view) {
       case "all":
-        return _mode;
+        return _mode
       case "single":
         return {
           ..._mode,
           submission:
             data?.find((value) => value._id === _mode.submisionId) ?? null,
-        };
+        }
     }
-  }, [_mode, data]);
+  }, [_mode, data])
 
   const { mutate, isPending: updatingSubmission } = useMutation({
     mutationFn: updateSubmission,
     async onMutate({ id, update }) {
       toast.loading("Updating submision", {
         id,
-      });
-      await queryClient.cancelQueries({ queryKey: queryOptions.queryKey });
-      const previousItems = queryClient.getQueryData(queryOptions.queryKey);
+      })
+      await queryClient.cancelQueries({ queryKey: queryOptions.queryKey })
+      const previousItems = queryClient.getQueryData(queryOptions.queryKey)
       queryClient.setQueryData(queryOptions.queryKey, (items) =>
         items?.map((item) =>
           item._id === id
@@ -59,24 +57,24 @@ export const SubmissionsList: FC<SubmissionsListProps> = ({
               }
             : item,
         ),
-      );
-      return { previousItems };
+      )
+      return { previousItems }
     },
     onSuccess(_, { id }) {
       toast.loading("Submission updated!", {
         id,
-      });
+      })
     },
     onError(error, { id }, context) {
-      console.error("Error updating submission:", error);
+      console.error("Error updating submission:", error)
       toast.error("Failed to update submission", {
         id,
-      });
+      })
       if (context?.previousItems) {
-        queryClient.setQueryData(queryOptions.queryKey, context.previousItems);
+        queryClient.setQueryData(queryOptions.queryKey, context.previousItems)
       }
     },
-  });
+  })
 
   if (isPending) {
     return (
@@ -84,10 +82,10 @@ export const SubmissionsList: FC<SubmissionsListProps> = ({
         <div className="loader"></div>
         <div>Loading...</div>
       </div>
-    );
+    )
   }
 
-  if (error) throw error;
+  if (error) throw error
 
   switch (mode.view) {
     case "single": {
@@ -141,17 +139,17 @@ export const SubmissionsList: FC<SubmissionsListProps> = ({
                           // TODO show an alert dialog
                           const newScore = prompt(
                             "Enter the score for this answer:",
-                          );
+                          )
                           if (newScore !== null) {
                             const updatedSubmission = {
                               ...mode.submission!,
-                            } satisfies Submission;
+                            } satisfies Submission
                             updatedSubmission.answers[index].marks_obtained =
-                              parseFloat(newScore);
+                              parseFloat(newScore)
                             mutate({
                               id: mode.submisionId,
                               update: updatedSubmission,
-                            });
+                            })
                           }
                         }}
                       >
@@ -168,7 +166,7 @@ export const SubmissionsList: FC<SubmissionsListProps> = ({
             ))}
           </div>
         </div>
-      );
+      )
     }
     case "all": {
       return (
@@ -216,7 +214,7 @@ export const SubmissionsList: FC<SubmissionsListProps> = ({
             </tbody>
           </table>
         </section>
-      );
+      )
     }
   }
-};
+}

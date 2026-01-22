@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { LoadingSpinner } from "@/shared/components/feedback";
-import type { ComponentProps, FC } from "react";
+import type { ComponentProps, FC } from "react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { LoadingSpinner } from "@/shared/components/feedback"
 
 type AuthButtonProps = ComponentProps<typeof Button> & {
-  isLoading: boolean;
-};
+  isLoading: boolean
+}
 
 export const AuthButton: FC<AuthButtonProps> = ({
   children,
@@ -22,7 +22,7 @@ export const AuthButton: FC<AuthButtonProps> = ({
     >
       {isLoading ? <LoadingSpinner size="sm" /> : children}
     </Button>
-  );
-};
+  )
+}
 
-export default AuthButton;
+export default AuthButton
