@@ -1,27 +1,27 @@
-import type { Assessment } from "@/api/assments/schema";
-import { assessmentByWeekOptions } from "@/queries";
-import type { Week } from "@/schemas";
-import type { Student } from "@/types";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState, type FC } from "react";
-import SubmitAssessment from "./submit-assessment";
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { type FC, useState } from "react"
+import SubmitAssessment from "./submit-assessment"
+import type { Student } from "@/types"
+import type { Week } from "@/schemas"
+import type { Assessment } from "@/api/assments/schema"
+import { assessmentByWeekOptions } from "@/queries"
 
 interface AllAssessmentsProps {
-  weekId: Week["_id"];
-  user: Student;
+  weekId: Week["_id"]
+  user: Student
 }
 
 const AllAssessments: FC<AllAssessmentsProps> = ({ weekId, user }) => {
   const { data: assessments, error } = useSuspenseQuery(
     assessmentByWeekOptions(weekId),
-  );
+  )
   const [activeAssessment, setActiveAssessment] = useState<Assessment | null>(
     null,
-  );
+  )
 
   const handleAssessmentClick = (assessment: Assessment) => {
-    setActiveAssessment(assessment);
-  };
+    setActiveAssessment(assessment)
+  }
 
   return (
     <>
@@ -59,7 +59,7 @@ const AllAssessments: FC<AllAssessmentsProps> = ({ weekId, user }) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default AllAssessments;
+export default AllAssessments

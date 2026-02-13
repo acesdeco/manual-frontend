@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils";
-import type { ComponentProps, FC } from "react";
-import { Loader } from "../global/loader";
+import { Loader } from "../global/loader"
+import type { ComponentProps, FC } from "react"
+import { cn } from "@/lib/utils"
 
 type AuthButtonProps = ComponentProps<"button"> & {
-  isLoading: boolean;
-};
+  isLoading: boolean
+}
 
 const AuthButton: FC<AuthButtonProps> = ({
   children,
@@ -26,7 +26,7 @@ const AuthButton: FC<AuthButtonProps> = ({
         {isLoading ? <Loader /> : children}
       </button>
     </>
-  );
-};
+  )
+}
 
-export default AuthButton;
+export default AuthButton

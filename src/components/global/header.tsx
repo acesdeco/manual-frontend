@@ -1,12 +1,12 @@
-import unionImg from "@/assets/images/Union.png";
-import { useHeaderActive } from "@/hooks/header-active";
-import { Link } from "@tanstack/react-router";
-import { BiMenuAltRight } from "react-icons/bi";
-import { IoIosArrowDown, IoIosClose } from "react-icons/io";
-import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5";
+import { Link } from "@tanstack/react-router"
+import { BiMenuAltRight } from "react-icons/bi"
+import { IoIosArrowDown, IoIosClose } from "react-icons/io"
+import { IoNotificationsOutline, IoPersonCircleOutline } from "react-icons/io5"
+import { useHeaderActive } from "@/hooks/header-active"
+import unionImg from "@/assets/images/Union.png"
 
 export const HeaderComp = () => {
-  const { menuOpen: isMenuOpen, toggleMenu } = useHeaderActive();
+  const { menuOpen: isMenuOpen, toggleMenu } = useHeaderActive()
   return (
     <header className="w-[100%] bg-white h-fit md:h-[10%] flex flex-row items-center py-5 justify-between bg-transparent px-10">
       <div id="left">
@@ -53,5 +53,5 @@ export const HeaderComp = () => {
         </div>
       </div>
     </header>
-  );
-};
+  )
+}

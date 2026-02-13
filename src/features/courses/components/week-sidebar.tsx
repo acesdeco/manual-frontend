@@ -1,16 +1,16 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import type { Course } from "@/schemas";
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router"
+import type { Course } from "@/schemas"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { cn } from "@/lib/utils"
 
 interface WeekSidebarProps {
-  course: Course;
-  currentSlug: string;
+  course: Course
+  currentSlug: string
 }
 
 export function WeekSidebar({ course, currentSlug }: WeekSidebarProps) {
-  const location = useLocation();
-  const weeks = Object.keys(course.weeks ?? {});
+  const location = useLocation()
+  const weeks = Object.keys(course.weeks ?? {})
 
   return (
     <ScrollArea className="h-full py-6">
@@ -40,8 +40,8 @@ export function WeekSidebar({ course, currentSlug }: WeekSidebarProps) {
 
           {/* Week Links */}
           {weeks.map((week) => {
-            const weekNumber = +week + 1;
-            const isActive = location.pathname.includes(`/${week}`);
+            const weekNumber = +week + 1
+            const isActive = location.pathname.includes(`/${week}`)
 
             return (
               <Link
@@ -67,10 +67,10 @@ export function WeekSidebar({ course, currentSlug }: WeekSidebarProps) {
                 </span>
                 Week {weekNumber}
               </Link>
-            );
+            )
           })}
         </nav>
       </div>
     </ScrollArea>
-  );
+  )
 }

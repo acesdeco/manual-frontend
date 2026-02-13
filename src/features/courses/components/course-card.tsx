@@ -1,7 +1,10 @@
-import placeholderImg from "@/assets/images/amico.png?url";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router"
+import { Clock } from "lucide-react"
+import type { Course } from "@/schemas"
+import placeholderImg from "@/assets/images/amico.png?url"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -9,29 +12,26 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import type { Course } from "@/schemas";
-import { Link } from "@tanstack/react-router";
-import { Clock } from "lucide-react";
+} from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 interface CourseCardProps {
-  course: Course;
-  variant?: "student" | "instructor";
+  course: Course
+  variant?: "student" | "instructor"
 }
 
 export function CourseCard({ course, variant = "student" }: CourseCardProps) {
   const linkTo =
     variant === "instructor"
       ? "/dashboard/courses/$slug/edit"
-      : "/courses/$slug/introduction";
+      : "/courses/$slug/introduction"
 
   const instructorInitials = course.instructor.name
     .split(" ")
     .map((n) => n[0])
     .join("")
     .toUpperCase()
-    .slice(0, 2);
+    .slice(0, 2)
 
   return (
     <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
@@ -94,11 +94,11 @@ export function CourseCard({ course, variant = "student" }: CourseCardProps) {
         </Button>
       </CardFooter>
     </Card>
-  );
+  )
 }
 
 interface CourseCardSkeletonProps {
-  className?: string;
+  className?: string
 }
 
 export function CourseCardSkeleton({ className }: CourseCardSkeletonProps) {
@@ -126,5 +126,5 @@ export function CourseCardSkeleton({ className }: CourseCardSkeletonProps) {
         <div className="h-8 w-16 animate-pulse rounded bg-accent" />
       </CardFooter>
     </Card>
-  );
+  )
 }

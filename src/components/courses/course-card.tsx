@@ -1,13 +1,13 @@
-import type { Course } from "@/schemas";
-import amico from "@/assets/images/amico.png?url";
-import type { FC, ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
-import { Button } from "../ui/button";
+import { Link } from "@tanstack/react-router"
+import { Button } from "../ui/button"
+import type { Course } from "@/schemas"
+import type { FC, ReactNode } from "react"
+import amico from "@/assets/images/amico.png?url"
 
 type CourseCardProps = {
-  children: ReactNode;
-  course: Course;
-};
+  children: ReactNode
+  course: Course
+}
 
 const CourseCard: FC<CourseCardProps> = ({ course, children }) => {
   return (
@@ -35,8 +35,8 @@ const CourseCard: FC<CourseCardProps> = ({ course, children }) => {
         </article>
       </div>
     </>
-  );
-};
+  )
+}
 
 export const StudentsCourseCard: FC<Omit<CourseCardProps, "children">> = ({
   course,
@@ -53,8 +53,8 @@ export const StudentsCourseCard: FC<Omit<CourseCardProps, "children">> = ({
         <Button>Go to course</Button>
       </Link>
     </CourseCard>
-  );
-};
+  )
+}
 
 export const InstructorCourseCard: FC<Omit<CourseCardProps, "children">> = ({
   course,
@@ -71,5 +71,5 @@ export const InstructorCourseCard: FC<Omit<CourseCardProps, "children">> = ({
         <Button>Go to course</Button>
       </Link>
     </CourseCard>
-  );
-};
+  )
+}

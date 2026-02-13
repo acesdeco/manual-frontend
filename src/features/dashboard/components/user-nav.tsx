@@ -1,5 +1,9 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Link, getRouteApi } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
+import { LogOut, Settings, User } from "lucide-react"
+import { useDashboard } from "./dashboard-shell"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,34 +12,30 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { logoutFn } from "@/functions/auth";
-import { getRouteApi, Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
-import { LogOut, Settings, User } from "lucide-react";
-import { useDashboard } from "./dashboard-shell";
+} from "@/components/ui/dropdown-menu"
+import { logoutFn } from "@/functions/auth"
 
 export function UserNav() {
-  const { role } = useDashboard();
+  const { role } = useDashboard()
   const userData = getRouteApi("/_app").useRouteContext({
     select: (s) => s.user,
-  });
+  })
 
   // TODO: Get actual user data from context
   const user = {
     name: userData.fullName,
     email: userData.email,
     image: null as string | null,
-  };
+  }
 
   const initials = user.name
     .split(" ")
-    .map((n) => n[0])
+    .map((n: string) => n[0])
     .join("")
     .toUpperCase()
-    .slice(0, 2);
+    .slice(0, 2)
 
-  const logout = useServerFn(logoutFn);
+  const logout = useServerFn(logoutFn)
 
   return (
     <DropdownMenu>
@@ -86,5 +86,5 @@ export function UserNav() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

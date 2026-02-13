@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { AlertTriangle, RefreshCw } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -6,14 +7,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { AlertTriangle, RefreshCw } from "lucide-react";
+} from "@/components/ui/card"
 
 interface ErrorFallbackProps {
-  error?: Error | null;
-  title?: string;
-  description?: string;
-  onRetry?: () => void;
+  error?: Error | null
+  title?: string
+  description?: string
+  onRetry?: () => void
 }
 
 export function ErrorFallback({
@@ -51,5 +51,5 @@ export function ErrorFallback({
         )}
       </Card>
     </div>
-  );
+  )
 }

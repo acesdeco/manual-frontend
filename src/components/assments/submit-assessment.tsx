@@ -1,61 +1,61 @@
-import { assessmentsApi } from "@/api";
-import type { Assessment } from "@/api/assments/schema";
-import { useMutation } from "@tanstack/react-query";
-import { useState, type FC } from "react";
-import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query"
+import { type FC, useState } from "react"
+import { toast } from "sonner"
+import type { Assessment } from "@/api/assments/schema"
+import { assessmentsApi } from "@/api"
 
 interface SubmitAssessmentProps {
-  assessment: Assessment;
+  assessment: Assessment
   student: {
-    student_id: string;
-    student_name: string;
-    reg_number: string;
-  };
+    student_id: string
+    student_name: string
+    reg_number: string
+  }
 }
 
 const SubmitAssessment: FC<SubmitAssessmentProps> = ({
   assessment,
   student,
 }) => {
-  const currentTime = new Date();
-  const startTime = new Date(assessment.startTime);
-  const endTime = new Date(assessment.endTime);
+  const currentTime = new Date()
+  const startTime = new Date(assessment.startTime)
+  const endTime = new Date(assessment.endTime)
   const [assessmentQuestions, setAssessmentQuestions] = useState(
     assessment.questions.map((question) => ({ ...question, selected: "" })),
-  );
-  const [canTakeAssessment, setCanTakeAssessment] = useState(false);
-  const [takeAssessment, setTakeAssessment] = useState(false);
-  const [taken, setTaken] = useState(false);
+  )
+  const [canTakeAssessment, setCanTakeAssessment] = useState(false)
+  const [takeAssessment, setTakeAssessment] = useState(false)
+  const [taken, setTaken] = useState(false)
 
-  const toastId = "assessment-toast-id";
+  const toastId = "assessment-toast-id"
 
   const { mutate } = useMutation({
     mutationFn: assessmentsApi.submitAssessment,
     onMutate() {
       toast.loading("Submitting assessment", {
         id: toastId,
-      });
+      })
     },
     onSuccess(data) {
       if (typeof data !== "undefined") {
-        setCanTakeAssessment(false);
+        setCanTakeAssessment(false)
       } else {
-        setCanTakeAssessment(true);
+        setCanTakeAssessment(true)
       }
       toast.success("Assessment submitted successfully", {
         id: toastId,
-      });
+      })
     },
     onError(error) {
-      console.error(`Error submitting assessment:`, error);
+      console.error(`Error submitting assessment:`, error)
       toast.error("Failed to submit assessment", {
         id: toastId,
-      });
+      })
     },
     onSettled() {
-      setTaken(false);
+      setTaken(false)
     },
-  });
+  })
 
   const updateQuestionState = (
     questionId: string | number,
@@ -63,21 +63,21 @@ const SubmitAssessment: FC<SubmitAssessmentProps> = ({
   ) => {
     const updatedQuestions = assessmentQuestions.map((question) => {
       if (question.id === questionId) {
-        return { ...question, selected };
+        return { ...question, selected }
       }
-      return question;
-    });
-    setAssessmentQuestions(updatedQuestions);
-  };
+      return question
+    })
+    setAssessmentQuestions(updatedQuestions)
+  }
 
   const submitAssessment = () => {
     const unansweredQuestions = assessmentQuestions.filter(
       (question) => question.selected === undefined || question.selected === "",
-    );
+    )
 
     if (unansweredQuestions.length > 0) {
-      alert("Please answer all questions before submitting.");
-      return;
+      alert("Please answer all questions before submitting.")
+      return
     }
 
     mutate({
@@ -96,11 +96,11 @@ const SubmitAssessment: FC<SubmitAssessmentProps> = ({
         answer_text: question.selected,
       })),
       submitted_at: new Date().toISOString(),
-    });
-  };
+    })
+  }
 
   if (currentTime < startTime || currentTime > endTime) {
-    return <div>Assessment is not accessible at this time.</div>;
+    return <div>Assessment is not accessible at this time.</div>
   }
   if (!canTakeAssessment || taken) {
     return (
@@ -108,7 +108,7 @@ const SubmitAssessment: FC<SubmitAssessmentProps> = ({
         <h2>You have already taken this assessment</h2>
         <p>Check back later for your score</p>
       </div>
-    );
+    )
   }
 
   if (!takeAssessment && canTakeAssessment) {
@@ -123,7 +123,7 @@ const SubmitAssessment: FC<SubmitAssessmentProps> = ({
           Start Assessment
         </button>
       </div>
-    );
+    )
   }
 
   return (
@@ -165,7 +165,7 @@ const SubmitAssessment: FC<SubmitAssessmentProps> = ({
         Submit Assessment
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default SubmitAssessment;
+export default SubmitAssessment

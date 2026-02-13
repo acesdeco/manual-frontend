@@ -1,14 +1,14 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Link } from "@tanstack/react-router";
-import type { ComponentType, FC } from "react";
+import { Link } from "@tanstack/react-router"
+import type { ComponentType, FC } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 type AuthLayoutProps = {
-  StudentComponent: ComponentType;
-  InstructorComponent: ComponentType;
-  imgSrc: string;
-  title: string;
-  route: "login" | "signup";
-};
+  StudentComponent: ComponentType
+  InstructorComponent: ComponentType
+  imgSrc: string
+  title: string
+  route: "login" | "signup"
+}
 
 const AuthLayout: FC<AuthLayoutProps> = ({
   imgSrc,
@@ -54,7 +54,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({
         <img src={imgSrc} alt="Studious Students" className="w-3/5" />
       </section>
     </>
-  );
-};
+  )
+}
 
-export default AuthLayout;
+export default AuthLayout

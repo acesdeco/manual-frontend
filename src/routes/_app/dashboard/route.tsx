@@ -1,5 +1,5 @@
-import { DashboardShell } from "@/features/dashboard/components";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router"
+import { DashboardShell } from "@/features/dashboard/components"
 
 export const Route = createFileRoute("/_app/dashboard")({
   head: () => ({
@@ -9,14 +9,14 @@ export const Route = createFileRoute("/_app/dashboard")({
     ],
   }),
   component: DashboardLayout,
-});
+})
 
 function DashboardLayout() {
-  const { role } = Route.useRouteContext();
+  const { role } = Route.useRouteContext()
 
   return (
     <DashboardShell role={role}>
       <Outlet />
     </DashboardShell>
-  );
+  )
 }

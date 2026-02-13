@@ -1,11 +1,11 @@
-import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
+import { cn } from "@/lib/utils"
 
 interface PageHeaderProps {
-  title: string;
-  description?: string;
-  actions?: ReactNode;
-  className?: string;
+  title: string
+  description?: string
+  actions?: ReactNode
+  className?: string
 }
 
 export function PageHeader({
@@ -31,5 +31,5 @@ export function PageHeader({
         <div className="mt-4 flex items-center gap-2 sm:mt-0">{actions}</div>
       )}
     </div>
-  );
+  )
 }

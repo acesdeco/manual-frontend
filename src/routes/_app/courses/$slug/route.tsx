@@ -1,6 +1,17 @@
-import { coursesApi } from "@/api";
-import logoImg from "@/assets/images/Union.png?url";
-import { Button } from "@/components/ui/button";
+import {
+  type ErrorComponentProps,
+  Link,
+  Outlet,
+  createFileRoute,
+} from "@tanstack/react-router"
+import { createServerFn } from "@tanstack/react-start"
+import { zodValidator } from "@tanstack/zod-adapter"
+import { ArrowLeft, Menu } from "lucide-react"
+import { useState } from "react"
+import z from "zod"
+import { coursesApi } from "@/api"
+import logoImg from "@/assets/images/Union.png?url"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -8,24 +19,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { WeekSidebar } from "@/features/courses/components";
-import { authMiddleware } from "@/middleware";
-import {
-  createFileRoute,
-  Link,
-  Outlet,
-  type ErrorComponentProps,
-} from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { zodValidator } from "@tanstack/zod-adapter";
-import { ArrowLeft, Menu } from "lucide-react";
-import { useState } from "react";
-import z from "zod";
+} from "@/components/ui/card"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { WeekSidebar } from "@/features/courses/components"
+import { authMiddleware } from "@/middleware"
 
 const courseLoader = createServerFn({ method: "GET" })
-  .validator(
+  .inputValidator(
     zodValidator(
       z.object({
         slug: z.string(),
@@ -37,9 +37,9 @@ const courseLoader = createServerFn({ method: "GET" })
     const [course, userCourses] = await Promise.all([
       coursesApi.getCourseBySlug(slug),
       coursesApi.getUsersEnrolledCourseIds(user.user),
-    ]);
+    ])
     if (!userCourses.find((courseId) => course._id === courseId))
-      return course._id + ":";
+      return course._id + ":"
     return {
       course,
       studentInfo: {
@@ -47,8 +47,8 @@ const courseLoader = createServerFn({ method: "GET" })
         student_name: user.fullName,
         reg_number: user.registrationNumber,
       },
-    };
-  });
+    }
+  })
 
 export const Route = createFileRoute("/_app/courses/$slug")({
   component: CourseLayout,
@@ -57,11 +57,11 @@ export const Route = createFileRoute("/_app/courses/$slug")({
   loader: async ({ params }) => {
     const result = await courseLoader({
       data: params,
-    });
+    })
     if (typeof result === "string") {
-      throw new Error(result);
+      throw new Error(result)
     }
-    return result;
+    return result
   },
   head: ({ loaderData, params }) => ({
     meta: [
@@ -69,7 +69,7 @@ export const Route = createFileRoute("/_app/courses/$slug")({
       { name: "description", content: "View course content" },
     ],
   }),
-});
+})
 
 function CourseLoadingState() {
   return (
@@ -79,12 +79,12 @@ function CourseLoadingState() {
         <p className="text-muted-foreground">Loading course...</p>
       </div>
     </div>
-  );
+  )
 }
 
 function NotEnrolled({ error }: ErrorComponentProps) {
-  if (!error.message.endsWith(":")) throw error;
-  const courseId = error.message.slice(0, error.message.length - 1);
+  if (!error.message.endsWith(":")) throw error
+  const courseId = error.message.slice(0, error.message.length - 1)
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
@@ -117,13 +117,13 @@ function NotEnrolled({ error }: ErrorComponentProps) {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }
 
 function CourseLayout() {
-  const { course } = Route.useLoaderData();
-  const { slug } = Route.useParams();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { course } = Route.useLoaderData()
+  const { slug } = Route.useParams()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -178,5 +178,5 @@ function CourseLayout() {
         </main>
       </div>
     </div>
-  );
+  )
 }

@@ -1,12 +1,12 @@
-import type { Week } from "@/schemas";
-import type { Student } from "@/types";
-import { useState, type FC } from "react";
-import AllAssessments from "../assments/all-assessment";
+import { type FC, useState } from "react"
+import AllAssessments from "../assments/all-assessment"
+import type { Week } from "@/schemas"
+import type { Student } from "@/types"
 
 interface CourseVideoProps {
-  content: Week;
-  user: Student;
-  weekId: Week["_id"];
+  content: Week
+  user: Student
+  weekId: Week["_id"]
 }
 
 export const CourseVideo: FC<CourseVideoProps> = ({
@@ -14,7 +14,7 @@ export const CourseVideo: FC<CourseVideoProps> = ({
   user,
   weekId,
 }) => {
-  const [activeTab, setActiveTab] = useState("notes");
+  const [activeTab, setActiveTab] = useState("notes")
   return (
     <div className="video-component">
       <div className="">
@@ -84,5 +84,5 @@ export const CourseVideo: FC<CourseVideoProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,41 +1,41 @@
-import type { Assessment as TAssessment } from "@/api/assments/schema";
-import { assessmentByWeekOptions } from "@/queries";
-import type { Course, Week } from "@/schemas";
-import { useQuery } from "@tanstack/react-query";
-import { useState, type FC } from "react";
-import { Loader } from "../global/loader";
-import AssessmentForm from "./assessment-form";
+import { useQuery } from "@tanstack/react-query"
+import { type FC, useState } from "react"
+import { Loader } from "../global/loader"
+import AssessmentForm from "./assessment-form"
+import type { Course, Week } from "@/schemas"
+import type { Assessment as TAssessment } from "@/api/assments/schema"
+import { assessmentByWeekOptions } from "@/queries"
 
 interface AssessmentsProps {
-  weekId: Week["_id"];
-  courseId: Course["_id"];
+  weekId: Week["_id"]
+  courseId: Course["_id"]
 }
 
 type Mode =
   | { state: "edit"; assessment: TAssessment }
   | { state: "new" }
-  | { state: "view" };
+  | { state: "view" }
 
 export const Assessment: FC<AssessmentsProps> = ({ weekId, courseId }) => {
   const {
     data: assessments,
     isPending: loadingAssesments,
     error,
-  } = useQuery(assessmentByWeekOptions(weekId));
+  } = useQuery(assessmentByWeekOptions(weekId))
 
   const [mode, setMode] = useState<Mode>({
     state: "view",
-  });
+  })
 
   if (loadingAssesments) {
     return (
       <div className="flex justify-center items-center h-full">
         <Loader />
       </div>
-    );
+    )
   }
 
-  if (error) throw error;
+  if (error) throw error
 
   switch (mode.state) {
     case "edit": {
@@ -54,7 +54,7 @@ export const Assessment: FC<AssessmentsProps> = ({ weekId, courseId }) => {
             courseId: courseId,
           }}
         />
-      );
+      )
     }
     case "new": {
       return (
@@ -68,7 +68,7 @@ export const Assessment: FC<AssessmentsProps> = ({ weekId, courseId }) => {
           courseId={courseId}
           initialFormState={null}
         />
-      );
+      )
     }
     case "view": {
       return (
@@ -121,7 +121,7 @@ export const Assessment: FC<AssessmentsProps> = ({ weekId, courseId }) => {
             </>
           )}
         </section>
-      );
+      )
     }
   }
-};
+}

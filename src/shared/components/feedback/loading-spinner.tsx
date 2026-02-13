@@ -1,16 +1,16 @@
-import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface LoadingSpinnerProps {
-  size?: "sm" | "md" | "lg";
-  className?: string;
+  size?: "sm" | "md" | "lg"
+  className?: string
 }
 
 const sizeClasses = {
   sm: "size-4",
   md: "size-6",
   lg: "size-8",
-};
+}
 
 export function LoadingSpinner({
   size = "md",
@@ -20,11 +20,11 @@ export function LoadingSpinner({
     <Loader2
       className={cn("animate-spin text-primary", sizeClasses[size], className)}
     />
-  );
+  )
 }
 
 interface PageLoaderProps {
-  message?: string;
+  message?: string
 }
 
 export function PageLoader({ message = "Loading..." }: PageLoaderProps) {
@@ -33,15 +33,15 @@ export function PageLoader({ message = "Loading..." }: PageLoaderProps) {
       <LoadingSpinner size="lg" />
       <p className="text-sm text-muted-foreground">{message}</p>
     </div>
-  );
+  )
 }
 
 interface OverlayLoaderProps {
-  isLoading: boolean;
+  isLoading: boolean
 }
 
 export function OverlayLoader({ isLoading }: OverlayLoaderProps) {
-  if (!isLoading) return null;
+  if (!isLoading) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
@@ -50,5 +50,5 @@ export function OverlayLoader({ isLoading }: OverlayLoaderProps) {
         <p className="text-sm text-muted-foreground">Please wait...</p>
       </div>
     </div>
-  );
+  )
 }

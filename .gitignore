@@ -7,9 +7,9 @@ count.txt
 .env
 .nitro
 .tanstack
+.wrangler
 .output
 .vinxi
-count.txt
-tsconfig.tsbuild*
-note.*
+todos.json
 .vercel
+tsconfig.tsbuildinfo

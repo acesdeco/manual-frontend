@@ -1,19 +1,15 @@
-import {
-  passwordSchema,
-  registrationNumberSchema,
-  userSchema,
-} from "@/schemas";
-import z from "zod";
+import z from "zod"
+import { passwordSchema, registrationNumberSchema, userSchema } from "@/schemas"
 
-const studentsRole = z.literal("student").catch("student");
+const studentsRole = z.literal("student").catch("student")
 
 export const sLoginSchema = z.object({
   password: passwordSchema,
   registrationNumber: registrationNumberSchema,
   role: studentsRole,
-});
+})
 
-export type StudentLogin = z.infer<typeof sLoginSchema>;
+export type StudentLogin = z.infer<typeof sLoginSchema>
 
 export const sSignUpSchema = userSchema
   .omit({
@@ -29,19 +25,19 @@ export const sSignUpSchema = userSchema
   .refine((input) => input.password === input.confirmPassword, {
     error: "Passwords don't match",
     path: ["confirmPassword"],
-  });
+  })
 
-export type StudentSignUp = z.infer<typeof sSignUpSchema>;
+export type StudentSignUp = z.infer<typeof sSignUpSchema>
 
-const instructorRole = z.literal("instructor").catch("instructor");
+const instructorRole = z.literal("instructor").catch("instructor")
 
 export const iLoginSchema = z.object({
   email: z.email(),
   password: passwordSchema,
   role: instructorRole,
-});
+})
 
-export type InstructorLogin = z.infer<typeof iLoginSchema>;
+export type InstructorLogin = z.infer<typeof iLoginSchema>
 
 export const iSignupSchema = z
   .object({
@@ -57,9 +53,9 @@ export const iSignupSchema = z
   .refine((input) => input.password === input.confirmPassword, {
     error: "Passwords don't match",
     path: ["confirmPassword"],
-  });
+  })
 
-export type InstructorSignUp = z.infer<typeof iSignupSchema>;
+export type InstructorSignUp = z.infer<typeof iSignupSchema>
 
 export const authResultSchema = z.object({
   token: z.jwt().or(z.literal("")),
@@ -68,8 +64,8 @@ export const authResultSchema = z.object({
   registrationNumber: registrationNumberSchema.or(z.literal("")),
   fullName: z.string(),
   courses: z.string().array().default([]),
-});
+})
 export const userCookieSchema = authResultSchema.extend({
   role: userSchema.shape.role,
-});
-export type UserCookie = z.infer<typeof userCookieSchema>;
+})
+export type UserCookie = z.infer<typeof userCookieSchema>

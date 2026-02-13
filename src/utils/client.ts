@@ -1,5 +1,5 @@
-import { toast, type ExternalToast } from "sonner";
-import { prettifyError, ZodError } from "zod";
+import { type ExternalToast, toast } from "sonner"
+import { ZodError, prettifyError } from "zod"
 
 export function responseErrorMessage(error: unknown) {
   return typeof error === "object" &&
@@ -11,7 +11,7 @@ export function responseErrorMessage(error: unknown) {
       ? prettifyError(error)
       : error instanceof Error
         ? error.message
-        : null;
+        : null
 }
 
 export function responseErrorToast(
@@ -21,5 +21,5 @@ export function responseErrorToast(
   toast.error("There was a problem with your request", {
     ...options,
     description: responseErrorMessage(error),
-  });
+  })
 }

@@ -1,14 +1,14 @@
+import { createFileRoute, getRouteApi } from "@tanstack/react-router"
+import { Suspense } from "react"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createFileRoute, getRouteApi } from "@tanstack/react-router";
-import { Suspense } from "react";
+} from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export const Route = createFileRoute("/_app/courses/$slug/introduction")({
   component: Introduction,
@@ -18,12 +18,12 @@ export const Route = createFileRoute("/_app/courses/$slug/introduction")({
       { name: "description", content: "Course introduction and overview" },
     ],
   }),
-});
+})
 
-const courseLayout = getRouteApi("/_app/courses/$slug");
+const courseLayout = getRouteApi("/_app/courses/$slug")
 
 function Introduction() {
-  const { course } = courseLayout.useLoaderData();
+  const { course } = courseLayout.useLoaderData()
 
   return (
     <div className="space-y-6">
@@ -118,7 +118,7 @@ function Introduction() {
         </TabsContent>
       </Tabs>
     </div>
-  );
+  )
 }
 
 function AssessmentsSkeleton() {
@@ -133,5 +133,5 @@ function AssessmentsSkeleton() {
         <Skeleton className="h-16 w-full" />
       </CardContent>
     </Card>
-  );
+  )
 }

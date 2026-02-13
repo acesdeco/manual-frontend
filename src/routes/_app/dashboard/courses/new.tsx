@@ -1,11 +1,18 @@
-import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
+import { ArrowLeft, Loader2 } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 import {
   Form,
   FormControl,
@@ -13,23 +20,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import {
+  type ICreateCourse,
   iCreateCourseFn,
   iCreateCourseSchema,
-  type ICreateCourse,
-} from "@/functions/courses";
-import { instructorOnlyFn } from "@/functions/global";
-import { responseErrorToast } from "@/utils/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+} from "@/functions/courses"
+import { instructorOnlyFn } from "@/functions/global"
+import { responseErrorToast } from "@/utils/client"
 
 export const Route = createFileRoute("/_app/dashboard/courses/new")({
   beforeLoad: async () => await instructorOnlyFn(),
@@ -40,10 +40,10 @@ export const Route = createFileRoute("/_app/dashboard/courses/new")({
       { name: "description", content: "Create a new course" },
     ],
   }),
-});
+})
 
 function RouteComponent() {
-  const { user } = Route.useRouteContext();
+  const { user } = Route.useRouteContext()
   const form = useForm<ICreateCourse>({
     resolver: zodResolver(iCreateCourseSchema),
     defaultValues: {
@@ -57,28 +57,28 @@ function RouteComponent() {
       title: "",
       published: false,
     },
-  });
+  })
 
-  const createCourseFn = useServerFn(iCreateCourseFn);
+  const createCourseFn = useServerFn(iCreateCourseFn)
   const { mutate, isPending } = useMutation({
     mutationFn: createCourseFn,
     onMutate({ data }) {
       toast.loading(`Creating ${data.code || "course"}...`, {
         id: "create-course",
-      });
+      })
     },
     onSuccess(_, { data }) {
       toast.success(`${data.code} created successfully`, {
         id: "create-course",
-      });
+      })
     },
     onError(error) {
-      console.error("Error creating instructor's course:", error);
+      console.error("Error creating instructor's course:", error)
       responseErrorToast(error, {
         id: "create-course",
-      });
+      })
     },
-  });
+  })
 
   return (
     <div className="space-y-6">
@@ -102,7 +102,6 @@ function RouteComponent() {
         <CardContent>
           <Form {...form}>
             <form
-              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onSubmit={form.handleSubmit((data) => mutate({ data }))}
               className="space-y-6"
             >
@@ -193,5 +192,5 @@ function RouteComponent() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

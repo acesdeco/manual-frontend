@@ -1,13 +1,13 @@
 // FIXME I believe the questions are theory, not subjective
 
-import { courseSchema, userSchema, weekSchema } from "@/schemas";
-import z from "zod";
+import z from "zod"
+import { courseSchema, userSchema, weekSchema } from "@/schemas"
 
 const baseQuestion = {
   id: z.nanoid().length(10),
   question_text: z.string(),
   marks: z.number().positive(),
-};
+}
 
 const objectiveQuestion = z
   .object({
@@ -23,36 +23,36 @@ const objectiveQuestion = z
       .min(2, "At least two options are required"),
   })
   .superRefine((data, ctx) => {
-    const correctCount = data.options.filter((o) => o.is_correct).length;
+    const correctCount = data.options.filter((o) => o.is_correct).length
 
     if (correctCount === 0) {
       ctx.addIssue({
         code: "custom",
         message: "You must mark at least one option as correct.",
         path: ["options"],
-      });
+      })
     } else if (correctCount > 1) {
       ctx.addIssue({
         code: "custom",
         message: "Only one option can be marked as correct.",
         path: ["options"],
-      });
+      })
     }
-  });
-export type ObjectiveQuestion = z.infer<typeof objectiveQuestion>;
+  })
+export type ObjectiveQuestion = z.infer<typeof objectiveQuestion>
 
 const subjectiveQuestion = z.object({
   ...baseQuestion,
   question_type: z.literal("subjective"),
-});
-export type SubjectiveQuestion = z.infer<typeof subjectiveQuestion>;
+})
+export type SubjectiveQuestion = z.infer<typeof subjectiveQuestion>
 
 export const questionSchema = z.discriminatedUnion("question_type", [
   objectiveQuestion,
   subjectiveQuestion,
-]);
+])
 
-export type Question = z.infer<typeof questionSchema>;
+export type Question = z.infer<typeof questionSchema>
 export const assessmentSchema = z.object({
   _id: z.string().optional(),
   // id: z.string().optional(),
@@ -67,8 +67,8 @@ export const assessmentSchema = z.object({
   endTime: z.string(),
   created_at: z.iso.datetime().optional(),
   updated_at: z.iso.datetime().optional(),
-});
-export type Assessment = z.infer<typeof assessmentSchema>;
+})
+export type Assessment = z.infer<typeof assessmentSchema>
 
 export const newAssessmentSchema = z.object({
   ...assessmentSchema.partial().shape,
@@ -82,8 +82,8 @@ export const newAssessmentSchema = z.object({
   }).shape,
   week_id: weekSchema.shape._id,
   courseId: courseSchema.in.shape._id,
-});
-export type NewAssment = z.infer<typeof newAssessmentSchema>;
+})
+export type NewAssment = z.infer<typeof newAssessmentSchema>
 
 export const submitAssessmentSchema = z.object({
   assessmentId: assessmentSchema.shape._id,
@@ -102,5 +102,5 @@ export const submitAssessmentSchema = z.object({
     })
     .array(),
   submitted_at: z.string(),
-});
-export type SubmitAssessmentInput = z.infer<typeof submitAssessmentSchema>;
+})
+export type SubmitAssessmentInput = z.infer<typeof submitAssessmentSchema>

@@ -1,12 +1,12 @@
-import { authResultSchema } from "@/functions/auth";
-import { userSchema } from "@/schemas";
-import z from "zod";
+import z from "zod"
+import { authResultSchema } from "@/functions/auth"
+import { userSchema } from "@/schemas"
 
 export const updateUserSchema = z.object({
   userId: userSchema.shape._id,
   data: userSchema.partial(),
-});
-export type UpdateUserInput = z.infer<typeof updateUserSchema>;
+})
+export type UpdateUserInput = z.infer<typeof updateUserSchema>
 
 export const updateUserResult = z
   .object({
@@ -24,4 +24,4 @@ export const updateUserResult = z
     user: _id,
     token: "",
     fullName: `${firstName} ${lastName}`,
-  })) satisfies z.ZodType<z.infer<typeof authResultSchema>>;
+  })) satisfies z.ZodType<z.infer<typeof authResultSchema>>

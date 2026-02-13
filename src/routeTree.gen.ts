@@ -8,13 +8,12 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createServerRootRoute } from '@tanstack/react-start/server'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AssessmentRouteImport } from './routes/assessment'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiInfoRouteImport } from './routes/api/info'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AppDashboardRouteRouteImport } from './routes/_app/dashboard/route'
@@ -31,9 +30,6 @@ import { Route as AppDashboardCoursesNewRouteImport } from './routes/_app/dashbo
 import { Route as AppCoursesSlugIntroductionRouteImport } from './routes/_app/courses/$slug/introduction'
 import { Route as AppCoursesSlugWeekRouteImport } from './routes/_app/courses/$slug/$week'
 import { Route as AppDashboardCoursesSlugEditRouteImport } from './routes/_app/dashboard/courses/$slug/edit'
-import { ServerRoute as ApiInfoServerRouteImport } from './routes/api/info'
-
-const rootServerRouteImport = createServerRootRoute()
 
 const AssessmentRoute = AssessmentRouteImport.update({
   id: '/assessment',
@@ -51,6 +47,11 @@ const AppRouteRoute = AppRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiInfoRoute = ApiInfoRouteImport.update({
+  id: '/api/info',
+  path: '/api/info',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthSignupRoute = AuthSignupRouteImport.update({
@@ -137,11 +138,6 @@ const AppDashboardCoursesSlugEditRoute =
     path: '/courses/$slug/edit',
     getParentRoute: () => AppDashboardRouteRoute,
   } as any)
-const ApiInfoServerRoute = ApiInfoServerRouteImport.update({
-  id: '/api/info',
-  path: '/api/info',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -149,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
+  '/api/info': typeof ApiInfoRoute
   '/courses/$slug': typeof AppCoursesSlugRouteRouteWithChildren
   '/payment/$courseId': typeof AppPaymentCourseIdRouteRouteWithChildren
   '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
@@ -160,7 +157,7 @@ export interface FileRoutesByFullPath {
   '/payment/$courseId/$': typeof AppPaymentCourseIdSplatRoute
   '/payment/$courseId/callback': typeof AppPaymentCourseIdCallbackRoute
   '/payment/$courseId/pay': typeof AppPaymentCourseIdPayRoute
-  '/dashboard/courses': typeof AppDashboardCoursesIndexRoute
+  '/dashboard/courses/': typeof AppDashboardCoursesIndexRoute
   '/dashboard/courses/$slug/edit': typeof AppDashboardCoursesSlugEditRoute
 }
 export interface FileRoutesByTo {
@@ -169,6 +166,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
+  '/api/info': typeof ApiInfoRoute
   '/courses/$slug': typeof AppCoursesSlugRouteRouteWithChildren
   '/payment/$courseId': typeof AppPaymentCourseIdRouteRouteWithChildren
   '/dashboard/enrolled': typeof AppDashboardEnrolledRoute
@@ -192,6 +190,7 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
+  '/api/info': typeof ApiInfoRoute
   '/_app/courses/$slug': typeof AppCoursesSlugRouteRouteWithChildren
   '/_app/payment/$courseId': typeof AppPaymentCourseIdRouteRouteWithChildren
   '/_app/dashboard/enrolled': typeof AppDashboardEnrolledRoute
@@ -214,6 +213,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/signup'
+    | '/api/info'
     | '/courses/$slug'
     | '/payment/$courseId'
     | '/dashboard/enrolled'
@@ -225,7 +225,7 @@ export interface FileRouteTypes {
     | '/payment/$courseId/$'
     | '/payment/$courseId/callback'
     | '/payment/$courseId/pay'
-    | '/dashboard/courses'
+    | '/dashboard/courses/'
     | '/dashboard/courses/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -234,6 +234,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/signup'
+    | '/api/info'
     | '/courses/$slug'
     | '/payment/$courseId'
     | '/dashboard/enrolled'
@@ -256,6 +257,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_auth/login'
     | '/_auth/signup'
+    | '/api/info'
     | '/_app/courses/$slug'
     | '/_app/payment/$courseId'
     | '/_app/dashboard/enrolled'
@@ -276,27 +278,7 @@ export interface RootRouteChildren {
   AppRouteRoute: typeof AppRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AssessmentRoute: typeof AssessmentRoute
-}
-export interface FileServerRoutesByFullPath {
-  '/api/info': typeof ApiInfoServerRoute
-}
-export interface FileServerRoutesByTo {
-  '/api/info': typeof ApiInfoServerRoute
-}
-export interface FileServerRoutesById {
-  __root__: typeof rootServerRouteImport
-  '/api/info': typeof ApiInfoServerRoute
-}
-export interface FileServerRouteTypes {
-  fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/info'
-  fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/info'
-  id: '__root__' | '/api/info'
-  fileServerRoutesById: FileServerRoutesById
-}
-export interface RootServerRouteChildren {
-  ApiInfoServerRoute: typeof ApiInfoServerRoute
+  ApiInfoRoute: typeof ApiInfoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -311,14 +293,14 @@ declare module '@tanstack/react-router' {
     '/_auth': {
       id: '/_auth'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
       id: '/_app'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -327,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/info': {
+      id: '/api/info'
+      path: '/api/info'
+      fullPath: '/api/info'
+      preLoaderRoute: typeof ApiInfoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/signup': {
@@ -388,7 +377,7 @@ declare module '@tanstack/react-router' {
     '/_app/dashboard/courses/': {
       id: '/_app/dashboard/courses/'
       path: '/courses'
-      fullPath: '/dashboard/courses'
+      fullPath: '/dashboard/courses/'
       preLoaderRoute: typeof AppDashboardCoursesIndexRouteImport
       parentRoute: typeof AppDashboardRouteRoute
     }
@@ -440,17 +429,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/courses/$slug/edit'
       preLoaderRoute: typeof AppDashboardCoursesSlugEditRouteImport
       parentRoute: typeof AppDashboardRouteRoute
-    }
-  }
-}
-declare module '@tanstack/react-start/server' {
-  interface ServerFileRoutesByPath {
-    '/api/info': {
-      id: '/api/info'
-      path: '/api/info'
-      fullPath: '/api/info'
-      preLoaderRoute: typeof ApiInfoServerRouteImport
-      parentRoute: typeof rootServerRouteImport
     }
   }
 }
@@ -542,13 +520,17 @@ const rootRouteChildren: RootRouteChildren = {
   AppRouteRoute: AppRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AssessmentRoute: AssessmentRoute,
+  ApiInfoRoute: ApiInfoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiInfoServerRoute: ApiInfoServerRoute,
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
 }
-export const serverRouteTree = rootServerRouteImport
-  ._addFileChildren(rootServerRouteChildren)
-  ._addFileTypes<FileServerRouteTypes>()

@@ -1,9 +1,9 @@
-import { courseSchema } from "@/schemas";
-import type z from "zod";
+import type z from "zod"
+import { courseSchema } from "@/schemas"
 
 export const iCreateCourseSchema = courseSchema.in.omit({
   _id: true,
-});
+})
 // .pick({
 //   code: true,
 //   description: true,
@@ -12,4 +12,4 @@ export const iCreateCourseSchema = courseSchema.in.omit({
 //   instructor: true,
 // })
 
-export type ICreateCourse = z.infer<typeof iCreateCourseSchema>;
+export type ICreateCourse = z.infer<typeof iCreateCourseSchema>

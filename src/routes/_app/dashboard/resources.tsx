@@ -1,13 +1,13 @@
+import { createFileRoute } from "@tanstack/react-router"
+import { FolderOpen } from "lucide-react"
 import {
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
-import { PageHeader } from "@/shared/components/layout";
-import { createFileRoute } from "@tanstack/react-router";
-import { FolderOpen } from "lucide-react";
+} from "@/components/ui/empty"
+import { PageHeader } from "@/shared/components/layout"
 
 export const Route = createFileRoute("/_app/dashboard/resources")({
   component: RouteComponent,
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/_app/dashboard/resources")({
       { name: "description", content: "Learning resources and materials" },
     ],
   }),
-});
+})
 
 function RouteComponent() {
   return (
@@ -38,5 +38,5 @@ function RouteComponent() {
         </EmptyHeader>
       </Empty>
     </div>
-  );
+  )
 }

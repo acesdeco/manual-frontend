@@ -1,9 +1,12 @@
-import { getUserCookie } from "@/helpers/server/cookies";
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router"
+import { getUserCookie } from "@/helpers/server/cookies"
 
-export const ServerRoute = createServerFileRoute("/api/info").methods({
-  GET: () => {
-    return Response.json(getUserCookie());
-    // return Response.json(JSON.parse(getCookie("user")!));
+export const Route = createFileRoute("/api/info")({
+  server: {
+    handlers: {
+      GET: () => {
+        return Response.json(getUserCookie())
+      },
+    },
   },
-});
+})

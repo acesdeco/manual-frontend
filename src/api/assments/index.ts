@@ -1,56 +1,56 @@
-import { parseResponse, weekSchema, type Week } from "@/schemas";
-import { api, parseApiResponse } from "../utils";
+import { api, parseApiResponse } from "../utils"
 import {
+  type NewAssment,
+  type SubmitAssessmentInput,
   assessmentSchema,
   newAssessmentSchema,
   submitAssessmentSchema,
-  type NewAssment,
-  type SubmitAssessmentInput,
-} from "./schema";
+} from "./schema"
+import { type Week, parseResponse, weekSchema } from "@/schemas"
 
 export async function getAssessment(
   assessmentId: string,
   signal?: AbortSignal,
 ) {
-  assessmentSchema.shape._id.parse(assessmentId);
+  assessmentSchema.shape._id.parse(assessmentId)
   const res = await api
     .get(`assessment/${assessmentId}`, {
       signal,
     })
-    .json();
-  return parseResponse(res, assessmentSchema);
+    .json()
+  return parseResponse(res, assessmentSchema)
 }
 
 export async function createAssessment(input: NewAssment) {
-  newAssessmentSchema.parse(input);
+  newAssessmentSchema.parse(input)
   await api.post("assessment", {
     json: input,
-  });
+  })
 }
 
 export async function updateAssessment(input: NewAssment) {
-  newAssessmentSchema.parse(input);
+  newAssessmentSchema.parse(input)
   await api.put(`assessment/${input._id}`, {
     json: input,
-  });
+  })
 }
 
 export async function getAssessmentsByWeek(
   weekId: Week["_id"],
   signal?: AbortSignal,
 ) {
-  weekSchema.shape._id.parse(weekId);
+  weekSchema.shape._id.parse(weekId)
   const res = await api
     .get(`assessment/week/${weekId}`, {
       signal,
     })
-    .json();
-  return parseApiResponse(res, assessmentSchema.array());
+    .json()
+  return parseApiResponse(res, assessmentSchema.array())
 }
 
 export async function submitAssessment(input: SubmitAssessmentInput) {
-  submitAssessmentSchema.parse(input);
+  submitAssessmentSchema.parse(input)
   await api.post("assessment/submit", {
     json: input,
-  });
+  })
 }

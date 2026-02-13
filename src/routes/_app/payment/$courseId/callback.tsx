@@ -1,4 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { zodValidator } from "@tanstack/zod-adapter"
+import { CheckCircle, XCircle } from "lucide-react"
+import z from "zod"
+import { paymentCallbackFn } from "@/functions/payments"
 import {
   Card,
   CardContent,
@@ -6,12 +10,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { paymentCallbackFn } from "@/functions/payments";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { zodValidator } from "@tanstack/zod-adapter";
-import { CheckCircle, XCircle } from "lucide-react";
-import z from "zod";
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 export const Route = createFileRoute("/_app/payment/$courseId/callback")({
   component: Callback,
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/_app/payment/$courseId/callback")({
         courseId: params.courseId,
         reference: "reference" in deps ? deps.reference : deps.trxref,
       },
-    });
+    })
   },
   head: () => ({
     meta: [
@@ -41,12 +41,12 @@ export const Route = createFileRoute("/_app/payment/$courseId/callback")({
       { name: "description", content: "Payment confirmation" },
     ],
   }),
-});
+})
 
 function Callback() {
-  const { course, txState } = Route.useLoaderData();
+  const { course, txState } = Route.useLoaderData()
 
-  const isSuccess = txState.status === "success";
+  const isSuccess = txState.status === "success"
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
@@ -111,5 +111,5 @@ function Callback() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }

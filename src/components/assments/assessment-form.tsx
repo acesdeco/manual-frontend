@@ -1,21 +1,11 @@
-import { assessmentsApi } from "@/api";
-import {
-  newAssessmentSchema,
-  type NewAssment,
-  type Question,
-} from "@/api/assments/schema";
-import { cn } from "@/lib/utils";
-import type { Course, Week } from "@/schemas";
-import type { RequireFields } from "@/types";
-import { responseErrorToast } from "@/utils/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getRouteApi } from "@tanstack/react-router";
-import { nanoid } from "nanoid";
-import { type ComponentProps, type FC } from "react";
-import { useForm } from "react-hook-form";
-import { BiPlus } from "react-icons/bi";
-import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { getRouteApi } from "@tanstack/react-router"
+import { nanoid } from "nanoid"
+import { type ComponentProps, type FC } from "react"
+import { useForm } from "react-hook-form"
+import { BiPlus } from "react-icons/bi"
+import { toast } from "sonner"
 import {
   Form,
   FormControl,
@@ -23,8 +13,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import Questions from "./questions";
+} from "../ui/form"
+import Questions from "./questions"
+import type { RequireFields } from "@/types"
+import type { Course, Week } from "@/schemas"
+import { responseErrorToast } from "@/utils/client"
+import { cn } from "@/lib/utils"
+import {
+  type NewAssment,
+  type Question,
+  newAssessmentSchema,
+} from "@/api/assments/schema"
+import { assessmentsApi } from "@/api"
 
 const CustomLabel: FC<
   RequireFields<ComponentProps<"label">, "children" | "htmlFor">
@@ -33,7 +33,7 @@ const CustomLabel: FC<
     {...props}
     className={cn("block text-sm font-medium text-gray-700", className)}
   />
-);
+)
 
 const CustomInput: FC<RequireFields<ComponentProps<"input">, "id">> = ({
   className,
@@ -46,16 +46,16 @@ const CustomInput: FC<RequireFields<ComponentProps<"input">, "id">> = ({
       className,
     )}
   />
-);
+)
 
 type AssessmentFormProps = {
-  initialFormState: NewAssment | null;
-  weekId: Week["_id"];
-  courseId: Course["_id"];
-  goBack?: () => void;
-};
+  initialFormState: NewAssment | null
+  weekId: Week["_id"]
+  courseId: Course["_id"]
+  goBack?: () => void
+}
 
-const editRoute = getRouteApi("/_app/dashboard/courses/$slug/edit");
+const editRoute = getRouteApi("/_app/dashboard/courses/$slug/edit")
 
 const AssessmentForm: FC<AssessmentFormProps> = ({
   initialFormState,
@@ -63,8 +63,8 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
   courseId,
   goBack,
 }) => {
-  const queryClient = useQueryClient();
-  const { user } = editRoute.useRouteContext();
+  const queryClient = useQueryClient()
+  const { user } = editRoute.useRouteContext()
 
   const form = useForm<NewAssment>({
     resolver: zodResolver(newAssessmentSchema),
@@ -78,7 +78,7 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
       courseId,
       created_by: user.user,
     },
-  });
+  })
 
   const { mutate, isPending } = useMutation({
     mutationFn: initialFormState
@@ -87,32 +87,31 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
     onMutate({ title, _id }) {
       toast.loading(`${_id ? "Creating" : "Updating"} assessment"`, {
         id: title,
-      });
+      })
     },
     async onSuccess(_, { title, _id }) {
       toast.success(`Assessment ${_id ? "updated" : "created"} successfully!`, {
         id: title,
-      });
-      await queryClient.invalidateQueries();
-      goBack?.();
+      })
+      await queryClient.invalidateQueries()
+      goBack?.()
     },
     onError(error, { title, _id }) {
       console.error(
         `Error ${_id ? "updating" : "creating"} assessment:"`,
         error,
-      );
+      )
       responseErrorToast(error, {
         id: title,
-      });
+      })
     },
-  });
+  })
 
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-2">Create Assessment</h1>
       <Form {...form}>
         <form
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onSubmit={form.handleSubmit((data) => mutate(data))}
           className="flex flex-col gap-4"
         >
@@ -207,13 +206,13 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
                     question_type: "objective",
                     marks: 1,
                   },
-                ] satisfies NewAssment["questions"]);
-              };
+                ] satisfies NewAssment["questions"])
+              }
               const removeQuestion = (id: Question["id"]) => {
                 field.onChange(
                   field.value.filter((question) => question.id !== id),
-                );
-              };
+                )
+              }
               return (
                 <FormItem>
                   <FormLabel asChild>
@@ -239,7 +238,7 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              );
+              )
             }}
           />
           <button
@@ -252,7 +251,7 @@ const AssessmentForm: FC<AssessmentFormProps> = ({
         </form>
       </Form>
     </section>
-  );
-};
+  )
+}
 
-export default AssessmentForm;
+export default AssessmentForm
